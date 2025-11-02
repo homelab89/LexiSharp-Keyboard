@@ -1,8 +1,8 @@
 {
-  "version": "3.4.4",
-  "version_code": 90,
-  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.4.4",
-  "release_notes": "本次更新包含 9 个提交:\n- fix(ui): 修复处理中旋转视图在视图不可见\n- fix(ui): 调整键盘视图按钮与信息栏的间隔\n- fix(ime): 限制粘贴板预览为单行显示避免布局破坏\n- pro(feat): 添加 Pro 版本 UI 注入功能\n- feat(update): 实现应用内下载安装包和安装功能\n- fix(ime): 修复长按模式下快速点按后卡在识别状态的问题\n- feat(history): 优化识别记录全选效果\n- feat(settings): 更新 API 密钥获取按钮的引导链接\n- pro(feat(asr)): 添加 Soniox ASR 引擎的上下文注入功能",
+  "version": "3.4.5",
+  "version_code": 91,
+  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.4.5",
+  "release_notes": "本次更新包含 2 个提交:\n- feat(debug): 添加音频采集和ASR引擎的调试日志记录\n- feat(asr): 伪流式识别动态处理间隔，尝试降低长录音处理压力",
   "min_supported_version": "2.6.5",
-  "update_time": "2025-11-02T02:15:32Z"
+  "update_time": "2025-11-02T15:16:09Z"
 }
