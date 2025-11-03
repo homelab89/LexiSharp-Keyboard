@@ -88,6 +88,7 @@
     <string name="label_dash_prompt">カスタムプロンプト/コンテキスト（オプション）</string>
     <string name="label_dash_language">認識言語（オプション。既知の場合は精度向上）</string>
     <string name="label_dash_streaming">DashScope ストリーミングを使用（WebSocket）</string>
+    <string name="dash_streaming_note">ストリーミングは Fun‑ASR モデルを使用、非ストリーミングは Qwen‑ASR‑Flash モデルを使用します\nストリーミングモードではカスタムプロンプト、地域設定、言語設定はサポートされません</string>
     <string name="dash_lang_auto">自動（言語識別を有効化）</string>
     <string name="label_dash_region">DashScope リージョン</string>
     <string name="dash_region_cn">中国本土（aliyuncs.com）</string>

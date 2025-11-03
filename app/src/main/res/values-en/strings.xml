@@ -89,6 +89,7 @@
     <string name="label_dash_prompt">Custom prompt / context (optional)</string>
     <string name="label_dash_language">Recognition language (optional; improves accuracy if known)</string>
     <string name="label_dash_streaming">Use DashScope streaming (WebSocket)</string>
+    <string name="dash_streaming_note">Streaming uses the Fun‑ASR model; non‑streaming uses the Qwen‑ASR‑Flash model\nStreaming mode does not support custom Prompt, region selection, or language setting</string>
     <string name="dash_lang_auto">Auto (enable language ID)</string>
     <string name="label_dash_region">DashScope Region</string>
     <string name="dash_region_cn">Mainland China (aliyuncs.com)</string>

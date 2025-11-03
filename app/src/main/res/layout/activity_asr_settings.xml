@@ -621,6 +621,15 @@
           android:layout_marginTop="8dp"
           android:text="@string/label_dash_streaming" />
 
+        <TextView
+          android:id="@+id/tvDashStreamingNote"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:textSize="12sp"
+          android:text="@string/dash_streaming_note" />
+
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnDashGetKey"
           android:layout_width="match_parent"

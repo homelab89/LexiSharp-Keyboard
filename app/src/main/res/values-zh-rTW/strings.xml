@@ -88,6 +88,7 @@
     <string name="label_dash_prompt">自定義提示詞 / 上下文 (可選)</string>
     <string name="label_dash_language">辨識語言（可選；已知語言可提升準確度）</string>
     <string name="label_dash_streaming">使用 DashScope 串流 (WebSocket)</string>
+    <string name="dash_streaming_note">串流識別使用 Fun‑ASR 模型，非串流使用 Qwen‑ASR‑Flash 模型\n串流模式不支援自訂 Prompt、地區設定、辨識語言設定</string>
     <string name="dash_lang_auto">自動（啟用語言辨識）</string>
     <string name="label_dash_region">DashScope 區域</string>
     <string name="dash_region_cn">中國大陸（aliyuncs.com）</string>

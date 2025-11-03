@@ -89,6 +89,7 @@
     <string name="label_dash_prompt">自定义提示词/识别上下文（可选）</string>
     <string name="label_dash_language">识别语言（可选，已知语种可提升准确率）</string>
     <string name="label_dash_streaming">使用 DashScope 流式识别（WebSocket）</string>
+    <string name="dash_streaming_note">流式识别使用 Fun‑ASR 模型，非流式使用 Qwen‑ASR‑Flash 模型\n流式模式不支持自定义 Prompt、地域设置、识别语言设置</string>
     <string name="dash_lang_auto">自动（启用语种识别）</string>
     <string name="label_dash_region">DashScope 地域</string>
     <string name="dash_region_cn">中国大陆（aliyuncs.com）</string>
