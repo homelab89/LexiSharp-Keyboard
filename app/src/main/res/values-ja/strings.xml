@@ -89,6 +89,9 @@
     <string name="label_dash_language">認識言語（オプション。既知の場合は精度向上）</string>
     <string name="label_dash_streaming">DashScope ストリーミングを使用（WebSocket）</string>
     <string name="dash_lang_auto">自動（言語識別を有効化）</string>
+    <string name="label_dash_region">DashScope リージョン</string>
+    <string name="dash_region_cn">中国本土（aliyuncs.com）</string>
+    <string name="dash_region_intl">シンガポール/国際（dashscope-intl.aliyuncs.com）</string>
     <string name="dash_lang_zh">中国語（zh）</string>
     <string name="dash_lang_en">英語（en）</string>
     <string name="dash_lang_ja">日本語（ja）</string>
@@ -350,6 +353,8 @@
     <string name="update_check_failed">更新確認失敗：%1$s</string>
     <string name="update_dialog_title">新しいバージョンが利用可能</string>
     <string name="update_dialog_message">現在のバージョン：%1$s\n最新バージョン：%2$s\n\nダウンロードしますか？</string>
+    <string name="current_version_info_title">現在のバージョン情報</string>
+    <string name="current_version_message">現在のバージョン：%1$s\n\n最新バージョンをご利用中です！</string>
     <string name="btn_download">ダウンロード</string>
     <string name="btn_view_release_page">リリースページを表示</string>
     <string name="btn_manual_check">手動確認</string>

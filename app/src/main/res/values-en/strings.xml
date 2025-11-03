@@ -90,6 +90,9 @@
     <string name="label_dash_language">Recognition language (optional; improves accuracy if known)</string>
     <string name="label_dash_streaming">Use DashScope streaming (WebSocket)</string>
     <string name="dash_lang_auto">Auto (enable language ID)</string>
+    <string name="label_dash_region">DashScope Region</string>
+    <string name="dash_region_cn">Mainland China (aliyuncs.com)</string>
+    <string name="dash_region_intl">Singapore/International (dashscope-intl.aliyuncs.com)</string>
     <string name="dash_lang_zh">Chinese (zh)</string>
     <string name="dash_lang_en">English (en)</string>
     <string name="dash_lang_ja">Japanese (ja)</string>

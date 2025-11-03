@@ -64,8 +64,8 @@ class DashscopeFileAsrEngine(
         }
 
         try {
-            // 2) 选择地域：默认使用中国大陆地域
-            Constants.baseHttpApiUrl = "https://dashscope.aliyuncs.com/api/v1"
+            // 2) 选择地域
+            Constants.baseHttpApiUrl = prefs.getDashHttpBaseUrl()
 
             // 3) 组装消息：用户音频 +（可选）系统提示词
             val audioPath = "file://" + tmp.absolutePath

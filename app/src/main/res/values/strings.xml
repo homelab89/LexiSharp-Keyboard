@@ -90,6 +90,9 @@
     <string name="label_dash_language">识别语言（可选，已知语种可提升准确率）</string>
     <string name="label_dash_streaming">使用 DashScope 流式识别（WebSocket）</string>
     <string name="dash_lang_auto">自动（启用语种识别）</string>
+    <string name="label_dash_region">DashScope 地域</string>
+    <string name="dash_region_cn">中国大陆（aliyuncs.com）</string>
+    <string name="dash_region_intl">新加坡/国际（dashscope-intl.aliyuncs.com）</string>
     <string name="dash_lang_zh">中文 (zh)</string>
     <string name="dash_lang_en">英语 (en)</string>
     <string name="dash_lang_ja">日语 (ja)</string>

@@ -421,6 +421,14 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_DASH_LANGUAGE, "") ?: ""
         set(value) = sp.edit { putString(KEY_DASH_LANGUAGE, value.trim()) }
 
+    // DashScope：地域（cn=中国大陆，intl=新加坡/国际）。默认 cn
+    var dashRegion: String by stringPref(KEY_DASH_REGION, "cn")
+
+    fun getDashHttpBaseUrl(): String {
+        return if (dashRegion.equals("intl", ignoreCase = true))
+            "https://dashscope-intl.aliyuncs.com/api/v1" else "https://dashscope.aliyuncs.com/api/v1"
+    }
+
     // DashScope: streaming toggle
     var dashStreamingEnabled: Boolean
         get() = sp.getBoolean(KEY_DASH_STREAMING_ENABLED, false)
@@ -974,6 +982,7 @@ class Prefs(context: Context) {
         private const val KEY_DASH_API_KEY = "dash_api_key"
         private const val KEY_DASH_PROMPT = "dash_prompt"
         private const val KEY_DASH_LANGUAGE = "dash_language"
+        private const val KEY_DASH_REGION = "dash_region"
         private const val KEY_SONIOX_API_KEY = "soniox_api_key"
         private const val KEY_SONIOX_STREAMING_ENABLED = "soniox_streaming_enabled"
         private const val KEY_SONIOX_LANGUAGE = "soniox_language"

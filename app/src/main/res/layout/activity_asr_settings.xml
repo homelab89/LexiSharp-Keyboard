@@ -594,6 +594,26 @@
           android:layout_height="wrap_content"
           android:visibility="gone" />
 
+        <!-- DashScope 地域选择 -->
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textColor="?attr/colorOnSurface"
+          android:text="@string/label_dash_region" />
+
+        <TextView
+          android:id="@+id/tvDashRegionValue"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          android:clickable="true"
+          android:focusable="true"
+          android:foreground="?attr/selectableItemBackground"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:text="@string/dash_region_cn" />
+
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchDashStreaming"
           android:layout_width="match_parent"

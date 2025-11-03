@@ -508,6 +508,7 @@ class AsrSettingsActivity : AppCompatActivity() {
         }
 
         setupDashLanguageSelection()
+        setupDashRegionSelection()
 
         findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switchDashStreaming).apply {
             isChecked = prefs.dashStreamingEnabled
@@ -549,6 +550,31 @@ class AsrSettingsActivity : AppCompatActivity() {
                 val code = langCodes.getOrNull(which) ?: ""
                 if (code != prefs.dashLanguage) prefs.dashLanguage = code
                 updateDashLangSummary()
+            }
+        }
+    }
+
+    private fun setupDashRegionSelection() {
+        val regionLabels = listOf(
+            getString(R.string.dash_region_cn),
+            getString(R.string.dash_region_intl)
+        )
+        val regionValues = listOf("cn", "intl")
+        val tvDashRegion = findViewById<TextView>(R.id.tvDashRegionValue)
+
+        fun updateRegionSummary() {
+            val idx = regionValues.indexOf(prefs.dashRegion.ifBlank { "cn" }).coerceAtLeast(0)
+            tvDashRegion.text = regionLabels[idx]
+        }
+
+        updateRegionSummary()
+        tvDashRegion.setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            val cur = regionValues.indexOf(prefs.dashRegion.ifBlank { "cn" }).coerceAtLeast(0)
+            showSingleChoiceDialog(R.string.label_dash_region, regionLabels.toTypedArray(), cur) { which ->
+                val value = regionValues.getOrNull(which) ?: "cn"
+                if (value != prefs.dashRegion) prefs.dashRegion = value
+                updateRegionSummary()
             }
         }
     }
