@@ -62,6 +62,7 @@ class AsrSettingsActivity : AppCompatActivity() {
     private lateinit var groupGemini: View
     private lateinit var groupSoniox: View
     private lateinit var groupSenseVoice: View
+    private lateinit var groupParaformer: View
 
     // Vendor title views
     private lateinit var titleVolc: View
@@ -72,6 +73,7 @@ class AsrSettingsActivity : AppCompatActivity() {
     private lateinit var titleGemini: View
     private lateinit var titleSoniox: View
     private lateinit var titleSenseVoice: View
+    private lateinit var titleParaformer: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +107,7 @@ class AsrSettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateSvDownloadUiVisibility()
+        updatePfDownloadUiVisibility()
     }
 
     private fun setupToolbar() {
@@ -133,6 +136,7 @@ class AsrSettingsActivity : AppCompatActivity() {
         groupGemini = findViewById(R.id.groupGemini)
         groupSoniox = findViewById(R.id.groupSoniox)
         groupSenseVoice = findViewById(R.id.groupSenseVoice)
+        groupParaformer = findViewById(R.id.groupParaformer)
 
         // Vendor titles
         titleVolc = findViewById(R.id.titleVolc)
@@ -143,19 +147,20 @@ class AsrSettingsActivity : AppCompatActivity() {
         titleGemini = findViewById(R.id.titleGemini)
         titleSoniox = findViewById(R.id.titleSoniox)
         titleSenseVoice = findViewById(R.id.titleSenseVoice)
+        titleParaformer = findViewById(R.id.titleParaformer)
     }
 
     private fun setupVendorSelection() {
         val vendorOrder = listOf(
             AsrVendor.Volc, AsrVendor.SiliconFlow, AsrVendor.ElevenLabs,
             AsrVendor.OpenAI, AsrVendor.DashScope, AsrVendor.Gemini,
-            AsrVendor.Soniox, AsrVendor.SenseVoice
+            AsrVendor.Soniox, AsrVendor.SenseVoice, AsrVendor.Paraformer
         )
         val vendorItems = listOf(
             getString(R.string.vendor_volc), getString(R.string.vendor_sf),
             getString(R.string.vendor_eleven), getString(R.string.vendor_openai),
             getString(R.string.vendor_dashscope), getString(R.string.vendor_gemini),
-            getString(R.string.vendor_soniox), getString(R.string.vendor_sensevoice)
+            getString(R.string.vendor_soniox), getString(R.string.vendor_sensevoice), getString(R.string.vendor_paraformer)
         )
 
         tvAsrVendor.setOnClickListener { v ->
@@ -220,6 +225,7 @@ class AsrSettingsActivity : AppCompatActivity() {
         setupGeminiSettings()
         setupSonioxSettings()
         setupSenseVoiceSettings()
+        setupParaformerSettings()
     }
 
     private fun setupVolcengineSettings() {
@@ -767,6 +773,188 @@ class AsrSettingsActivity : AppCompatActivity() {
         setupSvDownloadButtons()
     }
 
+    private fun setupParaformerSettings() {
+        // 变体选择（四种）
+        val tvPfVariant = findViewById<TextView>(R.id.tvPfModelVariantValue)
+        val btnPfDownload = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPfDownloadModel)
+        val variantLabels = listOf(
+            getString(R.string.pf_variant_bilingual_int8),
+            getString(R.string.pf_variant_bilingual_fp32),
+            getString(R.string.pf_variant_trilingual_int8),
+            getString(R.string.pf_variant_trilingual_fp32)
+        )
+        val variantCodes = listOf(
+            "bilingual-int8", "bilingual-fp32", "trilingual-int8", "trilingual-fp32"
+        )
+        fun updateVariantSummary() {
+            val idx = variantCodes.indexOf(prefs.pfModelVariant).coerceAtLeast(0)
+            tvPfVariant.text = variantLabels[idx]
+        }
+        updateVariantSummary()
+        tvPfVariant.setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            val cur = variantCodes.indexOf(prefs.pfModelVariant).coerceAtLeast(0)
+            showSingleChoiceDialog(R.string.label_pf_model_variant, variantLabels.toTypedArray(), cur) { which ->
+                val code = variantCodes.getOrNull(which) ?: "bilingual-int8"
+                if (code != prefs.pfModelVariant) {
+                    viewModel.updatePfModelVariant(code)
+                }
+                updateVariantSummary()
+                updatePfDownloadUiVisibility()
+            }
+        }
+
+        // 保留时长
+        val tvKeep = findViewById<TextView>(R.id.tvPfKeepAliveValue)
+        fun updateKeepAliveSummary() {
+            val values = listOf(0, 5, 15, 30, -1)
+            val labels = listOf(
+                getString(R.string.sv_keep_alive_immediate),
+                getString(R.string.sv_keep_alive_5m),
+                getString(R.string.sv_keep_alive_15m),
+                getString(R.string.sv_keep_alive_30m),
+                getString(R.string.sv_keep_alive_always)
+            )
+            val idx = values.indexOf(prefs.pfKeepAliveMinutes).let { if (it >= 0) it else values.size - 1 }
+            tvKeep.text = labels[idx]
+        }
+        updateKeepAliveSummary()
+        tvKeep.setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            val labels = arrayOf(
+                getString(R.string.sv_keep_alive_immediate),
+                getString(R.string.sv_keep_alive_5m),
+                getString(R.string.sv_keep_alive_15m),
+                getString(R.string.sv_keep_alive_30m),
+                getString(R.string.sv_keep_alive_always)
+            )
+            val values = listOf(0, 5, 15, 30, -1)
+            val cur = values.indexOf(prefs.pfKeepAliveMinutes).let { if (it >= 0) it else values.size - 1 }
+            showSingleChoiceDialog(R.string.label_pf_keep_alive, labels, cur) { which ->
+                val vv = values.getOrNull(which) ?: -1
+                if (vv != prefs.pfKeepAliveMinutes) {
+                    prefs.pfKeepAliveMinutes = vv
+                }
+                updateKeepAliveSummary()
+            }
+        }
+
+        // 线程数滑块（1-8）
+        findViewById<com.google.android.material.slider.Slider>(R.id.sliderPfThreads).apply {
+            value = prefs.pfNumThreads.coerceIn(1, 8).toFloat()
+            addOnChangeListener { _, value, fromUser ->
+                if (fromUser) {
+                    val v = value.toInt().coerceIn(1, 8)
+                    if (v != prefs.pfNumThreads) {
+                        viewModel.updatePfNumThreads(v)
+                    }
+                }
+            }
+            addOnSliderTouchListener(object : com.google.android.material.slider.Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: com.google.android.material.slider.Slider) = hapticTapIfEnabled(slider)
+                override fun onStopTrackingTouch(slider: com.google.android.material.slider.Slider) = hapticTapIfEnabled(slider)
+            })
+        }
+
+        // 首次显示时加载模型
+        findViewById<com.google.android.material.materialswitch.MaterialSwitch>(R.id.switchPfPreload).apply {
+            isChecked = prefs.pfPreloadEnabled
+            setOnCheckedChangeListener { btn, isChecked ->
+                hapticTapIfEnabled(btn)
+                viewModel.updatePfPreload(isChecked)
+            }
+        }
+
+        // 下载/清理
+        setupPfDownloadButtons()
+    }
+
+    private fun setupPfDownloadButtons() {
+        val btnDl = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPfDownloadModel)
+        val btnClear = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPfClearModel)
+        val tvStatus = findViewById<TextView>(R.id.tvPfDownloadStatus)
+        btnDl.setOnClickListener { v ->
+            v.isEnabled = false
+            tvStatus.text = ""
+            val sources = arrayOf(
+                getString(R.string.download_source_github_official),
+                getString(R.string.download_source_mirror_ghproxy),
+                getString(R.string.download_source_mirror_gitmirror),
+                getString(R.string.download_source_mirror_gh_proxynet)
+            )
+            val variant = prefs.pfModelVariant
+            val isTri = variant.startsWith("trilingual")
+            val urlOfficial = if (isTri) {
+                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-paraformer-trilingual-zh-cantonese-en.tar.bz2"
+            } else {
+                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-paraformer-bilingual-zh-en.tar.bz2"
+            }
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.download_source_title)
+                .setItems(sources) { dlg, which ->
+                    dlg.dismiss()
+                    val url = when (which) {
+                        1 -> "https://ghproxy.net/$urlOfficial"
+                        2 -> "https://hub.gitmirror.com/$urlOfficial"
+                        3 -> "https://gh-proxy.net/$urlOfficial"
+                        else -> urlOfficial
+                    }
+                    try {
+                        // 统一下载服务
+                        ModelDownloadService.startDownload(this, url, variant, "paraformer")
+                        tvStatus.text = getString(R.string.pf_download_started_in_bg)
+                    } catch (e: Throwable) {
+                        android.util.Log.e(TAG, "Failed to start paraformer download", e)
+                        tvStatus.text = getString(R.string.pf_download_status_failed)
+                    } finally { v.isEnabled = true }
+                }
+                .setOnDismissListener { v.isEnabled = true }
+                .show()
+        }
+
+        btnClear.setOnClickListener { v ->
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.pf_clear_confirm_title)
+                .setMessage(R.string.pf_clear_confirm_message)
+                .setPositiveButton(android.R.string.ok) { d, _ ->
+                    d.dismiss()
+                    v.isEnabled = false
+                    lifecycleScope.launch {
+                        try {
+                            val base = getExternalFilesDir(null) ?: filesDir
+                            val root = java.io.File(base, "paraformer")
+                            val group = if (prefs.pfModelVariant.startsWith("trilingual")) "trilingual" else "bilingual"
+                            val outDir = java.io.File(root, group)
+                            if (outDir.exists()) withContext(Dispatchers.IO) { outDir.deleteRecursively() }
+                            try { com.brycewg.asrkb.asr.unloadParaformerRecognizer() } catch (_: Throwable) { }
+                            tvStatus.text = getString(R.string.pf_clear_done)
+                        } catch (e: Throwable) {
+                            android.util.Log.e(TAG, "Failed to clear paraformer model", e)
+                            tvStatus.text = getString(R.string.pf_clear_failed)
+                        } finally {
+                            v.isEnabled = true
+                            updatePfDownloadUiVisibility()
+                        }
+                    }
+                }
+                .setNegativeButton(R.string.btn_cancel, null)
+                .create()
+                .show()
+        }
+    }
+
+    private fun updatePfDownloadUiVisibility() {
+        val ready = viewModel.checkPfModelDownloaded(this)
+        val btn = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPfDownloadModel)
+        val btnClear = findViewById<com.google.android.material.button.MaterialButton>(R.id.btnPfClearModel)
+        val tv = findViewById<TextView>(R.id.tvPfDownloadStatus)
+        btn.visibility = if (ready) View.GONE else View.VISIBLE
+        btnClear.visibility = if (ready) View.VISIBLE else View.GONE
+        if (ready && tv.text.isNullOrBlank()) {
+            tv.text = getString(R.string.pf_download_status_done)
+        }
+    }
+
     private fun setupSvModelVariantSelection() {
         val variantLabels = listOf(
             getString(R.string.sv_model_small_int8),
@@ -972,13 +1160,13 @@ class AsrSettingsActivity : AppCompatActivity() {
         val vendorOrder = listOf(
             AsrVendor.Volc, AsrVendor.SiliconFlow, AsrVendor.ElevenLabs,
             AsrVendor.OpenAI, AsrVendor.DashScope, AsrVendor.Gemini,
-            AsrVendor.Soniox, AsrVendor.SenseVoice
+            AsrVendor.Soniox, AsrVendor.SenseVoice, AsrVendor.Paraformer
         )
         val vendorItems = listOf(
             getString(R.string.vendor_volc), getString(R.string.vendor_sf),
             getString(R.string.vendor_eleven), getString(R.string.vendor_openai),
             getString(R.string.vendor_dashscope), getString(R.string.vendor_gemini),
-            getString(R.string.vendor_soniox), getString(R.string.vendor_sensevoice)
+            getString(R.string.vendor_soniox), getString(R.string.vendor_sensevoice), getString(R.string.vendor_paraformer)
         )
         val idx = vendorOrder.indexOf(vendor).coerceAtLeast(0)
         tvAsrVendor.text = vendorItems[idx]
@@ -993,7 +1181,8 @@ class AsrSettingsActivity : AppCompatActivity() {
             AsrVendor.DashScope to listOf(titleDash, groupDash),
             AsrVendor.Gemini to listOf(titleGemini, groupGemini),
             AsrVendor.Soniox to listOf(titleSoniox, groupSoniox),
-            AsrVendor.SenseVoice to listOf(titleSenseVoice, groupSenseVoice)
+            AsrVendor.SenseVoice to listOf(titleSenseVoice, groupSenseVoice),
+            AsrVendor.Paraformer to listOf(titleParaformer, groupParaformer)
         )
         visMap.forEach { (vendor, views) ->
             val vis = if (vendor == state.selectedVendor) View.VISIBLE else View.GONE

@@ -622,6 +622,23 @@ class Prefs(context: Context) {
         }
         set(value) = sp.edit { putBoolean(KEY_SV_PSEUDO_STREAMING_ENABLED, value) }
 
+    // Paraformer（本地 ASR）
+    var pfModelVariant: String
+        get() = sp.getString(KEY_PF_MODEL_VARIANT, "bilingual-int8") ?: "bilingual-int8"
+        set(value) = sp.edit { putString(KEY_PF_MODEL_VARIANT, value.trim().ifBlank { "bilingual-int8" }) }
+
+    var pfNumThreads: Int
+        get() = sp.getInt(KEY_PF_NUM_THREADS, 2).coerceIn(1, 8)
+        set(value) = sp.edit { putInt(KEY_PF_NUM_THREADS, value.coerceIn(1, 8)) }
+
+    var pfKeepAliveMinutes: Int
+        get() = sp.getInt(KEY_PF_KEEP_ALIVE_MINUTES, -1)
+        set(value) = sp.edit { putInt(KEY_PF_KEEP_ALIVE_MINUTES, value) }
+
+    var pfPreloadEnabled: Boolean
+        get() = sp.getBoolean(KEY_PF_PRELOAD_ENABLED, false)
+        set(value) = sp.edit { putBoolean(KEY_PF_PRELOAD_ENABLED, value) }
+
     // --- 供应商配置通用化 ---
     private data class VendorField(val key: String, val required: Boolean = false, val default: String = "")
 
@@ -661,8 +678,10 @@ class Prefs(context: Context) {
         AsrVendor.Soniox to listOf(
             VendorField(KEY_SONIOX_API_KEY, required = true)
         ),
-        // 本地 SenseVoice（sherpa-onnx）无需鉴权，留空表示无必填项
-        AsrVendor.SenseVoice to emptyList()
+        // 本地 SenseVoice（sherpa-onnx）无需鉴权
+        AsrVendor.SenseVoice to emptyList(),
+        // 本地 Paraformer（sherpa-onnx）无需鉴权
+        AsrVendor.Paraformer to emptyList()
     )
 
     fun hasVendorKeys(v: AsrVendor): Boolean {
@@ -1008,6 +1027,11 @@ class Prefs(context: Context) {
         private const val KEY_SV_PRELOAD_ENABLED = "sv_preload_enabled"
         private const val KEY_SV_KEEP_ALIVE_MINUTES = "sv_keep_alive_minutes"
         private const val KEY_SV_PSEUDO_STREAMING_ENABLED = "sv_pseudo_streaming_enabled"
+        // Paraformer（本地 ASR）
+        private const val KEY_PF_MODEL_VARIANT = "pf_model_variant"
+        private const val KEY_PF_NUM_THREADS = "pf_num_threads"
+        private const val KEY_PF_KEEP_ALIVE_MINUTES = "pf_keep_alive_minutes"
+        private const val KEY_PF_PRELOAD_ENABLED = "pf_preload_enabled"
         private const val KEY_AI_EDIT_DEFAULT_TO_LAST_ASR = "ai_edit_default_to_last_asr"
         private const val KEY_HEADSET_MIC_PRIORITY_ENABLED = "headset_mic_priority_enabled"
         private const val KEY_USAGE_STATS_JSON = "usage_stats"
@@ -1203,6 +1227,11 @@ class Prefs(context: Context) {
         o.put(KEY_SV_PRELOAD_ENABLED, svPreloadEnabled)
         o.put(KEY_SV_KEEP_ALIVE_MINUTES, svKeepAliveMinutes)
         o.put(KEY_SV_PSEUDO_STREAMING_ENABLED, svPseudoStreamingEnabled)
+        // Paraformer（本地 ASR）
+        o.put(KEY_PF_MODEL_VARIANT, pfModelVariant)
+        o.put(KEY_PF_NUM_THREADS, pfNumThreads)
+        o.put(KEY_PF_KEEP_ALIVE_MINUTES, pfKeepAliveMinutes)
+        o.put(KEY_PF_PRELOAD_ENABLED, pfPreloadEnabled)
         // SyncClipboard 配置
         o.put(KEY_SC_ENABLED, syncClipboardEnabled)
         o.put(KEY_SC_SERVER_BASE, syncClipboardServerBase)
@@ -1327,6 +1356,11 @@ class Prefs(context: Context) {
             optBool(KEY_SV_PRELOAD_ENABLED)?.let { svPreloadEnabled = it }
             optInt(KEY_SV_KEEP_ALIVE_MINUTES)?.let { svKeepAliveMinutes = it }
             optBool(KEY_SV_PSEUDO_STREAMING_ENABLED)?.let { svPseudoStreamingEnabled = it }
+            // Paraformer（本地 ASR）
+            optString(KEY_PF_MODEL_VARIANT)?.let { pfModelVariant = it }
+            optInt(KEY_PF_NUM_THREADS)?.let { pfNumThreads = it.coerceIn(1, 8) }
+            optInt(KEY_PF_KEEP_ALIVE_MINUTES)?.let { pfKeepAliveMinutes = it }
+            optBool(KEY_PF_PRELOAD_ENABLED)?.let { pfPreloadEnabled = it }
             // SyncClipboard 配置
             optBool(KEY_SC_ENABLED)?.let { syncClipboardEnabled = it }
             optString(KEY_SC_SERVER_BASE)?.let { syncClipboardServerBase = it }

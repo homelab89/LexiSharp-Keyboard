@@ -79,8 +79,6 @@ class FloatingAsrService : Service(),
     private var radialDragSession: FloatingMenuHelper.DragRadialMenuSession? = null
     private var touchActiveGuard: Boolean = false
 
-    // 本地模型预加载标记
-    private var svPreloadTriggered: Boolean = false
 
     // 显示尝试去重
     private var lastShowAttemptAt: Long = 0L
@@ -283,8 +281,8 @@ class FloatingAsrService : Service(),
         }
         DebugLogManager.log("float", "show_success")
 
-        // 悬浮球首次出现时，按需异步预加载本地 SenseVoice
-        tryPreloadSenseVoiceOnce()
+        // 悬浮球首次出现时，按需异步预加载本地模型
+        tryPreloadLocalAsrOnce()
 
         // 初始为静息场景：若在左右边缘或就近吸附，则执行半隐
         // 仅当未开启“仅在键盘显示时显示悬浮球”时启用半隐
@@ -818,7 +816,8 @@ class FloatingAsrService : Service(),
             AsrVendor.DashScope to getString(R.string.vendor_dashscope),
             AsrVendor.Gemini to getString(R.string.vendor_gemini),
             AsrVendor.Soniox to getString(R.string.vendor_soniox),
-            AsrVendor.SenseVoice to getString(R.string.vendor_sensevoice)
+            AsrVendor.SenseVoice to getString(R.string.vendor_sensevoice),
+            AsrVendor.Paraformer to getString(R.string.vendor_paraformer)
         )
         val cur = try {
             prefs.asrVendor
@@ -1100,33 +1099,20 @@ class FloatingAsrService : Service(),
         }
     }
 
-    private fun tryPreloadSenseVoiceOnce() {
-        try {
-            if (!svPreloadTriggered) {
-                if (prefs.asrVendor == AsrVendor.SenseVoice && prefs.svPreloadEnabled) {
-                    val prepared = try {
-                        com.brycewg.asrkb.asr.isSenseVoicePrepared()
-                    } catch (e: Throwable) {
-                        Log.w(TAG, "Failed to check SenseVoice preparation", e)
-                        false
-                    }
-                    if (!prepared) {
-                        serviceScope.launch(kotlinx.coroutines.Dispatchers.Default) {
-                            try {
-                                com.brycewg.asrkb.asr.preloadSenseVoiceIfConfigured(
-                                    this@FloatingAsrService,
-                                    prefs
-                                )
-                            } catch (e: Throwable) {
-                                Log.e(TAG, "Failed to preload SenseVoice", e)
-                            }
-                        }
-                    }
-                }
-                svPreloadTriggered = true
-            }
-        } catch (e: Throwable) {
-            Log.e(TAG, "Failed to trigger SenseVoice preload", e)
+    private var localPreloadTriggered: Boolean = false
+    private fun tryPreloadLocalAsrOnce() {
+        if (localPreloadTriggered) return
+        val enabled = when (prefs.asrVendor) {
+            AsrVendor.SenseVoice -> prefs.svPreloadEnabled
+            AsrVendor.Paraformer -> prefs.pfPreloadEnabled
+            else -> false
+        }
+        if (!enabled) return
+        if (com.brycewg.asrkb.asr.isLocalAsrPrepared(prefs)) { localPreloadTriggered = true; return }
+
+        localPreloadTriggered = true
+        serviceScope.launch(kotlinx.coroutines.Dispatchers.Default) {
+            com.brycewg.asrkb.asr.preloadLocalAsrIfConfigured(this@FloatingAsrService, prefs)
         }
     }
 

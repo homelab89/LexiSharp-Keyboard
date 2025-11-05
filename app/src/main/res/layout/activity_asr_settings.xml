@@ -844,19 +844,11 @@
           android:foreground="?attr/selectableItemBackground"
           android:textColor="?attr/colorOnSurfaceVariant"
           android:text="@string/sv_lang_auto" />
-        <Spinner
-            android:layout_width="match_parent"
+        
+        <com.google.android.material.divider.MaterialDivider
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:visibility="gone" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:textColor="?attr/colorOnSurface"
-          android:text="@string/label_sv_model_variant" />
-          
+          android:layout_marginTop="16dp" />     
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchSvUseItn"
           android:layout_width="match_parent"
@@ -950,6 +942,116 @@
           android:layout_marginTop="6dp"
           android:textColor="?attr/colorOnSurfaceVariant"
           android:text="" />
+      </LinearLayout>
+
+      <!-- Paraformer (Local) -->
+      <TextView
+        android:id="@+id/titleParaformer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="?attr/colorOnSurface"
+        android:text="@string/paraformer_section_title"
+        android:textStyle="bold" />
+
+      <LinearLayout
+        android:id="@+id/groupParaformer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+          android:id="@+id/tvPfModelVariantValue"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          android:clickable="true"
+          android:focusable="true"
+          android:foreground="?attr/selectableItemBackground"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:text="@string/pf_variant_bilingual_int8" />
+
+        <com.google.android.material.divider.MaterialDivider
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/switchPfPreload"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:text="@string/label_pf_preload" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textColor="?attr/colorOnSurface"
+          android:text="@string/label_pf_threads" />
+
+        <com.google.android.material.slider.Slider
+          android:id="@+id/sliderPfThreads"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:valueFrom="1"
+          android:valueTo="8"
+          android:stepSize="1" />
+
+        <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:textColor="?attr/colorOnSurface"
+          android:text="@string/label_pf_keep_alive" />
+
+        <TextView
+          android:id="@+id/tvPfKeepAliveValue"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
+          android:clickable="true"
+          android:focusable="true"
+          android:foreground="?attr/selectableItemBackground"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:text="@string/sv_keep_alive_always" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnPfDownloadModel"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="12dp"
+          app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+          android:text="@string/btn_pf_download_model" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnPfClearModel"
+          style="@style/Widget.Material3.Button.TonalButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+          android:text="@string/btn_pf_clear_model" />
+
+        <TextView
+          android:id="@+id/tvPfDownloadStatus"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="6dp"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:text="" />
+
+        <TextView
+          android:id="@+id/tvPfModelInfo"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="12dp"
+          android:textSize="12sp"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:text="@string/pf_model_info" />
       </LinearLayout>
 
     </LinearLayout>

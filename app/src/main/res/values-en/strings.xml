@@ -155,7 +155,33 @@
     <!-- Local ASR (placeholder) -->
     <string name="error_local_asr_not_ready">Local ASR not ready. Please integrate sherpa‑onnx and model files later.</string>
     <string name="error_sensevoice_model_missing">SenseVoice model is missing. Configure or download it later in Settings.</string>
-    
+    <string name="vendor_paraformer">Paraformer (Local)</string>
+    <string name="notif_pf_title_bilingual">Paraformer model (Zh+En)</string>
+    <string name="notif_pf_title_trilingual">Paraformer model (Zh+Yue+En)</string>
+    <string name="paraformer_section_title">Paraformer (Local)</string>
+    <string name="label_pf_model_variant">Model variant</string>
+    <string name="label_pf_threads">Threads (1-8)</string>
+    <string name="label_pf_keep_alive">Keep model in memory</string>
+    <string name="pf_variant_bilingual_int8">Zh+En (int8)</string>
+    <string name="pf_variant_bilingual_fp32">Zh+En (fp32)</string>
+    <string name="pf_variant_trilingual_int8">Zh+Yue+En (int8)</string>
+    <string name="pf_variant_trilingual_fp32">Zh+Yue+En (fp32)</string>
+    <string name="btn_pf_download_model">Download Paraformer model</string>
+    <string name="btn_pf_clear_model">Clear downloaded model</string>
+    <string name="pf_download_status_downloading">Downloading… %1$d%%</string>
+    <string name="pf_download_status_extracting">Extracting… It may take a while</string>
+    <string name="pf_download_status_done">Model installed</string>
+    <string name="pf_download_status_failed">Download or extract failed</string>
+    <string name="pf_download_started_in_bg">Started in background. See notification for progress</string>
+    <string name="pf_clear_confirm_title">Clear model?</string>
+    <string name="pf_clear_confirm_message">This will delete downloaded model files. You can re-download later. Continue?</string>
+    <string name="pf_clear_done">Model cleared</string>
+    <string name="pf_clear_failed">Clear failed</string>
+    <string name="pf_loading_model">Loading local model…</string>
+    <string name="error_paraformer_model_missing">Paraformer model files are missing. Please configure or download in Settings</string>
+    <string name="label_pf_preload">Load model on first show</string>
+    <string name="pf_model_info">Note:\n1. Paraformer has two model variants (Zh+En and Zh+Yue+En). The Chinese model also supports some dialects\n2. Each variant download is 1GB and contains both int8 and fp32 quantized versions. Switching between int8 and fp32 of the same variant requires no re-download</string>
+
     <string name="btn_close">Close</string>
     <string name="btn_close_with_seconds">Close (%1$ds)</string>
     <string name="title_quick_guide">Quick Start Guide</string>
@@ -478,7 +504,7 @@
     <string name="notif_model_summary_title">Model Downloads</string>
     <string name="notif_model_summary_text">Downloading/extracting models in background</string>
     <string name="notif_model_title_int8">SenseVoice Model (Small int8)</string>
-    <string name="notif_model_title_full">SenseVoice Model (Small full)</string>
+    <string name="notif_model_title_full">SenseVoice Model (Small fp32)</string>
 
     <!-- Silence auto-stop (ASR) -->
     <string name="section_silence_autostop">Auto-stop on Silence</string>
@@ -488,7 +514,7 @@
     <!-- SenseVoice local settings -->
     <string name="btn_sv_download_model">One-click download SenseVoice model</string>
     <string name="btn_sv_download_model_int8">One-click download SenseVoice (small int8, ~160MB)</string>
-    <string name="btn_sv_download_model_full">One-click download SenseVoice (small full, ~850MB)</string>
+    <string name="btn_sv_download_model_full">One-click download SenseVoice (small fp32, ~850MB)</string>
     <string name="btn_sv_clear_model">Clear downloaded model</string>
     <string name="sv_download_status_downloading">Downloading… %1$d%%</string>
     <string name="sv_download_status_extracting">Extracting…Please wait</string>
@@ -501,10 +527,11 @@
     <string name="sv_clear_failed">Clear failed</string>
     <string name="label_sv_model_variant">Model Version</string>
     <string name="sv_model_small_int8">Small (int8, ~160MB)</string>
-    <string name="sv_model_small_full">Small (full, ~850MB)</string>
+    <string name="sv_model_small_full">Small (fp32, ~850MB)</string>
     <string name="sv_loading_model">Loading local model…</string>
     <string name="sv_loading_model_while_listening">Listening… loading local model in background…</string>
     <string name="sv_model_ready">Local model loaded</string>
+    <string name="sv_model_ready_with_ms">Local model loaded (%1$d ms)</string>
     <string name="label_sv_preload">Load model on first show</string>
     <string name="label_sv_keep_alive">Model keep-alive duration</string>
     <string name="sv_keep_alive_immediate">No keep-alive (unload after recognition)</string>

@@ -52,6 +52,7 @@ class ModelDownloadService : Service() {
     private const val EXTRA_URL = "url"
     private const val EXTRA_VARIANT = "variant"
     private const val EXTRA_KEY = "key"
+    private const val EXTRA_MODEL_TYPE = "modelType" // sensevoice | paraformer
 
     fun startDownload(context: Context, url: String, variant: String) {
       val key = DownloadKey(variant, url)
@@ -60,6 +61,19 @@ class ModelDownloadService : Service() {
         putExtra(EXTRA_URL, url)
         putExtra(EXTRA_VARIANT, variant)
         putExtra(EXTRA_KEY, key.toSerializedKey())
+        putExtra(EXTRA_MODEL_TYPE, "sensevoice")
+      }
+      ContextCompat.startForegroundService(context, i)
+    }
+
+    fun startDownload(context: Context, url: String, variant: String, modelType: String) {
+      val key = DownloadKey(variant, url)
+      val i = Intent(context, ModelDownloadService::class.java).apply {
+        action = ACTION_START
+        putExtra(EXTRA_URL, url)
+        putExtra(EXTRA_VARIANT, variant)
+        putExtra(EXTRA_KEY, key.toSerializedKey())
+        putExtra(EXTRA_MODEL_TYPE, modelType)
       }
       ContextCompat.startForegroundService(context, i)
     }
@@ -83,6 +97,7 @@ class ModelDownloadService : Service() {
         val variant = intent.getStringExtra(EXTRA_VARIANT) ?: ""
         val serializedKey = intent.getStringExtra(EXTRA_KEY) ?: DownloadKey(variant, url).toSerializedKey()
         val key = DownloadKey.fromSerializedKey(serializedKey)
+        val modelType = intent.getStringExtra(EXTRA_MODEL_TYPE) ?: "sensevoice"
 
         if (!tasks.containsKey(key)) {
           if (tasks.isEmpty()) startAsForegroundSummary()
@@ -91,11 +106,12 @@ class ModelDownloadService : Service() {
             context = this,
             notificationManager = nm,
             key = key,
-            variant = variant
+            variant = variant,
+            modelType = modelType
           )
           notificationHandlers[key] = notificationHandler
 
-          val job = scope.launch { doDownloadTask(key, url, variant, notificationHandler) }
+          val job = scope.launch { doDownloadTask(key, url, variant, modelType, notificationHandler) }
           tasks[key] = job
         }
       }
@@ -104,7 +120,10 @@ class ModelDownloadService : Service() {
         val key = DownloadKey.fromSerializedKey(serializedKey)
 
         tasks.remove(key)?.cancel()
-        notificationHandlers[key]?.notifyFailed(getString(R.string.sv_download_status_failed))
+        // 由各自 handler 决定文案
+        notificationHandlers[key]?.notifyFailed(
+          notificationHandlers[key]?.getFailedText() ?: getString(R.string.sv_download_status_failed)
+        )
         notificationHandlers.remove(key)
       }
     }
@@ -137,6 +156,7 @@ class ModelDownloadService : Service() {
     key: DownloadKey,
     url: String,
     variant: String,
+    modelType: String,
     notificationHandler: NotificationHandler
   ) {
     val cacheFile = File(cacheDir, key.toSafeFileName() + ".tar.bz2")
@@ -146,15 +166,21 @@ class ModelDownloadService : Service() {
       downloadFile(url, cacheFile, notificationHandler)
 
       // 解压归档
-      val modelDir = extractArchive(cacheFile, key, variant, notificationHandler)
+      val modelDir = extractArchive(cacheFile, key, variant, modelType, notificationHandler)
 
       // 验证并安装模型
-      verifyAndInstallModel(modelDir, variant)
+      verifyAndInstallModel(modelDir, variant, modelType)
 
-      notificationHandler.notifySuccess(getString(R.string.sv_download_status_done))
+      notificationHandler.notifySuccess(
+        if (modelType == "paraformer") getString(R.string.pf_download_status_done)
+        else getString(R.string.sv_download_status_done)
+      )
     } catch (t: Throwable) {
       Log.e(TAG, "Download task failed for key=$key, url=$url", t)
-      notificationHandler.notifyFailed(getString(R.string.sv_download_status_failed))
+      notificationHandler.notifyFailed(
+        if (modelType == "paraformer") getString(R.string.pf_download_status_failed)
+        else getString(R.string.sv_download_status_failed)
+      )
     } finally {
       tasks.remove(key)
       notificationHandlers.remove(key)
@@ -232,6 +258,7 @@ class ModelDownloadService : Service() {
     cacheFile: File,
     key: DownloadKey,
     variant: String,
+    modelType: String,
     notificationHandler: NotificationHandler
   ): File {
     Log.d(TAG, "Starting extraction for variant: $variant")
@@ -240,7 +267,7 @@ class ModelDownloadService : Service() {
 
     // 输出目录
     val base = getExternalFilesDir(null) ?: filesDir
-    val outRoot = File(base, "sensevoice")
+    val outRoot = File(base, if (modelType == "paraformer") "paraformer" else "sensevoice")
     val tmpDir = File(outRoot, ".tmp_extract_${key.toSafeFileName()}_${System.currentTimeMillis()}")
 
     if (tmpDir.exists()) {
@@ -260,24 +287,43 @@ class ModelDownloadService : Service() {
    */
   private suspend fun verifyAndInstallModel(
     tmpDir: File,
-    variant: String
+    variant: String,
+    modelType: String
   ) = withContext(Dispatchers.IO) {
     Log.d(TAG, "Verifying model files for variant: $variant")
 
     // 校验并定位模型目录
     val modelDir = findModelDir(tmpDir)
-    if (modelDir == null ||
-      !File(modelDir, "tokens.txt").exists() ||
-      !(File(modelDir, "model.int8.onnx").exists() || File(modelDir, "model.onnx").exists())) {
-      throw IllegalStateException("model files missing after extract")
+    if (modelDir == null) throw IllegalStateException("model dir not found")
+    val tokens = File(modelDir, "tokens.txt")
+    if (!tokens.exists()) throw IllegalStateException("tokens.txt missing")
+
+    if (modelType == "paraformer") {
+      val encInt8 = File(modelDir, "encoder.int8.onnx")
+      val decInt8 = File(modelDir, "decoder.int8.onnx")
+      val encF32 = File(modelDir, "encoder.onnx")
+      val decF32 = File(modelDir, "decoder.onnx")
+      if (!((encInt8.exists() && decInt8.exists()) || (encF32.exists() && decF32.exists()))) {
+        throw IllegalStateException("paraformer files missing after extract")
+      }
+    } else {
+      if (!(File(modelDir, "model.int8.onnx").exists() || File(modelDir, "model.onnx").exists())) {
+        throw IllegalStateException("sensevoice files missing after extract")
+      }
     }
 
     Log.d(TAG, "Model files verified, installing to final location")
 
     // 确定最终输出目录
     val base = getExternalFilesDir(null) ?: filesDir
-    val outRoot = File(base, "sensevoice")
-    val outFinal = if (variant == "small-full") File(outRoot, "small-full") else File(outRoot, "small-int8")
+    val outFinal = if (modelType == "paraformer") {
+      val outRoot = File(base, "paraformer")
+      val group = if (variant.startsWith("trilingual")) "trilingual" else "bilingual"
+      File(outRoot, group)
+    } else {
+      val outRoot = File(base, "sensevoice")
+      if (variant == "small-full") File(outRoot, "small-full") else File(outRoot, "small-int8")
+    }
 
     // 原子替换
     if (outFinal.exists()) {
@@ -447,7 +493,8 @@ class NotificationHandler(
   private val context: Context,
   private val notificationManager: NotificationManager,
   private val key: DownloadKey,
-  private val variant: String
+  private val variant: String,
+  private val modelType: String
 ) {
   companion object {
     private const val THROTTLE_INTERVAL_MS = 500L
@@ -480,7 +527,10 @@ class NotificationHandler(
    * 通知下载进度（带节流）
    */
   fun notifyDownloadProgress(progress: Int, cancelIntent: PendingIntent) {
-    val text = context.getString(R.string.sv_download_status_downloading, progress)
+    val text = if (modelType == "paraformer")
+      context.getString(R.string.pf_download_status_downloading, progress)
+    else
+      context.getString(R.string.sv_download_status_downloading, progress)
     notifyProgress(
       progress = progress,
       text = text,
@@ -496,7 +546,10 @@ class NotificationHandler(
    * 通知正在解压（不定进度）
    */
   fun notifyExtracting() {
-    val text = context.getString(R.string.sv_download_status_extracting)
+    val text = if (modelType == "paraformer")
+      context.getString(R.string.pf_download_status_extracting)
+    else
+      context.getString(R.string.sv_download_status_extracting)
     notifyProgress(
       progress = 0,
       text = text,
@@ -536,6 +589,12 @@ class NotificationHandler(
       throttle = false,
       force = true
     )
+  }
+
+  fun getFailedText(): String {
+    return if (modelType == "paraformer")
+      context.getString(R.string.pf_download_status_failed)
+    else context.getString(R.string.sv_download_status_failed)
   }
 
   private fun notifyProgress(
@@ -608,9 +667,16 @@ class NotificationHandler(
   }
 
   private fun getTitleForVariant(): String {
-    return when (variant) {
-      "small-full" -> context.getString(R.string.notif_model_title_full)
-      else -> context.getString(R.string.notif_model_title_int8)
+    return if (modelType == "paraformer") {
+      if (variant.startsWith("trilingual"))
+        context.getString(R.string.notif_pf_title_trilingual)
+      else
+        context.getString(R.string.notif_pf_title_bilingual)
+    } else {
+      when (variant) {
+        "small-full" -> context.getString(R.string.notif_model_title_full)
+        else -> context.getString(R.string.notif_model_title_int8)
+      }
     }
   }
 }

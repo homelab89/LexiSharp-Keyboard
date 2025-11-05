@@ -203,6 +203,33 @@
     <string name="toast_llm_profile_deleted">プロファイルが削除されました</string>
     <string name="untitled_profile">無題のプロファイル</string>
 
+    <string name="vendor_paraformer">Paraformer（ローカル）</string>
+    <string name="notif_pf_title_bilingual">Paraformer モデル（中英）</string>
+    <string name="notif_pf_title_trilingual">Paraformer モデル（中英+広東語）</string>
+    <string name="paraformer_section_title">Paraformer（ローカル）</string>
+    <string name="label_pf_model_variant">モデルバリアント</string>
+    <string name="label_pf_threads">スレッド数（1-8）</string>
+    <string name="label_pf_keep_alive">モデルのメモリ保持</string>
+    <string name="pf_variant_bilingual_int8">中英（int8）</string>
+    <string name="pf_variant_bilingual_fp32">中英（fp32）</string>
+    <string name="pf_variant_trilingual_int8">中英+広東語（int8）</string>
+    <string name="pf_variant_trilingual_fp32">中英+広東語（fp32）</string>
+    <string name="btn_pf_download_model">Paraformer モデルをダウンロード</string>
+    <string name="btn_pf_clear_model">ダウンロード済みモデルを削除</string>
+    <string name="pf_download_status_downloading">ダウンロード中… %1$d%%</string>
+    <string name="pf_download_status_extracting">展開中…時間がかかる場合があります</string>
+    <string name="pf_download_status_done">モデルをインストールしました</string>
+    <string name="pf_download_status_failed">ダウンロードまたは展開に失敗しました</string>
+    <string name="pf_download_started_in_bg">バックグラウンドで開始しました。通知で進行状況を確認してください</string>
+    <string name="pf_clear_confirm_title">モデルを削除しますか？</string>
+    <string name="pf_clear_confirm_message">ダウンロード済みのモデルを削除します。後で再ダウンロードできます。続行しますか？</string>
+    <string name="pf_clear_done">モデルを削除しました</string>
+    <string name="pf_clear_failed">削除に失敗しました</string>
+    <string name="pf_loading_model">ローカルモデルを読み込み中…</string>
+    <string name="error_paraformer_model_missing">Paraformer モデルが見つかりません。設定で構成またはダウンロードしてください</string>
+    <string name="label_pf_preload">初回表示時にモデルを読み込み</string>
+    <string name="pf_model_info">注：\n1. Paraformer モデルには2つのバリアント（中英と中英+広東語）があります。中国語モデルは一部の方言もサポートしています\n2. 各バリアントのダウンロードは1GBで、int8とfp32の両方の量子化バージョンが含まれています。同じバリアントのint8とfp32間の切り替えは再ダウンロードを必要としません</string>
+
     <!-- Floating radial menu -->
     <string name="label_radial_switch_asr">ASRプロバイダーを切り替え</string>
     <string name="label_radial_switch_ime">入力メソッドを切り替え</string>
@@ -477,7 +504,7 @@
     <string name="notif_model_summary_title">モデルダウンロード</string>
     <string name="notif_model_summary_text">バックグラウンドでモデルをダウンロード/展開中</string>
     <string name="notif_model_title_int8">SenseVoiceモデル（Small int8）</string>
-    <string name="notif_model_title_full">SenseVoiceモデル（Small full）</string>
+    <string name="notif_model_title_full">SenseVoiceモデル（Small fp32）</string>
 
     <!-- Silence auto-stop (ASR) -->
     <string name="section_silence_autostop">無音時自動停止</string>
@@ -487,7 +514,7 @@
     <!-- SenseVoice local settings -->
     <string name="btn_sv_download_model">SenseVoiceモデルをワンクリックでダウンロード</string>
     <string name="btn_sv_download_model_int8">SenseVoice（small int8、約160MB）をワンクリックでダウンロード</string>
-    <string name="btn_sv_download_model_full">SenseVoice（small full、約850MB）をワンクリックでダウンロード</string>
+    <string name="btn_sv_download_model_full">SenseVoice（small fp32、約850MB）をワンクリックでダウンロード</string>
     <string name="btn_sv_clear_model">ダウンロードしたモデルをクリア</string>
     <string name="sv_download_status_downloading">ダウンロード中…%1$d%%</string>
     <string name="sv_download_status_extracting">展開中…お待ちください</string>
@@ -500,10 +527,11 @@
     <string name="sv_clear_failed">クリア失敗</string>
     <string name="label_sv_model_variant">モデルバージョン</string>
     <string name="sv_model_small_int8">Small（int8、約160MB）</string>
-    <string name="sv_model_small_full">Small（full、約850MB）</string>
+    <string name="sv_model_small_full">Small（fp32、約850MB）</string>
     <string name="sv_loading_model">ローカルモデルを読み込み中…</string>
     <string name="sv_loading_model_while_listening">聞いています…バックグラウンドでローカルモデルを読み込み中…</string>
     <string name="sv_model_ready">ローカルモデルが読み込まれました</string>
+    <string name="sv_model_ready_with_ms">ローカルモデルの読み込みが完了（%1$d ms）</string>
     <string name="label_sv_preload">初回表示時にモデルを読み込み</string>
     <string name="label_sv_keep_alive">モデルキープアライブ期間</string>
     <string name="sv_keep_alive_immediate">キープアライブなし（認識後にアンロード）</string>

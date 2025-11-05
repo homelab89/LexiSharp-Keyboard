@@ -748,6 +748,8 @@ class KeyboardActionHandler(
     }
 
     override fun onLocalModelLoadStart() {
+        // 记录开始时间，用于计算加载耗时
+        try { modelLoadStartUptimeMs = android.os.SystemClock.uptimeMillis() } catch (_: Throwable) { modelLoadStartUptimeMs = 0L }
         val resId = if (currentState is KeyboardState.Listening || currentState is KeyboardState.AiEditListening) {
             R.string.sv_loading_model_while_listening
         } else {
@@ -757,7 +759,15 @@ class KeyboardActionHandler(
     }
 
     override fun onLocalModelLoadDone() {
-        uiListener?.onStatusMessage(context.getString(R.string.sv_model_ready))
+        val dt = try {
+            val now = android.os.SystemClock.uptimeMillis()
+            if (modelLoadStartUptimeMs > 0L && now >= modelLoadStartUptimeMs) now - modelLoadStartUptimeMs else -1L
+        } catch (_: Throwable) { -1L }
+        if (dt > 0) {
+            uiListener?.onStatusMessage(context.getString(R.string.sv_model_ready_with_ms, dt))
+        } else {
+            uiListener?.onStatusMessage(context.getString(R.string.sv_model_ready))
+        }
     }
 
     // ========== 私有方法：状态转换 ==========
@@ -818,6 +828,9 @@ class KeyboardActionHandler(
         asrManager.startRecording(state)
         uiListener?.onStatusMessage(context.getString(R.string.status_listening))
     }
+
+    // 本地模型加载耗时统计
+    private var modelLoadStartUptimeMs: Long = 0L
 
     /**
      * 判断是否应提供“重试”入口（仅非流式 + 网络错误 + 有片段 + 非空结果错误）。

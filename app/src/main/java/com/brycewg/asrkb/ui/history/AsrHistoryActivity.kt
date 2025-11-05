@@ -449,6 +449,7 @@ class AsrHistoryActivity : AppCompatActivity() {
       AsrVendor.Gemini -> getString(R.string.vendor_gemini)
       AsrVendor.Soniox -> getString(R.string.vendor_soniox)
       AsrVendor.SenseVoice -> getString(R.string.vendor_sensevoice)
+      AsrVendor.Paraformer -> getString(R.string.vendor_paraformer)
     }
   }
 
@@ -650,6 +651,7 @@ class AsrHistoryActivity : AppCompatActivity() {
           AsrVendor.Gemini -> itemView.context.getString(R.string.vendor_gemini)
           AsrVendor.Soniox -> itemView.context.getString(R.string.vendor_soniox)
           AsrVendor.SenseVoice -> itemView.context.getString(R.string.vendor_sensevoice)
+          AsrVendor.Paraformer -> itemView.context.getString(R.string.vendor_paraformer)
         }
       } catch (e: Exception) {
         id

@@ -161,6 +161,9 @@ class AsrSessionManager(
                     SenseVoiceFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
                 }
             }
+            AsrVendor.Paraformer -> {
+                ParaformerStreamAsrEngine(context, scope, prefs, this)
+            }
         }
     }
 
@@ -214,6 +217,10 @@ class AsrSessionManager(
             AsrVendor.SenseVoice -> when (current) {
                 is LocalModelPseudoStreamAsrEngine -> if (prefs.svPseudoStreamingEnabled) current else null
                 is SenseVoiceFileAsrEngine -> if (!prefs.svPseudoStreamingEnabled) current else null
+                else -> null
+            }
+            AsrVendor.Paraformer -> when (current) {
+                is ParaformerStreamAsrEngine -> current
                 else -> null
             }
         }

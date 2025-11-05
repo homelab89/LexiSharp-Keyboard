@@ -435,6 +435,9 @@ class AsrSessionManager(
                     SenseVoiceFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
                 }
             }
+            AsrVendor.Paraformer -> {
+                ParaformerStreamAsrEngine(context, serviceScope, prefs, this)
+            }
         }
     }
 

@@ -124,7 +124,8 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     private var clipboardPreviewTimeout: Runnable? = null
     private var prefsReceiver: BroadcastReceiver? = null
     private var syncClipboardManager: SyncClipboardManager? = null
-    private var svPreloadTriggered: Boolean = false
+    // 本地模型首次出现预热仅触发一次
+    private var localPreloadTriggered: Boolean = false
     private var suppressReturnPrevImeOnHideOnce: Boolean = false
     // 追踪宿主选区（用于精确控制选择扩展）
     private var lastSelStart: Int = -1
@@ -264,8 +265,8 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             android.util.Log.w("AsrKeyboardService", "Failed to log start_input_view", t)
         }
 
-        // 键盘面板首次出现时，按需异步预加载本地 SenseVoice
-        tryPreloadSenseVoice()
+        // 键盘面板首次出现时，按需异步预加载本地模型（SenseVoice/Paraformer）
+        tryPreloadLocalModel()
 
 
         // 刷新 UI
@@ -1431,54 +1432,44 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         } catch (_: Throwable) { }
     }
 
-    private fun tryPreloadSenseVoice() {
-        try {
-            if (!svPreloadTriggered) {
-                val p = prefs
-                if (p.asrVendor == AsrVendor.SenseVoice && p.svPreloadEnabled) {
-                    val prepared = try {
-                        com.brycewg.asrkb.asr.isSenseVoicePrepared()
-                    } catch (_: Throwable) {
-                        false
+    private fun tryPreloadLocalModel() {
+        if (localPreloadTriggered) return
+        val p = prefs
+        val enabled = when (p.asrVendor) {
+            AsrVendor.SenseVoice -> p.svPreloadEnabled
+            AsrVendor.Paraformer -> p.pfPreloadEnabled
+            else -> false
+        }
+        if (!enabled) return
+        if (com.brycewg.asrkb.asr.isLocalAsrPrepared(p)) { localPreloadTriggered = true; return }
+
+        // 信息栏显示“加载中…”，完成后回退状态
+        rootView?.post {
+            clearStatusTextStyle()
+            txtStatus?.text = getString(R.string.sv_loading_model)
+        }
+        localPreloadTriggered = true
+
+        serviceScope.launch(Dispatchers.Default) {
+            val t0 = android.os.SystemClock.uptimeMillis()
+            com.brycewg.asrkb.asr.preloadLocalAsrIfConfigured(
+                this@AsrKeyboardService,
+                p,
+                onLoadStart = null,
+                onLoadDone = {
+                    val dt = (android.os.SystemClock.uptimeMillis() - t0).coerceAtLeast(0)
+                    rootView?.post {
+                        clearStatusTextStyle()
+                        txtStatus?.text = getString(R.string.sv_model_ready_with_ms, dt)
+                        rootView?.postDelayed({
+                            clearStatusTextStyle()
+                            txtStatus?.text = if (asrManager.isRunning()) getString(R.string.status_listening) else getString(R.string.status_idle)
+                        }, 1200)
                     }
-                    if (!prepared) {
-                        try {
-                            rootView?.post {
-                                clearStatusTextStyle()
-                                txtStatus?.text = getString(R.string.sv_loading_model)
-                            }
-                        } catch (_: Throwable) { }
-                        serviceScope.launch(Dispatchers.Default) {
-                            try {
-                                com.brycewg.asrkb.asr.preloadSenseVoiceIfConfigured(
-                                    this@AsrKeyboardService,
-                                    p,
-                                    onLoadStart = null,
-                                    onLoadDone = {
-                                        try {
-                                            rootView?.post {
-                                                clearStatusTextStyle()
-                                                txtStatus?.text = getString(R.string.sv_model_ready)
-                                                rootView?.postDelayed({
-                                                    clearStatusTextStyle()
-                                                    if (asrManager.isRunning()) {
-                                                        txtStatus?.text = getString(R.string.status_listening)
-                                                    } else {
-                                                        txtStatus?.text = getString(R.string.status_idle)
-                                                    }
-                                                }, 1200)
-                                            }
-                                        } catch (_: Throwable) { }
-                                    },
-                                    suppressToastOnStart = true
-                                )
-                            } catch (_: Throwable) { }
-                        }
-                    }
-                }
-                svPreloadTriggered = true
-            }
-        } catch (_: Throwable) { }
+                },
+                suppressToastOnStart = true
+            )
+        }
     }
 
     private fun startClipboardSync() {

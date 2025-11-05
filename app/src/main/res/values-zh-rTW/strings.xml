@@ -477,7 +477,7 @@
     <string name="notif_model_summary_title">模型下載</string>
     <string name="notif_model_summary_text">在背景下載/解壓縮模型</string>
     <string name="notif_model_title_int8">SenseVoice 模型 (Small int8)</string>
-    <string name="notif_model_title_full">SenseVoice 模型 (Small full)</string>
+    <string name="notif_model_title_full">SenseVoice 模型 (Small fp32)</string>
 
     <!-- Silence auto-stop (ASR) -->
     <string name="section_silence_autostop">靜音自動停止</string>
@@ -487,7 +487,7 @@
     <!-- SenseVoice local settings -->
     <string name="btn_sv_download_model">一鍵下載 SenseVoice 模型</string>
     <string name="btn_sv_download_model_int8">一鍵下載 SenseVoice (small int8, ~160MB)</string>
-    <string name="btn_sv_download_model_full">一鍵下載 SenseVoice (small full, ~850MB)</string>
+    <string name="btn_sv_download_model_full">一鍵下載 SenseVoice (small fp32, ~850MB)</string>
     <string name="btn_sv_clear_model">清除已下載模型</string>
     <string name="sv_download_status_downloading">下載中… %1$d%%</string>
     <string name="sv_download_status_extracting">解壓縮中…請稍候</string>
@@ -500,10 +500,11 @@
     <string name="sv_clear_failed">清除失敗</string>
     <string name="label_sv_model_variant">模型版本</string>
     <string name="sv_model_small_int8">Small (int8, ~160MB)</string>
-    <string name="sv_model_small_full">Small (full, ~850MB)</string>
+    <string name="sv_model_small_full">Small (fp32, ~850MB)</string>
     <string name="sv_loading_model">載入本機模型中…</string>
     <string name="sv_loading_model_while_listening">聆聽中…背景載入本機模型中…</string>
     <string name="sv_model_ready">本機模型已載入</string>
+    <string name="sv_model_ready_with_ms">本機模型載入完成（%1$d ms）</string>
     <string name="label_sv_preload">首次顯示時載入模型</string>
     <string name="label_sv_keep_alive">模型保持存活時間</string>
     <string name="sv_keep_alive_immediate">不保持 (識別後卸載)</string>
@@ -576,4 +577,32 @@
     <string name="fmt_h_m">%1$d 小時 %2$d 分鐘</string>
     <string name="fmt_m_s">%1$d 分鐘 %2$d 秒</string>
     <string name="fmt_s">%1$d 秒</string>
+    
+    <!-- Paraformer (Local) -->
+    <string name="vendor_paraformer">Paraformer（本機）</string>
+    <string name="notif_pf_title_bilingual">Paraformer 模型（中英）</string>
+    <string name="notif_pf_title_trilingual">Paraformer 模型（中英+粵語）</string>
+    <string name="paraformer_section_title">Paraformer（本機）</string>
+    <string name="label_pf_model_variant">模型版本</string>
+    <string name="label_pf_threads">執行緒數（1-8）</string>
+    <string name="label_pf_keep_alive">模型保留於記憶體</string>
+    <string name="pf_variant_bilingual_int8">中英（int8）</string>
+    <string name="pf_variant_bilingual_fp32">中英（fp32）</string>
+    <string name="pf_variant_trilingual_int8">中英+粵語（int8）</string>
+    <string name="pf_variant_trilingual_fp32">中英+粵語（fp32）</string>
+    <string name="btn_pf_download_model">下載 Paraformer 模型</string>
+    <string name="btn_pf_clear_model">清除已下載模型</string>
+    <string name="pf_download_status_downloading">下載中… %1$d%%</string>
+    <string name="pf_download_status_extracting">解壓中…可能需要一段時間</string>
+    <string name="pf_download_status_done">模型已安裝</string>
+    <string name="pf_download_status_failed">下載或解壓失敗</string>
+    <string name="pf_download_started_in_bg">已在背景開始，請在通知列查看進度</string>
+    <string name="pf_clear_confirm_title">確認清除模型？</string>
+    <string name="pf_clear_confirm_message">將刪除已下載的模型，之後可再下載。是否繼續？</string>
+    <string name="pf_clear_done">已清除模型</string>
+    <string name="pf_clear_failed">清除失敗</string>
+    <string name="pf_loading_model">正在載入本機模型…</string>
+    <string name="error_paraformer_model_missing">Paraformer 模型缺失，請稍後在設定中配置或下載</string>
+    <string name="label_pf_preload">首次顯示時載入模型</string>
+    <string name="pf_model_info">注：\n1. Paraformer 模型擁有兩個版本（中英和中英粵），其中中文還另支援部分方言\n2. 每個版本的下載包都為 1GB，其中都包含 int8 和 fp32 兩個量化版本的模型檔案，在同版本的 int8 和 fp32 之間切換無需重新下載</string>
 </resources>

@@ -270,6 +270,7 @@ fun preloadSenseVoiceIfConfigured(
         val alwaysKeep = keepMinutes < 0
         // 在后台协程触发预加载，避免直接在调用线程（可能是主线程）阻塞
         kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Default).launch {
+            val t0 = try { android.os.SystemClock.uptimeMillis() } catch (_: Throwable) { 0L }
             val ok = manager.prepare(
                 assetManager = null,
                 tokens = tokensPath,
@@ -312,6 +313,25 @@ fun preloadSenseVoiceIfConfigured(
                 onLoadDone = onLoadDone,
             )
             if (ok && !forImmediateUse) {
+                // 加载完成后显示 Toast，并报告加载用时
+                val dt = try {
+                    val now = android.os.SystemClock.uptimeMillis()
+                    if (t0 > 0L && now >= t0) now - t0 else -1L
+                } catch (_: Throwable) { -1L }
+                try {
+                    android.os.Handler(android.os.Looper.getMainLooper()).post {
+                        try {
+                            val text = if (dt > 0) {
+                                context.getString(R.string.sv_model_ready_with_ms, dt)
+                            } else context.getString(R.string.sv_model_ready)
+                            android.widget.Toast.makeText(context, text, android.widget.Toast.LENGTH_SHORT).show()
+                        } catch (t: Throwable) {
+                            Log.e("SenseVoiceFileAsrEngine", "Failed to show load-done toast", t)
+                        }
+                    }
+                } catch (t: Throwable) {
+                    Log.e("SenseVoiceFileAsrEngine", "Post load-done toast failed", t)
+                }
                 try { SenseVoiceOnnxManager.getInstance().scheduleUnloadIfIdle() } catch (t: Throwable) {
                     Log.e("SenseVoiceFileAsrEngine", "Failed to schedule unload after preload", t)
                 }

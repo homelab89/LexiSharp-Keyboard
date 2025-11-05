@@ -8,7 +8,8 @@ enum class AsrVendor(val id: String) {
     DashScope("dashscope"),
     Gemini("gemini"),
     Soniox("soniox"),
-    SenseVoice("sensevoice");
+    SenseVoice("sensevoice"),
+    Paraformer("paraformer");
 
     companion object {
         fun fromId(id: String?): AsrVendor = when (id?.lowercase()) {
@@ -19,6 +20,7 @@ enum class AsrVendor(val id: String) {
             Gemini.id -> Gemini
             Soniox.id -> Soniox
             SenseVoice.id -> SenseVoice
+            Paraformer.id -> Paraformer
             else -> Volc
         }
     }

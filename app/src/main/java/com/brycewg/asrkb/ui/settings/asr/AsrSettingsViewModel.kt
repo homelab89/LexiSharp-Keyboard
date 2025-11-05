@@ -65,7 +65,12 @@ class AsrSettingsViewModel : ViewModel() {
             svUseItn = prefs.svUseItn,
             svPreloadEnabled = prefs.svPreloadEnabled,
             svPseudoStreamingEnabled = prefs.svPseudoStreamingEnabled,
-            svKeepAliveMinutes = prefs.svKeepAliveMinutes
+            svKeepAliveMinutes = prefs.svKeepAliveMinutes,
+            // Paraformer settings
+            pfModelVariant = prefs.pfModelVariant,
+            pfNumThreads = prefs.pfNumThreads,
+            pfKeepAliveMinutes = prefs.pfKeepAliveMinutes,
+            pfPreloadEnabled = prefs.pfPreloadEnabled
         )
     }
 
@@ -74,13 +79,12 @@ class AsrSettingsViewModel : ViewModel() {
         prefs.asrVendor = vendor
         _uiState.value = _uiState.value.copy(selectedVendor = vendor)
 
-        // Handle SenseVoice model lifecycle
+        // Handle local model lifecycle cleanup
         if (oldVendor == AsrVendor.SenseVoice && vendor != AsrVendor.SenseVoice) {
-            try {
-                com.brycewg.asrkb.asr.unloadSenseVoiceRecognizer()
-            } catch (e: Throwable) {
-                Log.e(TAG, "Failed to unload SenseVoice recognizer", e)
-            }
+            try { com.brycewg.asrkb.asr.unloadSenseVoiceRecognizer() } catch (e: Throwable) { Log.e(TAG, "Failed to unload SenseVoice recognizer", e) }
+        }
+        if (oldVendor == AsrVendor.Paraformer && vendor != AsrVendor.Paraformer) {
+            try { com.brycewg.asrkb.asr.unloadParaformerRecognizer() } catch (e: Throwable) { Log.e(TAG, "Failed to unload Paraformer recognizer", e) }
         }
 
         if (vendor == AsrVendor.SenseVoice && prefs.svPreloadEnabled) {
@@ -92,6 +96,19 @@ class AsrSettingsViewModel : ViewModel() {
                     )
                 } catch (e: Throwable) {
                     Log.e(TAG, "Failed to preload SenseVoice model", e)
+                }
+            }
+        }
+
+        if (vendor == AsrVendor.Paraformer && prefs.pfPreloadEnabled) {
+            viewModelScope.launch(Dispatchers.Default) {
+                try {
+                    com.brycewg.asrkb.asr.preloadParaformerIfConfigured(
+                        appContext,
+                        prefs
+                    )
+                } catch (e: Throwable) {
+                    Log.e(TAG, "Failed to preload Paraformer model", e)
                 }
             }
         }
@@ -189,6 +206,7 @@ class AsrSettingsViewModel : ViewModel() {
         } catch (e: Throwable) {
             Log.e(TAG, "Failed to unload SenseVoice recognizer after variant change", e)
         }
+        triggerSvPreloadIfEnabledAndActive("variant change")
     }
 
     fun updateSvNumThreads(threads: Int) {
@@ -199,6 +217,7 @@ class AsrSettingsViewModel : ViewModel() {
         } catch (e: Throwable) {
             Log.e(TAG, "Failed to unload SenseVoice recognizer after threads change", e)
         }
+        triggerSvPreloadIfEnabledAndActive("threads change")
     }
 
     fun updateSvLanguage(language: String) {
@@ -209,6 +228,7 @@ class AsrSettingsViewModel : ViewModel() {
         } catch (e: Throwable) {
             Log.e(TAG, "Failed to unload SenseVoice recognizer after language change", e)
         }
+        triggerSvPreloadIfEnabledAndActive("language change")
     }
 
     fun updateSvUseItn(enabled: Boolean) {
@@ -220,6 +240,7 @@ class AsrSettingsViewModel : ViewModel() {
             } catch (e: Throwable) {
                 Log.e(TAG, "Failed to unload SenseVoice recognizer after ITN change", e)
             }
+            triggerSvPreloadIfEnabledAndActive("ITN change")
         }
     }
 
@@ -249,6 +270,84 @@ class AsrSettingsViewModel : ViewModel() {
     fun updateSvKeepAlive(minutes: Int) {
         prefs.svKeepAliveMinutes = minutes
         _uiState.value = _uiState.value.copy(svKeepAliveMinutes = minutes)
+    }
+
+    // ----- Paraformer -----
+    fun updatePfModelVariant(variant: String) {
+        prefs.pfModelVariant = variant
+        _uiState.value = _uiState.value.copy(pfModelVariant = variant)
+        try { com.brycewg.asrkb.asr.unloadParaformerRecognizer() } catch (_: Throwable) { }
+        triggerPfPreloadIfEnabledAndActive("variant change")
+    }
+
+    fun updatePfKeepAlive(minutes: Int) {
+        prefs.pfKeepAliveMinutes = minutes
+        _uiState.value = _uiState.value.copy(pfKeepAliveMinutes = minutes)
+    }
+
+    fun updatePfNumThreads(v: Int) {
+        val vv = v.coerceIn(1, 8)
+        prefs.pfNumThreads = vv
+        _uiState.value = _uiState.value.copy(pfNumThreads = vv)
+        // 线程数变化后卸载已缓存识别器，必要时重新预加载
+        try { com.brycewg.asrkb.asr.unloadParaformerRecognizer() } catch (_: Throwable) { }
+        triggerPfPreloadIfEnabledAndActive("threads change")
+    }
+
+    // 统一预加载触发
+    private fun triggerSvPreloadIfEnabledAndActive(reason: String) {
+        if (prefs.svPreloadEnabled && prefs.asrVendor == AsrVendor.SenseVoice) {
+            viewModelScope.launch(Dispatchers.Default) {
+                try {
+                    com.brycewg.asrkb.asr.preloadSenseVoiceIfConfigured(appContext, prefs)
+                } catch (t: Throwable) {
+                    Log.e(TAG, "Failed to preload SenseVoice after $reason", t)
+                }
+            }
+        }
+    }
+
+    private fun triggerPfPreloadIfEnabledAndActive(reason: String) {
+        if (prefs.pfPreloadEnabled && prefs.asrVendor == AsrVendor.Paraformer) {
+            viewModelScope.launch(Dispatchers.Default) {
+                try {
+                    com.brycewg.asrkb.asr.preloadParaformerIfConfigured(appContext, prefs)
+                } catch (t: Throwable) {
+                    Log.e(TAG, "Failed to preload Paraformer after $reason", t)
+                }
+            }
+        }
+    }
+
+    fun updatePfPreload(enabled: Boolean) {
+        prefs.pfPreloadEnabled = enabled
+        _uiState.value = _uiState.value.copy(pfPreloadEnabled = enabled)
+
+        if (enabled && prefs.asrVendor == AsrVendor.Paraformer) {
+            viewModelScope.launch(Dispatchers.Default) {
+                try {
+                    com.brycewg.asrkb.asr.preloadParaformerIfConfigured(
+                        appContext,
+                        prefs
+                    )
+                } catch (e: Throwable) {
+                    Log.e(TAG, "Failed to preload Paraformer model", e)
+                }
+            }
+        }
+    }
+
+    fun checkPfModelDownloaded(context: Context): Boolean {
+        val base = context.getExternalFilesDir(null) ?: context.filesDir
+        val root = File(base, "paraformer")
+        val group = if (prefs.pfModelVariant.startsWith("trilingual")) File(root, "trilingual") else File(root, "bilingual")
+        val dir = com.brycewg.asrkb.asr.findPfModelDir(group)
+        return dir != null &&
+                File(dir, "tokens.txt").exists() &&
+                (
+                    (File(dir, "encoder.onnx").exists() && File(dir, "decoder.onnx").exists()) ||
+                    (File(dir, "encoder.int8.onnx").exists() && File(dir, "decoder.int8.onnx").exists())
+                )
     }
 
     fun checkSvModelDownloaded(context: Context): Boolean {
@@ -315,7 +414,12 @@ data class AsrSettingsUiState(
     val svUseItn: Boolean = true,
     val svPreloadEnabled: Boolean = false,
     val svPseudoStreamingEnabled: Boolean = false,
-    val svKeepAliveMinutes: Int = -1
+    val svKeepAliveMinutes: Int = -1,
+    // Paraformer settings
+    val pfModelVariant: String = "bilingual-int8",
+    val pfNumThreads: Int = 2,
+    val pfKeepAliveMinutes: Int = -1,
+    val pfPreloadEnabled: Boolean = false
 ) {
     // Computed visibility properties based on selected vendor
     val isVolcVisible: Boolean get() = selectedVendor == AsrVendor.Volc
@@ -326,4 +430,5 @@ data class AsrSettingsUiState(
     val isGeminiVisible: Boolean get() = selectedVendor == AsrVendor.Gemini
     val isSonioxVisible: Boolean get() = selectedVendor == AsrVendor.Soniox
     val isSenseVoiceVisible: Boolean get() = selectedVendor == AsrVendor.SenseVoice
+    val isParaformerVisible: Boolean get() = selectedVendor == AsrVendor.Paraformer
 }

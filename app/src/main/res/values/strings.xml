@@ -78,6 +78,7 @@
     <string name="vendor_dashscope">阿里云百炼（DashScope）</string>
     <string name="vendor_soniox">Soniox</string>
     <string name="vendor_sensevoice">SenseVoice（本地）</string>
+    <string name="vendor_paraformer">Paraformer（本地）</string>
     <string name="label_sf_api_key">API Key（Bearer）</string>
     <string name="label_sf_model_select">选择模型</string>
     <string name="sf_model_default_display">FunAudioLLM/SenseVoiceSmall</string>
@@ -362,7 +363,7 @@
     <string name="label_sv_use_itn">启用 ITN（数字/标点规范化）</string>
     <string name="btn_sv_download_model">一键下载 SenseVoice 模型</string>
     <string name="btn_sv_download_model_int8">一键下载 SenseVoice 模型（small int8，约 160MB）</string>
-    <string name="btn_sv_download_model_full">一键下载 SenseVoice 模型（small full，约 850MB）</string>
+    <string name="btn_sv_download_model_full">一键下载 SenseVoice 模型（small fp32，约 850MB）</string>
     <string name="btn_sv_clear_model">清除已下载模型</string>
     <string name="sv_download_status_downloading">下载中… %1$d%%</string>
     <string name="sv_download_status_extracting">解压中…时间预计较长,请耐心等待</string>
@@ -377,10 +378,11 @@
     <string name="error_sensevoice_model_missing">缺少 SenseVoice 模型文件，请稍后在设置中配置或下载</string>
     <string name="label_sv_model_variant">模型版本</string>
     <string name="sv_model_small_int8">Small（int8，约160MB）</string>
-    <string name="sv_model_small_full">Small（full，约850MB）</string>
+    <string name="sv_model_small_full">Small（fp32，约850MB）</string>
     <string name="sv_loading_model">本地模型加载中…</string>
     <string name="sv_loading_model_while_listening">正在聆听…本地模型后台加载中…</string>
     <string name="sv_model_ready">本地模型加载完成</string>
+    <string name="sv_model_ready_with_ms">本地模型加载完成（%1$d ms）</string>
     <string name="label_sv_preload">首次显示时加载模型</string>
     <string name="label_sv_keep_alive">模型内存保留时长</string>
     <string name="sv_keep_alive_immediate">不保留（识别后立即卸载）</string>
@@ -518,8 +520,35 @@
     <string name="notif_model_summary_title">模型下载</string>
     <string name="notif_model_summary_text">正在后台下载/解压本地模型</string>
     <string name="notif_model_title_int8">SenseVoice 模型（Small int8）</string>
-    <string name="notif_model_title_full">SenseVoice 模型（Small full）</string>
-    
+    <string name="notif_model_title_full">SenseVoice 模型（Small fp32）</string>
+    <string name="notif_pf_title_bilingual">Paraformer 模型（中英）</string>
+    <string name="notif_pf_title_trilingual">Paraformer 模型（中英+粤语）</string>
+
+    <!-- Paraformer (Local) -->
+    <string name="paraformer_section_title">Paraformer（本地）</string>
+    <string name="label_pf_model_variant">模型版本</string>
+    <string name="label_pf_threads">线程数（1-8）</string>
+    <string name="label_pf_keep_alive">模型内存保留时长</string>
+    <string name="pf_variant_bilingual_int8">中英（int8）</string>
+    <string name="pf_variant_bilingual_fp32">中英（fp32）</string>
+    <string name="pf_variant_trilingual_int8">中英+粤语（int8）</string>
+    <string name="pf_variant_trilingual_fp32">中英+粤语（fp32）</string>
+    <string name="btn_pf_download_model">一键下载 Paraformer 模型</string>
+    <string name="btn_pf_clear_model">清除已下载模型</string>
+    <string name="pf_download_status_downloading">下载中… %1$d%%</string>
+    <string name="pf_download_status_extracting">解压中…时间预计较长,请耐心等待</string>
+    <string name="pf_download_status_done">模型已安装</string>
+    <string name="pf_download_status_failed">下载或解压失败</string>
+    <string name="pf_download_started_in_bg">已开始后台下载，请到通知栏查看进度</string>
+    <string name="pf_clear_confirm_title">确认清除模型？</string>
+    <string name="pf_clear_confirm_message">将删除已下载的模型文件，可稍后重新下载。是否继续？</string>
+    <string name="pf_clear_done">已清除模型</string>
+    <string name="pf_clear_failed">清除失败</string>
+    <string name="pf_loading_model">本地模型加载中…</string>
+    <string name="error_paraformer_model_missing">缺少 Paraformer 模型文件，请稍后在设置中配置或下载</string>
+    <string name="label_pf_preload">首次显示时加载模型</string>
+    <string name="pf_model_info">注：\n1. Paraformer 模型拥有两个版本（中英和中英粤），其中中文还另支持部分方言\n2. 每个版本的下载包都为 1GB，其中都包含 int8 和 fp32 两个量化版本的模型文件，在同版本的 int8 和 fp32 之间切换无需重新下载</string>
+
     <!-- SyncClipboard settings -->
     <string name="section_sync_clipboard">剪贴板同步</string>
     <string name="label_enable_sync_clipboard">使用 SyncClipboard 项目来同步粘贴板</string>
