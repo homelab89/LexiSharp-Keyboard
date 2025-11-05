@@ -597,31 +597,6 @@ class Prefs(context: Context) {
         get() = sp.getInt(KEY_SV_KEEP_ALIVE_MINUTES, -1)
         set(value) = sp.edit { putInt(KEY_SV_KEEP_ALIVE_MINUTES, value) }
 
-    // SenseVoice：伪流式识别开关（容错：若历史上被以字符串写入，做解析回退并修正）
-    var svPseudoStreamingEnabled: Boolean
-        get() = try {
-            sp.getBoolean(KEY_SV_PSEUDO_STREAMING_ENABLED, false)
-        } catch (e: ClassCastException) {
-            // 检测到类型不匹配，说明历史数据以字符串形式存储
-            Log.w(TAG, "Detected legacy string value for svPseudoStreamingEnabled, migrating to boolean", e)
-            val s = sp.getString(KEY_SV_PSEUDO_STREAMING_ENABLED, null)
-            val boolValue = when {
-                s == null -> false
-                s.equals("true", ignoreCase = true) -> true
-                s == "1" -> true
-                else -> false
-            }
-            // 一次性数据迁移：写回正确的布尔类型
-            try {
-                sp.edit { putBoolean(KEY_SV_PSEUDO_STREAMING_ENABLED, boolValue) }
-                Log.i(TAG, "Successfully migrated svPseudoStreamingEnabled to boolean: $boolValue")
-            } catch (migrateError: Exception) {
-                Log.e(TAG, "Failed to migrate svPseudoStreamingEnabled to boolean", migrateError)
-            }
-            boolValue
-        }
-        set(value) = sp.edit { putBoolean(KEY_SV_PSEUDO_STREAMING_ENABLED, value) }
-
     // Paraformer（本地 ASR）
     var pfModelVariant: String
         get() = sp.getString(KEY_PF_MODEL_VARIANT, "bilingual-int8") ?: "bilingual-int8"
@@ -1054,7 +1029,6 @@ class Prefs(context: Context) {
         private const val KEY_SV_USE_ITN = "sv_use_itn"
         private const val KEY_SV_PRELOAD_ENABLED = "sv_preload_enabled"
         private const val KEY_SV_KEEP_ALIVE_MINUTES = "sv_keep_alive_minutes"
-        private const val KEY_SV_PSEUDO_STREAMING_ENABLED = "sv_pseudo_streaming_enabled"
         // Paraformer（本地 ASR）
         private const val KEY_PF_MODEL_VARIANT = "pf_model_variant"
         private const val KEY_PF_NUM_THREADS = "pf_num_threads"
@@ -1261,7 +1235,6 @@ class Prefs(context: Context) {
         o.put(KEY_SV_USE_ITN, svUseItn)
         o.put(KEY_SV_PRELOAD_ENABLED, svPreloadEnabled)
         o.put(KEY_SV_KEEP_ALIVE_MINUTES, svKeepAliveMinutes)
-        o.put(KEY_SV_PSEUDO_STREAMING_ENABLED, svPseudoStreamingEnabled)
         // Paraformer（本地 ASR）
         o.put(KEY_PF_MODEL_VARIANT, pfModelVariant)
         o.put(KEY_PF_NUM_THREADS, pfNumThreads)
@@ -1397,7 +1370,6 @@ class Prefs(context: Context) {
             optBool(KEY_SV_USE_ITN)?.let { svUseItn = it }
             optBool(KEY_SV_PRELOAD_ENABLED)?.let { svPreloadEnabled = it }
             optInt(KEY_SV_KEEP_ALIVE_MINUTES)?.let { svKeepAliveMinutes = it }
-            optBool(KEY_SV_PSEUDO_STREAMING_ENABLED)?.let { svPseudoStreamingEnabled = it }
             // Paraformer（本地 ASR）
             optString(KEY_PF_MODEL_VARIANT)?.let { pfModelVariant = it }
             optInt(KEY_PF_NUM_THREADS)?.let { pfNumThreads = it.coerceIn(1, 8) }

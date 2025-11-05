@@ -764,14 +764,6 @@ class AsrSettingsActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<MaterialSwitch>(R.id.switchSvPseudoStreaming).apply {
-            isChecked = prefs.svPseudoStreamingEnabled
-            setOnCheckedChangeListener { btn, isChecked ->
-                hapticTapIfEnabled(btn)
-                viewModel.updateSvPseudoStreaming(isChecked)
-            }
-        }
-
         // Keep alive
         setupSvKeepAliveSelection()
 

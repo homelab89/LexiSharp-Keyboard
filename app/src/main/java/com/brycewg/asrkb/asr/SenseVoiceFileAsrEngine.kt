@@ -332,9 +332,6 @@ fun preloadSenseVoiceIfConfigured(
                 } catch (t: Throwable) {
                     Log.e("SenseVoiceFileAsrEngine", "Post load-done toast failed", t)
                 }
-                try { SenseVoiceOnnxManager.getInstance().scheduleUnloadIfIdle() } catch (t: Throwable) {
-                    Log.e("SenseVoiceFileAsrEngine", "Failed to schedule unload after preload", t)
-                }
             }
         }
     } catch (t: Throwable) {
@@ -502,10 +499,9 @@ class SenseVoiceOnnxManager private constructor() {
         return cachedRecognizer != null
     }
 
-    // 记录最近一次配置，用于在 stream 释放时按用户设置调度卸载
+    // 记录最近一次配置，用于解码完成后按用户设置调度卸载
     @Volatile private var lastKeepAliveMs: Long = 0L
     @Volatile private var lastAlwaysKeep: Boolean = false
-    @Volatile private var activeStreams: Int = 0
 
     /**
      * 调度自动卸载
@@ -755,7 +751,7 @@ class SenseVoiceOnnxManager private constructor() {
                 }
             }
             // 记录本次配置。注意：不在预加载时立即调度卸载，
-            // 将在实际使用（decodeOffline 或流式结束 releaseStream）后再依据设置调度。
+            // 将在实际使用（decodeOffline）后再依据设置调度。
             lastKeepAliveMs = keepAliveMs
             lastAlwaysKeep = alwaysKeep
             return@withLock true
@@ -765,61 +761,6 @@ class SenseVoiceOnnxManager private constructor() {
         }
     }
 
-    // --- 供伪流式会话使用的简化桥接 ---
-    // 调用前请先通过 prepare() 确保 cachedRecognizer 已创建
-    suspend fun createStreamOrNull(): Any? = mutex.withLock {
-        try {
-            val recognizer = cachedRecognizer ?: return@withLock null
-            val s = recognizer.createStream()
-            activeStreams++
-            return@withLock s
-        } catch (t: Throwable) {
-            Log.e(TAG, "Failed to create stream: ${t.message}", t)
-            return@withLock null
-        }
-    }
-
-    fun acceptWaveform(stream: Any, samples: FloatArray, sampleRate: Int) {
-        try {
-            if (stream is ReflectiveStream) {
-                stream.acceptWaveform(samples, sampleRate)
-            }
-        } catch (t: Throwable) {
-            Log.e(TAG, "Failed to accept waveform: ${t.message}", t)
-        }
-    }
-
-    suspend fun decodeAndGetText(stream: Any): String? = mutex.withLock {
-        try {
-            val recognizer = cachedRecognizer ?: return@withLock null
-            return@withLock if (stream is ReflectiveStream) recognizer.decode(stream) else null
-        } catch (t: Throwable) {
-            Log.e(TAG, "Failed to decode and get text: ${t.message}", t)
-            return@withLock null
-        }
-    }
-
-    fun releaseStream(stream: Any?) {
-        if (stream == null) return
-        try {
-            if (stream is ReflectiveStream) {
-                stream.release()
-            }
-            // 根据最近一次配置调度卸载（遵循保留时长设置）
-            if (activeStreams > 0) activeStreams--
-            scheduleUnloadIfIdle()
-        } catch (t: Throwable) {
-            Log.e(TAG, "Failed to release stream: ${t.message}", t)
-        }
-    }
-
-    fun scheduleUnloadIfIdle() {
-        if (activeStreams <= 0) {
-            scheduleAutoUnload(lastKeepAliveMs, lastAlwaysKeep)
-        } else {
-            Log.d(TAG, "Skip scheduling unload: ${activeStreams} active stream(s)")
-        }
-    }
 }
 
 /**
@@ -871,26 +812,6 @@ object SenseVoiceOnnxBridge {
         assetManager, tokens, model, language, useItn, provider, numThreads,
         keepAliveMs, alwaysKeep, onLoadStart, onLoadDone
     )
-
-    suspend fun createStreamOrNull(): Any? = manager.createStreamOrNull()
-
-    fun acceptWaveform(stream: Any, samples: FloatArray, sampleRate: Int) {
-        if (stream is ReflectiveStream) {
-            manager.acceptWaveform(stream, samples, sampleRate)
-        }
-    }
-
-    suspend fun decodeAndGetText(stream: Any): String? {
-        return if (stream is ReflectiveStream) {
-            manager.decodeAndGetText(stream)
-        } else null
-    }
-
-    fun releaseStream(stream: Any?) {
-        if (stream is ReflectiveStream) {
-            manager.releaseStream(stream)
-        }
-    }
 }
 
 // 判断是否已有缓存的本地识别器（已加载模型）

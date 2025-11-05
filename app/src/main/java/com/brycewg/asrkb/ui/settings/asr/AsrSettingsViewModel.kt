@@ -64,7 +64,6 @@ class AsrSettingsViewModel : ViewModel() {
             svLanguage = prefs.svLanguage,
             svUseItn = prefs.svUseItn,
             svPreloadEnabled = prefs.svPreloadEnabled,
-            svPseudoStreamingEnabled = prefs.svPseudoStreamingEnabled,
             svKeepAliveMinutes = prefs.svKeepAliveMinutes,
             // Paraformer settings
             pfModelVariant = prefs.pfModelVariant,
@@ -291,11 +290,6 @@ class AsrSettingsViewModel : ViewModel() {
         }
     }
 
-    fun updateSvPseudoStreaming(enabled: Boolean) {
-        prefs.svPseudoStreamingEnabled = enabled
-        _uiState.value = _uiState.value.copy(svPseudoStreamingEnabled = enabled)
-    }
-
     fun updateSvKeepAlive(minutes: Int) {
         prefs.svKeepAliveMinutes = minutes
         _uiState.value = _uiState.value.copy(svKeepAliveMinutes = minutes)
@@ -515,7 +509,6 @@ data class AsrSettingsUiState(
     val svLanguage: String = "auto",
     val svUseItn: Boolean = true,
     val svPreloadEnabled: Boolean = false,
-    val svPseudoStreamingEnabled: Boolean = false,
     val svKeepAliveMinutes: Int = -1,
     // Paraformer settings
     val pfModelVariant: String = "bilingual-int8",

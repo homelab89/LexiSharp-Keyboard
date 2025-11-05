@@ -428,12 +428,8 @@ class AsrSessionManager(
                 }
             } else null
             AsrVendor.SenseVoice -> {
-                // 本地 SenseVoice：根据用户开关选择伪流式或非流式文件识别
-                if (prefs.svPseudoStreamingEnabled) {
-                    LocalModelPseudoStreamAsrEngine(context, serviceScope, prefs, this)
-                } else {
-                    SenseVoiceFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
-                }
+                // 本地 SenseVoice：仅支持文件识别模式
+                SenseVoiceFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
             }
             AsrVendor.Paraformer -> {
                 ParaformerStreamAsrEngine(context, serviceScope, prefs, this)

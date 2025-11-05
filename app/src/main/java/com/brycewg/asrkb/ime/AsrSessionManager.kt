@@ -154,12 +154,8 @@ class AsrSessionManager(
             } else null
 
             AsrVendor.SenseVoice -> {
-                // 本地引擎无需鉴权；根据开关选择伪流式或非流式
-                if (prefs.svPseudoStreamingEnabled) {
-                    LocalModelPseudoStreamAsrEngine(context, scope, prefs, this)
-                } else {
-                    SenseVoiceFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
-                }
+                // 本地引擎无需鉴权；仅支持文件识别模式
+                SenseVoiceFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
             }
             AsrVendor.Paraformer -> {
                 ParaformerStreamAsrEngine(context, scope, prefs, this)
@@ -217,11 +213,7 @@ class AsrSessionManager(
                 else -> null
             }
 
-            AsrVendor.SenseVoice -> when (current) {
-                is LocalModelPseudoStreamAsrEngine -> if (prefs.svPseudoStreamingEnabled) current else null
-                is SenseVoiceFileAsrEngine -> if (!prefs.svPseudoStreamingEnabled) current else null
-                else -> null
-            }
+            AsrVendor.SenseVoice -> if (current is SenseVoiceFileAsrEngine) current else null
             AsrVendor.Paraformer -> when (current) {
                 is ParaformerStreamAsrEngine -> current
                 else -> null
@@ -278,9 +270,9 @@ class AsrSessionManager(
         } else {
             Log.d(TAG, "Audio ducking disabled by user; skip audio focus request")
         }
-        // 若为本地 SenseVoice 且使用文件识别模式，在录音触发时后台开始加载模型
+        // 若为本地 SenseVoice，在录音触发时后台开始加载模型
         try {
-            if (prefs.asrVendor == AsrVendor.SenseVoice && !prefs.svPseudoStreamingEnabled) {
+            if (prefs.asrVendor == AsrVendor.SenseVoice) {
                 val prepared = try {
                     com.brycewg.asrkb.asr.isSenseVoicePrepared()
                 } catch (t: Throwable) {
