@@ -555,6 +555,22 @@
     <string name="about_proc_prefix">処理時間</string>
     <string name="about_last_7_days">過去7日間（文字）</string>
     <string name="about_empty_stats_placeholder">まだデータがありません</string>
+
+    <!-- オープンソース謝辞 -->
+    <string name="about_acknowledgements_title">謝辞</string>
+    <string name="about_acknowledgements_desc">本プロジェクトは以下の優れたオープンソースプロジェクトに基づいて構築されています。開発者の皆様に心より感謝いたします：</string>
+    <string name="about_view_full_licenses">完全なライセンスを表示</string>
+    <string name="about_licenses_dialog_title">サードパーティライセンス</string>
+
+    <string name="about_sherpa_onnx_title">k2-fsa/sherpa-onnx</string>
+    <string name="about_sherpa_onnx_desc">ローカルASRモデルの技術ソリューションを提供し、オフライン音声認識を可能にします</string>
+
+    <string name="about_syncclipboard_title">Jeric-X/SyncClipboard</string>
+    <string name="about_syncclipboard_desc">クリップボード同期のバックエンドサービスを提供します（ローカルでは実行されず、サーバーが必要です）</string>
+
+    <string name="about_phosphor_title">phosphor-icons/homepage</string>
+    <string name="about_phosphor_desc">アプリケーション全体で使用されるほぼすべてのアイコンを提供します</string>
+
     <string name="unit_chars">文字</string>
     <string name="unit_0_min">0分</string>
     <string name="fmt_h_m">%1$d時間%2$d分</string>

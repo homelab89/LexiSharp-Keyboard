@@ -147,6 +147,86 @@
         android:orientation="vertical"
         android:layout_marginTop="6dp" />
 
+      <!-- 开源致谢 -->
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="@string/about_acknowledgements_title" />
+
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp"
+        android:text="@string/about_acknowledgements_desc" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnViewLicenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:text="@string/about_view_full_licenses" />
+
+      <!-- sherpa-onnx -->
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/about_sherpa_onnx_title" />
+
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp"
+        android:text="@string/about_sherpa_onnx_desc" />
+
+      <!-- SyncClipboard -->
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/about_syncclipboard_title" />
+
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp"
+        android:text="@string/about_syncclipboard_desc" />
+
+      <!-- Phosphor Icons -->
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="@string/about_phosphor_title" />
+
+      <TextView
+          android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp"
+        android:text="@string/about_phosphor_desc" />
+
       <!-- 调试日志 -->
       <TextView
           android:layout_width="match_parent"

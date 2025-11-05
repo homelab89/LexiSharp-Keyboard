@@ -555,6 +555,22 @@
     <string name="about_proc_prefix">處理耗時</string>
     <string name="about_last_7_days">最近 7 天 (字元)</string>
     <string name="about_empty_stats_placeholder">尚無資料</string>
+
+    <!-- 開源致謝 -->
+    <string name="about_acknowledgements_title">開源致謝</string>
+    <string name="about_acknowledgements_desc">本專案基於以下優秀的開源專案構建，在此向這些專案的開發者表示誠摯的感謝：</string>
+    <string name="about_view_full_licenses">檢視完整授權</string>
+    <string name="about_licenses_dialog_title">第三方授權</string>
+
+    <string name="about_sherpa_onnx_title">k2-fsa/sherpa-onnx</string>
+    <string name="about_sherpa_onnx_desc">提供了本機 ASR 模型的技術方案支援，使離線語音辨識成為可能</string>
+
+    <string name="about_syncclipboard_title">Jeric-X/SyncClipboard</string>
+    <string name="about_syncclipboard_desc">提供了剪貼簿同步的後端服務支援（非軟體本機執行，需要伺服器）</string>
+
+    <string name="about_phosphor_title">phosphor-icons/homepage</string>
+    <string name="about_phosphor_desc">提供了軟體內幾乎所有的圖示資源</string>
+
     <string name="unit_chars">字元</string>
     <string name="unit_0_min">0 分鐘</string>
     <string name="fmt_h_m">%1$d 小時 %2$d 分鐘</string>

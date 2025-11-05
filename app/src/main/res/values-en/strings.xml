@@ -556,6 +556,22 @@
     <string name="about_proc_prefix">processing time</string>
     <string name="about_last_7_days">Last 7 days (chars)</string>
     <string name="about_empty_stats_placeholder">No data yet</string>
+
+    <!-- Open Source Acknowledgements -->
+    <string name="about_acknowledgements_title">Acknowledgements</string>
+    <string name="about_acknowledgements_desc">This project is built upon the following excellent open source projects. We sincerely thank their developers:</string>
+    <string name="about_view_full_licenses">View Full Licenses</string>
+    <string name="about_licenses_dialog_title">Third-Party Licenses</string>
+
+    <string name="about_sherpa_onnx_title">k2-fsa/sherpa-onnx</string>
+    <string name="about_sherpa_onnx_desc">Provides technical solution for local ASR models, enabling offline speech recognition</string>
+
+    <string name="about_syncclipboard_title">Jeric-X/SyncClipboard</string>
+    <string name="about_syncclipboard_desc">Provides backend service for clipboard synchronization (not running locally, requires server)</string>
+
+    <string name="about_phosphor_title">phosphor-icons/homepage</string>
+    <string name="about_phosphor_desc">Provides almost all icons used throughout the application</string>
+
     <string name="unit_chars">chars</string>
     <string name="unit_0_min">0 min</string>
     <string name="fmt_h_m">%1$d h %2$d m</string>

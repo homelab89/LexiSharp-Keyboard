@@ -69,6 +69,11 @@ class AboutActivity : AppCompatActivity() {
       }
     }
 
+    // 查看完整许可证按钮
+    findViewById<Button>(R.id.btnViewLicenses)?.setOnClickListener {
+      showLicensesDialog()
+    }
+
     // 调试日志控制：开始/停止、导出分享
     val btnToggle = findViewById<Button>(R.id.btnToggleDebugRecording)
     val btnExport = findViewById<Button>(R.id.btnExportDebugLog)
@@ -326,5 +331,62 @@ class AboutActivity : AppCompatActivity() {
   private fun updateToggleText(btn: Button) {
     val textRes = if (DebugLogManager.isRecording()) R.string.btn_debug_stop_recording else R.string.btn_debug_start_recording
     btn.setText(textRes)
+  }
+
+  /**
+   * 显示第三方许可证对话框
+   */
+  private fun showLicensesDialog() {
+    try {
+      val licensesText = buildString {
+        // 读取 sherpa-onnx 许可证
+        append(readAssetFile("licenses/sherpa-onnx-LICENSE"))
+        append("\n\n")
+        append("=" .repeat(80))
+        append("\n\n")
+
+        // 读取 SyncClipboard 许可证
+        append(readAssetFile("licenses/SyncClipboard-LICENSE"))
+        append("\n\n")
+        append("=".repeat(80))
+        append("\n\n")
+
+        // 读取 Phosphor 许可证
+        append(readAssetFile("licenses/Phosphor-LICENSE"))
+      }
+
+      // 创建滚动视图
+      val scrollView = android.widget.ScrollView(this)
+      val textView = android.widget.TextView(this)
+      textView.text = licensesText
+      textView.setTextIsSelectable(true)
+      textView.textSize = 12f
+      textView.typeface = android.graphics.Typeface.MONOSPACE
+
+      val padding = (16 * resources.displayMetrics.density).toInt()
+      textView.setPadding(padding, padding, padding, padding)
+      scrollView.addView(textView)
+
+      com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        .setTitle(R.string.about_licenses_dialog_title)
+        .setView(scrollView)
+        .setPositiveButton(android.R.string.ok, null)
+        .show()
+    } catch (e: Throwable) {
+      Log.e(TAG, "Failed to show licenses dialog", e)
+      Toast.makeText(this, R.string.toast_debug_failed, Toast.LENGTH_SHORT).show()
+    }
+  }
+
+  /**
+   * 从 assets 目录读取文件内容
+   */
+  private fun readAssetFile(fileName: String): String {
+    return try {
+      assets.open(fileName).bufferedReader().use { it.readText() }
+    } catch (e: Throwable) {
+      Log.e(TAG, "Failed to read asset file: $fileName", e)
+      "Error reading file: $fileName"
+    }
   }
 }
