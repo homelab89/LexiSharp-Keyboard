@@ -1,0 +1,49 @@
+<resources>
+    <!-- 鍵盤相關字串 - Keyboard related strings -->
+
+    <!-- Content Descriptions -->
+    <string name="cd_mic">麥克風</string>
+    <string name="cd_settings">設定</string>
+    <string name="cd_enter">換行</string>
+    <string name="cd_backspace">倒退鍵</string>
+    <string name="cd_switch_ime">切換輸入法</string>
+    <string name="cd_postproc_toggle">AI 後處理</string>
+    <string name="cd_ai_edit">AI 編輯</string>
+    <string name="cd_hide">隱藏鍵盤</string>
+    <string name="cd_prompt_picker">切換後處理提示詞</string>
+    <string name="cd_punct_btn_1">自定義按鍵 1</string>
+    <string name="cd_punct_btn_2">自定義按鍵 2</string>
+    <string name="cd_punct_btn_3">自定義按鍵 3</string>
+    <string name="cd_punct_btn_4">自定義按鍵 4</string>
+
+    <!-- Edit panel content descriptions -->
+    <string name="cd_return_main">返回主鍵盤</string>
+    <string name="cd_apply_preset_prompt">套用預設提示詞</string>
+    <string name="cd_cursor_left">游標左移</string>
+    <string name="cd_cursor_right">游標右移</string>
+    <string name="cd_numpad">數字小鍵盤</string>
+    <string name="cd_numpad_back">返回編輯面板</string>
+    <string name="cd_space">空格</string>
+    <string name="cd_punct_lang_toggle">切換中/英文標點</string>
+    <string name="cd_select_toggle">切換選擇模式</string>
+    <string name="cd_select_all">全選</string>
+    <string name="cd_copy">複製</string>
+    <string name="cd_paste">貼上</string>
+    <string name="cd_move_home">移至開頭</string>
+    <string name="cd_move_end">移至結尾</string>
+    <string name="cd_undo">復原</string>
+
+    <!-- Keyboard height -->
+    <string name="label_keyboard_height">鍵盤縮放</string>
+    <string name="keyboard_height_small">小</string>
+    <string name="keyboard_height_medium">中</string>
+    <string name="keyboard_height_large">大</string>
+
+    <!-- Keyboard bottom padding -->
+    <string name="label_keyboard_bottom_padding">鍵盤底部填充</string>
+    <string name="keyboard_bottom_padding_value">%d dp</string>
+
+    <!-- Keyboard layout option -->
+    <string name="label_fcitx5_return_on_switcher">輸入法切換鍵返回上個輸入法</string>
+    <string name="label_hide_recent_task_card">隱藏最近任務預覽</string>
+</resources>

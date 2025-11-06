@@ -1,0 +1,29 @@
+<resources>
+    <!-- DashScope (阿里雲百煉) ASR 配置字串 -->
+    <string name="dash_section_title">阿里雲百煉 ASR 參數</string>
+    <string name="vendor_dashscope">阿里雲百煉（DashScope）</string>
+
+    <!-- DashScope configuration -->
+    <string name="label_dash_api_key">DashScope API Key（Bearer）</string>
+    <string name="label_dash_prompt">自定義提示詞/識別上下文（可選）</string>
+    <string name="label_dash_language">識別語言（可選，已知語種可提升準確率）</string>
+    <string name="label_dash_streaming">使用 DashScope 串流識別（WebSocket）</string>
+    <string name="dash_streaming_note">串流識別使用 Fun‑ASR 模型，非串流使用 Qwen‑ASR‑Flash 模型\n串流模式不支援自訂 Prompt、地域設定、識別語言設定</string>
+    <string name="dash_lang_auto">自動（啟用語種識別）</string>
+    <string name="label_dash_region">DashScope 地域</string>
+    <string name="dash_region_cn">中國大陸（aliyuncs.com）</string>
+    <string name="dash_region_intl">新加坡/國際（dashscope-intl.aliyuncs.com）</string>
+
+    <!-- DashScope language options -->
+    <string name="dash_lang_zh">中文 (zh)</string>
+    <string name="dash_lang_en">英語 (en)</string>
+    <string name="dash_lang_ja">日語 (ja)</string>
+    <string name="dash_lang_de">德語 (de)</string>
+    <string name="dash_lang_ko">韓語 (ko)</string>
+    <string name="dash_lang_ru">俄語 (ru)</string>
+    <string name="dash_lang_fr">法語 (fr)</string>
+    <string name="dash_lang_pt">葡萄牙語 (pt)</string>
+    <string name="dash_lang_ar">阿拉伯語 (ar)</string>
+    <string name="dash_lang_it">義大利語 (it)</string>
+    <string name="dash_lang_es">西班牙語 (es)</string>
+</resources>

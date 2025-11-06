@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- デバッグログ関連文字列 - Debug logging related strings -->
+
+    <!-- Debug logging -->
+    <string name="about_debug_title">デバッグログ</string>
+    <string name="about_debug_desc">状態とエラーのみを記録し、ASRテキスト、入力内容、クリップボードデータは含みません。開始すると以前のログがクリアされます。停止して共有してエクスポートします。</string>
+    <string name="btn_debug_start_recording">デバッグ記録を開始</string>
+    <string name="btn_debug_stop_recording">記録を停止</string>
+    <string name="btn_debug_export">デバッグログを共有</string>
+    <string name="toast_debug_recording_started">記録開始（以前のログをクリア）</string>
+    <string name="toast_debug_recording_stopped">記録停止</string>
+    <string name="toast_debug_no_log">エクスポートするログがありません</string>
+    <string name="toast_debug_stop_before_export">エクスポート前に記録を停止してください</string>
+    <string name="toast_debug_failed">操作失敗。再試行してください</string>
+    <string name="toast_debug_export_failed">共有失敗</string>
+</resources>

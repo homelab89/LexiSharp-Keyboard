@@ -1,0 +1,35 @@
+<resources>
+    <!-- Volcengine (Volcano Engine) ASR 配置字串 -->
+    <string name="volc_section_title">Volcano Engine 鑑權參數</string>
+    <string name="vendor_volc">Volcano Engine（豆包語音）</string>
+
+    <!-- Volc configuration -->
+    <string name="label_volc_streaming">使用串流識別（WebSocket）</string>
+    <string name="label_volc_bidi_streaming">啟用雙向串流</string>
+    <string name="label_volc_ddc">啟用語義順滑（實驗性）</string>
+    <string name="label_volc_vad">啟用 VAD 分句（實驗性）</string>
+    <string name="label_volc_nonstream">啟用二遍識別（實驗性）</string>
+    <string name="label_volc_first_char_accel">首字加速（實驗性）</string>
+    <string name="label_volc_language">識別語言（用於二遍識別）</string>
+
+    <!-- Volc modes hint -->
+    <string name="volc_modes_hint">模式說明：\n
+1. 檔案識別（極速版）：錄完再上傳，穩定，首字延遲較高；網路差時更穩。\n
+2. 串流識別（預設）：邊錄邊傳，停止後很快返回最終結果，不顯示增量預覽。\n
+3. 雙向串流（體驗最佳）：邊錄邊傳並即時返回增量預覽，首字與尾字時延更低，需要穩定網路。</string>
+
+    <!-- Volc language options -->
+    <string name="volc_lang_auto">自動（中英文與方言）</string>
+    <string name="volc_lang_en_us">英語 (en-US)</string>
+    <string name="volc_lang_ja_jp">日語 (ja-JP)</string>
+    <string name="volc_lang_id_id">印尼語 (id-ID)</string>
+    <string name="volc_lang_es_mx">西班牙語 (es-MX)</string>
+    <string name="volc_lang_pt_br">葡萄牙語 (pt-BR)</string>
+    <string name="volc_lang_de_de">德語 (de-DE)</string>
+    <string name="volc_lang_fr_fr">法語 (fr-FR)</string>
+    <string name="volc_lang_ko_kr">韓語 (ko-KR)</string>
+    <string name="volc_lang_fil_ph">菲律賓語 (fil-PH)</string>
+    <string name="volc_lang_ms_my">馬來語 (ms-MY)</string>
+    <string name="volc_lang_th_th">泰語 (th-TH)</string>
+    <string name="volc_lang_ar_sa">阿拉伯語 (ar-SA)</string>
+</resources>

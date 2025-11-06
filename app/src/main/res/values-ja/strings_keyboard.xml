@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- キーボード関連文字列 - Keyboard related strings -->
+
+    <!-- Content Descriptions -->
+    <string name="cd_mic">マイク</string>
+    <string name="cd_settings">設定</string>
+    <string name="cd_enter">Enter</string>
+    <string name="cd_backspace">Backspace</string>
+    <string name="cd_switch_ime">入力メソッドを切り替え</string>
+    <string name="cd_postproc_toggle">AI後処理</string>
+    <string name="cd_ai_edit">AI編集</string>
+    <string name="cd_hide">キーボードを非表示</string>
+    <string name="cd_prompt_picker">後処理プロンプトを切り替え</string>
+    <string name="cd_numpad_back">編集パネルに戻る</string>
+    <string name="cd_space">スペース</string>
+    <string name="cd_punct_lang_toggle">中/英句読点を切り替え</string>
+    <string name="cd_punct_btn_1">カスタムキー1</string>
+    <string name="cd_punct_btn_2">カスタムキー2</string>
+    <string name="cd_punct_btn_3">カスタムキー3</string>
+    <string name="cd_punct_btn_4">カスタムキー4</string>
+
+    <!-- Edit panel content descriptions -->
+    <string name="cd_return_main">メインキーボードに戻る</string>
+    <string name="cd_apply_preset_prompt">プリセットプロンプトを適用</string>
+    <string name="cd_cursor_left">カーソルを左に移動</string>
+    <string name="cd_cursor_right">カーソルを右に移動</string>
+    <string name="cd_numpad">数字パッド</string>
+    <string name="cd_select_toggle">選択モードを切り替え</string>
+    <string name="cd_select_all">すべて選択</string>
+    <string name="cd_copy">コピー</string>
+    <string name="cd_paste">貼り付け</string>
+    <string name="cd_move_home">先頭に移動</string>
+    <string name="cd_move_end">末尾に移動</string>
+    <string name="cd_undo">元に戻す</string>
+
+    <!-- Keyboard height -->
+    <string name="label_keyboard_height">キーボードスケール</string>
+    <string name="keyboard_height_small">小</string>
+    <string name="keyboard_height_medium">中</string>
+    <string name="keyboard_height_large">大</string>
+
+    <!-- Keyboard bottom padding -->
+    <string name="label_keyboard_bottom_padding">キーボード下部パディング</string>
+    <string name="keyboard_bottom_padding_value">%d dp</string>
+
+    <!-- Keyboard layout option -->
+    <string name="label_fcitx5_return_on_switcher">IME切り替えキーが前の入力メソッドに戻る</string>
+    <string name="label_hide_recent_task_card">最近のタスクプレビューを非表示</string>
+</resources>

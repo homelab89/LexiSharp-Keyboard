@@ -1,0 +1,29 @@
+<resources>
+    <!-- Soniox ASR 配置字串 -->
+    <string name="soniox_section_title">Soniox 鑑權參數</string>
+    <string name="vendor_soniox">Soniox</string>
+
+    <!-- Soniox configuration -->
+    <string name="label_soniox_streaming">使用 Soniox 串流識別（WebSocket）</string>
+    <string name="label_soniox_language">識別語言（Language Hints）</string>
+    <string name="label_soniox_api_key">API Key（Bearer）</string>
+
+    <!-- Soniox language options -->
+    <string name="soniox_lang_auto">自動（多語言）</string>
+    <string name="soniox_lang_en">英語 (en)</string>
+    <string name="soniox_lang_zh">中文 (zh)</string>
+    <string name="soniox_lang_ja">日語 (ja)</string>
+    <string name="soniox_lang_ko">韓語 (ko)</string>
+    <string name="soniox_lang_es">西班牙語 (es)</string>
+    <string name="soniox_lang_pt">葡萄牙語 (pt)</string>
+    <string name="soniox_lang_de">德語 (de)</string>
+    <string name="soniox_lang_fr">法語 (fr)</string>
+    <string name="soniox_lang_id">印尼語 (id)</string>
+    <string name="soniox_lang_ru">俄語 (ru)</string>
+    <string name="soniox_lang_ar">阿拉伯語 (ar)</string>
+    <string name="soniox_lang_hi">印地語 (hi)</string>
+    <string name="soniox_lang_vi">越南語 (vi)</string>
+    <string name="soniox_lang_th">泰語 (th)</string>
+    <string name="soniox_lang_ms">馬來語 (ms)</string>
+    <string name="soniox_lang_fil">菲律賓語 (fil)</string>
+</resources>

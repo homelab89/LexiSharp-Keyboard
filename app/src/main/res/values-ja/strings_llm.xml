@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- LLM関連文字列 - LLM related strings -->
+
+    <!-- LLM settings -->
+    <string name="label_llm_endpoint">OpenAIエンドポイント（例：https://api.openai.com/v1 または /chat/completionsを含む）</string>
+    <string name="label_llm_api_key">APIキー</string>
+    <string name="label_llm_model">モデル名（例：gpt-4o-mini）</string>
+    <string name="label_llm_temperature">温度（0.0 – 2.0）</string>
+    <string name="label_llm_prompt">後処理プロンプト（処理されたテキストのみ出力）</string>
+    <string name="label_llm_prompt_title">プロンプトプリセットタイトル</string>
+    <string name="label_llm_prompt_presets">プロンプトプリセットを選択</string>
+    <string name="btn_add_preset">プリセットとして追加/保存</string>
+    <string name="btn_delete_preset">プリセットを削除</string>
+    <string name="label_llm_choose_profile">後処理モデルを選択</string>
+    <string name="label_llm_profile_name">プロファイル名</string>
+    <string name="btn_llm_add_profile">プロファイルを追加</string>
+    <string name="btn_llm_delete_profile">プロファイルを削除</string>
+    <string name="toast_llm_profile_added">プロファイルが追加されました</string>
+    <string name="toast_llm_profile_deleted">プロファイルが削除されました</string>
+    <string name="untitled_profile">無題のプロファイル</string>
+
+    <!-- LLM test call -->
+    <string name="btn_llm_test_call">LLM呼び出しをテスト</string>
+    <string name="llm_test_running">LLM呼び出しをテスト中…</string>
+    <string name="llm_test_success_title">テスト成功</string>
+    <string name="llm_test_success_preview">レスポンスプレビュー：%1$s</string>
+    <string name="llm_test_failed_title">テスト失敗</string>
+    <string name="llm_test_failed_reason">理由：%1$s</string>
+    <string name="llm_test_failed_generic">呼び出し失敗</string>
+    <string name="llm_test_missing_params">APIエンドポイントとモデル名を入力してください</string>
+</resources>

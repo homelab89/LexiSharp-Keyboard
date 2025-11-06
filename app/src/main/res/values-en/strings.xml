@@ -1,645 +1,138 @@
 <resources>
-<string name="app_name">LexiSharp Keyboard</string>
+  <!-- ============================================== -->
+  <!-- Basic Information -->
+  <!-- ============================================== -->
+  <string name="app_name">LexiSharp Keyboard</string>
 
-    <string name="cd_mic">Microphone</string>
-    <string name="cd_settings">Settings</string>
-    <string name="cd_enter">Enter</string>
-    <string name="cd_backspace">Backspace</string>
-    <string name="cd_switch_ime">Switch input method</string>
-    <string name="cd_postproc_toggle">AI Post-process</string>
-    <string name="cd_ai_edit">AI Edit</string>
-    <string name="cd_hide">Hide keyboard</string>
-    <string name="cd_prompt_picker">Switch post-processing prompt</string>
-    <string name="cd_numpad_back">Back to edit panel</string>
-    <string name="cd_space">Space</string>
-    <string name="cd_punct_lang_toggle">Toggle C/E punctuation</string>
-    <string name="cd_punct_btn_1">Custom key 1</string>
-    <string name="cd_punct_btn_2">Custom key 2</string>
-    <string name="cd_punct_btn_3">Custom key 3</string>
-    <string name="cd_punct_btn_4">Custom key 4</string>
+  <!-- ============================================== -->
+  <!-- Keyboard Status Information -->
+  <!-- ============================================== -->
+  <string name="status_idle">Ready</string>
+  <string name="status_listening">Listening…</string>
+  <string name="status_recognizing">Recognizing…</string>
+  <string name="status_ai_processing">AI post-processing…</string>
+  <string name="status_ai_edit_listening">Speak your edit instruction…</string>
+  <string name="status_ai_editing">AI editing…</string>
+  <string name="status_cancelled">Canceled</string>
+  <string name="status_last_request_ms">Last request time: %1$d ms</string>
+  <string name="status_reverted_to_raw">Reverted to raw transcript</string>
+  <string name="status_undone">Undone last change</string>
+  <string name="status_llm_empty_result">AI edit failed: no result</string>
+  <string name="status_last_asr_not_found">Last ASR result not found; canceled</string>
+  <string name="hint_need_llm_keys">Configure AI post-processing first</string>
+  <string name="hint_cannot_read_text">Current app text is not readable</string>
+  <string name="status_llm_failed_used_raw">AI post-process failed; used raw text</string>
+  <string name="status_llm_edit_failed">AI edit failed. Please try again</string>
+  <string name="hint_need_permission">Microphone permission is required for voice input</string>
+  <string name="status_postproc">AI Post-process: %1$s</string>
 
-    <string name="status_idle">Ready</string>
-    <string name="status_listening">Listening…</string>
-    <string name="status_recognizing">Recognizing…</string>
-    <string name="status_ai_processing">AI post-processing…</string>
-    <string name="status_ai_edit_listening">Speak your edit instruction…</string>
-    <string name="status_ai_editing">AI editing…</string>
-    <string name="status_cancelled">Canceled</string>
-    <string name="status_reverted_to_raw">Reverted to raw transcript</string>
-    <string name="status_undone">Undone last change</string>
-    <string name="status_llm_empty_result">AI edit failed: no result</string>
-    <string name="status_last_asr_not_found">Last ASR result not found; canceled</string>
-    <string name="hint_need_llm_keys">Configure AI post-processing first</string>
-    <string name="hint_cannot_read_text">Current app text is not readable</string>
-    <string name="status_llm_failed_used_raw">AI post-process failed; used raw text</string>
-    <string name="status_llm_edit_failed">AI edit failed. Please try again</string>
-    <string name="hint_need_permission">Microphone permission is required for voice input</string>
-    <string name="status_postproc">AI Post-process: %1$s</string>
-    <string name="toggle_on">ON</string>
-    <string name="toggle_off">OFF</string>
-    <string name="label_ai_edit_default_use_last_asr">AI edit default scope: use last transcript</string>
-    <string name="label_mic_swipe_up_auto_enter">Swipe up on release to send</string>
-    <string name="label_auto_start_recording_on_show">Auto start recording when keyboard appears</string>
-    <string name="btn_retry">Connect failed, retry?</string>
+  <string name="toggle_on">ON</string>
+  <string name="toggle_off">OFF</string>
 
-    <!-- Edit panel content descriptions -->
-    <string name="cd_return_main">Back to main keyboard</string>
-    <string name="cd_apply_preset_prompt">Apply preset prompt</string>
-    <string name="cd_cursor_left">Move cursor left</string>
-    <string name="cd_cursor_right">Move cursor right</string>
-    <string name="cd_numpad">Number pad</string>
-    <string name="cd_select_toggle">Toggle selection mode</string>
-    <string name="cd_select_all">Select all</string>
-    <string name="cd_copy">Copy</string>
-    <string name="cd_paste">Paste</string>
-    <string name="cd_move_home">Move to start</string>
-    <string name="cd_move_end">Move to end</string>
-    <string name="cd_undo">Undo</string>
+  <string name="label_ai_edit_default_use_last_asr">AI edit default scope: use last transcript</string>
+  <string name="label_mic_swipe_up_auto_enter">Swipe up on release to send</string>
+  <string name="label_auto_start_recording_on_show">Auto start recording when keyboard appears</string>
+  <string name="btn_retry">Connect failed, retry?</string>
 
-    <string name="settings_instructions">First-time setup:\n1. Tap "Enable Keyboard" and enable LexiSharp Keyboard in system settings\n2. Tap "Choose Keyboard" to switch to LexiSharp Keyboard\n3. Grant microphone permission, then long‑press the mic button on the keyboard to try</string>
-    <string name="btn_one_click_setup">One-click Setup</string>
-    <string name="btn_show_guide">View Quick Guide</string>
-    <string name="btn_check_update">Check for Updates</string>
-    <!-- Material UI additions -->
-    <string name="settings_title">LexiSharp Keyboard Settings</string>
-    <string name="btn_open_asr_history">History</string>
-    <string name="title_input_settings">Input Settings</string>
-    <string name="title_asr_settings">ASR Settings</string>
-    <string name="title_ai_settings">AI Post-processing Settings</string>
-    <string name="title_other_settings">Other Settings</string>
-    <string name="title_floating_settings">Floating Settings</string>
-    <string name="volc_section_title">Volcano Engine Credentials</string>
-    <string name="sf_section_title">SiliconFlow Credentials</string>
-    <string name="label_app_key">X-Api-App-Key</string>
-    <string name="label_access_key">X-Api-Access-Key</string>
-    <string name="label_asr_vendor">ASR Provider</string>
-    <string name="vendor_volc">Volcano Engine</string>
-    <string name="vendor_sf">SiliconFlow</string>
-    <string name="vendor_dashscope">Alibaba Cloud DashScope</string>
-    <string name="vendor_soniox">Soniox</string>
-    <string name="vendor_sensevoice">SenseVoice (Local Non-stream)</string>
-    <string name="label_sf_api_key">API Key (Bearer)</string>
-    <string name="label_sf_model_select">Choose model</string>
-    <string name="sf_model_default_display">FunAudioLLM/SenseVoiceSmall</string>
-    <string name="label_sf_omni_prompt">Multimodal transcription prompt (optional)</string>
-    <string name="dash_section_title">Alibaba Cloud DashScope ASR Parameters</string>
-    <string name="soniox_section_title">Soniox Credentials</string>
-    <string name="sensevoice_section_title">SenseVoice Local ASR</string>
-    <string name="label_dash_api_key">DashScope API Key (Bearer)</string>
-    <string name="label_dash_prompt">Custom prompt / context (optional)</string>
-    <string name="label_dash_language">Recognition language (optional; improves accuracy if known)</string>
-    <string name="label_dash_streaming">Use DashScope streaming (WebSocket)</string>
-    <string name="dash_streaming_note">Streaming uses the Fun‑ASR model; non‑streaming uses the Qwen‑ASR‑Flash model\nStreaming mode does not support custom Prompt, region selection, or language setting</string>
-    <string name="dash_lang_auto">Auto (enable language ID)</string>
-    <string name="label_dash_region">DashScope Region</string>
-    <string name="dash_region_cn">Mainland China (aliyuncs.com)</string>
-    <string name="dash_region_intl">Singapore/International (dashscope-intl.aliyuncs.com)</string>
-    <string name="dash_lang_zh">Chinese (zh)</string>
-    <string name="dash_lang_en">English (en)</string>
-    <string name="dash_lang_ja">Japanese (ja)</string>
-    <string name="dash_lang_de">German (de)</string>
-    <string name="dash_lang_ko">Korean (ko)</string>
-    <string name="dash_lang_ru">Russian (ru)</string>
-    <string name="dash_lang_fr">French (fr)</string>
-    <string name="dash_lang_pt">Portuguese (pt)</string>
-    <string name="dash_lang_ar">Arabic (ar)</string>
-    <string name="dash_lang_it">Italian (it)</string>
-    <string name="dash_lang_es">Spanish (es)</string>
-    <string name="label_volc_streaming">Use streaming recognition (WebSocket)</string>
-    <string name="label_volc_bidi_streaming">Enable bidirectional streaming</string>
-    <string name="label_volc_ddc">Enable semantic smoothing (experimental)</string>
-    <string name="label_volc_vad">Enable VAD segmentation (experimental)</string>
-    <string name="label_volc_nonstream">Enable two-pass recognition (experimental)</string>
-    <string name="label_volc_first_char_accel">First token acceleration (experimental)</string>
-    <string name="label_volc_language">Recognition language (for nonstream)</string>
+  <!-- ============================================== -->
+  <!-- Settings Related -->
+  <!-- ============================================== -->
+  <string name="settings_instructions">First-time setup:\n1. Tap "Enable Keyboard" and enable LexiSharp Keyboard in system settings\n2. Tap "Choose Keyboard" to switch to LexiSharp Keyboard\n3. Grant microphone permission, then long‑press the mic button on the keyboard to try</string>
+  <string name="btn_one_click_setup">One-click Setup</string>
 
-    <!-- Volc modes hint -->
-    <string name="volc_modes_hint">Modes:\n
-1. File recognition (Fast): upload after recording; stable, but higher first-token latency; more robust on poor networks.\n
-2. Streaming (default): upload while recording; returns the final result quickly after stop; no incremental preview.\n
-3. Bidirectional streaming (best experience): upload while recording with real-time incremental preview; lower first/last token latency; requires a stable network.</string>
-    <string name="volc_lang_auto">Auto (Chinese/English + dialects)</string>
-    <string name="volc_lang_en_us">English (en-US)</string>
-    <string name="volc_lang_ja_jp">Japanese (ja-JP)</string>
-    <string name="volc_lang_id_id">Indonesian (id-ID)</string>
-    <string name="volc_lang_es_mx">Spanish (es-MX)</string>
-    <string name="volc_lang_pt_br">Portuguese (pt-BR)</string>
-    <string name="volc_lang_de_de">German (de-DE)</string>
-    <string name="volc_lang_fr_fr">French (fr-FR)</string>
-    <string name="volc_lang_ko_kr">Korean (ko-KR)</string>
-    <string name="volc_lang_fil_ph">Filipino (fil-PH)</string>
-    <string name="volc_lang_ms_my">Malay (ms-MY)</string>
-    <string name="volc_lang_th_th">Thai (th-TH)</string>
-    <string name="volc_lang_ar_sa">Arabic (ar-SA)</string>
-    <string name="label_soniox_streaming">Use Soniox streaming (WebSocket)</string>
-    <string name="label_soniox_language">Recognition language (Language Hints)</string>
-    <string name="soniox_lang_auto">Auto (multilingual)</string>
-    <string name="soniox_lang_en">English (en)</string>
-    <string name="soniox_lang_zh">Chinese (zh)</string>
-    <string name="soniox_lang_ja">Japanese (ja)</string>
-    <string name="soniox_lang_ko">Korean (ko)</string>
-    <string name="soniox_lang_es">Spanish (es)</string>
-    <string name="soniox_lang_pt">Portuguese (pt)</string>
-    <string name="soniox_lang_de">German (de)</string>
-    <string name="soniox_lang_fr">French (fr)</string>
-    <string name="soniox_lang_id">Indonesian (id)</string>
-    <string name="soniox_lang_ru">Russian (ru)</string>
-    <string name="soniox_lang_ar">Arabic (ar)</string>
-    <string name="soniox_lang_hi">Hindi (hi)</string>
-    <string name="soniox_lang_vi">Vietnamese (vi)</string>
-    <string name="soniox_lang_th">Thai (th)</string>
-    <string name="soniox_lang_ms">Malay (ms)</string>
-    <string name="soniox_lang_fil">Filipino (fil)</string>
-    <string name="status_last_request_ms">Last request time: %1$d ms</string>
-    
-    <!-- Local ASR (placeholder) -->
-    <string name="error_local_asr_not_ready">Local ASR not ready. Please integrate sherpa‑onnx and model files later.</string>
-    <string name="error_sensevoice_model_missing">SenseVoice model is missing. Configure or download it later in Settings.</string>
-    <string name="vendor_paraformer">Paraformer (Local streaming)</string>
-    <string name="vendor_zipformer">Zipformer (Local streaming)</string>
-    <string name="notif_pf_title_bilingual">Paraformer model (Zh+En)</string>
-    <string name="notif_pf_title_trilingual">Paraformer model (Zh+Yue+En)</string>
-    <string name="paraformer_section_title">Paraformer (Local)</string>
-    <string name="label_pf_model_variant">Model variant</string>
-    <string name="label_pf_threads">Threads (1-8)</string>
-    <string name="label_pf_keep_alive">Keep model in memory</string>
-    <string name="pf_variant_bilingual_int8">Zh+En (int8)</string>
-    <string name="pf_variant_bilingual_fp32">Zh+En (fp32)</string>
-    <string name="pf_variant_trilingual_int8">Zh+Yue+En (int8)</string>
-    <string name="pf_variant_trilingual_fp32">Zh+Yue+En (fp32)</string>
-    <string name="btn_pf_download_model">Download Paraformer model</string>
-    <string name="btn_pf_clear_model">Clear downloaded model</string>
-    <string name="pf_download_status_downloading">Downloading… %1$d%%</string>
-    <string name="pf_download_status_extracting">Extracting… It may take a while</string>
-    <string name="pf_download_status_done">Model installed</string>
-    <string name="pf_download_status_failed">Download or extract failed</string>
-    <string name="pf_download_started_in_bg">Started in background. See notification for progress</string>
-    <string name="pf_clear_confirm_title">Clear model?</string>
-    <string name="pf_clear_confirm_message">This will delete downloaded model files. You can re-download later. Continue?</string>
-    <string name="pf_clear_done">Model cleared</string>
-    <string name="pf_clear_failed">Clear failed</string>
-    <string name="pf_loading_model">Loading local model…</string>
-    <string name="error_paraformer_model_missing">Paraformer model files are missing. Please configure or download in Settings</string>
-    <string name="label_pf_preload">Load model on first show</string>
-    <string name="label_pf_use_itn">Enable ITN (inverse text normalization)</string>
-    <string name="pf_model_info">Note:\n1. Paraformer has two model variants (Zh+En and Zh+Yue+En). The Chinese model also supports some dialects\n2. Each variant download is 1GB and contains both int8 and fp32 quantized versions. Switching between int8 and fp32 of the same variant requires no re-download</string>
+  <string name="settings_title">LexiSharp Keyboard Settings</string>
+  <string name="title_input_settings">Input Settings</string>
+  <string name="title_asr_settings">ASR Settings</string>
+  <string name="title_ai_settings">AI Post-processing Settings</string>
+  <string name="title_other_settings">Other Settings</string>
 
-    <!-- Zipformer (Local streaming) -->
-    <string name="zipformer_section_title">Zipformer (Local streaming)</string>
-    <string name="label_zf_model_variant">Model variant</string>
-    <string name="label_zf_threads">Threads (1-8)</string>
-    <string name="label_zf_keep_alive">Keep model in memory</string>
-    <string name="label_zf_preload">Load model on first show</string>
-    <string name="label_zf_use_itn">Enable ITN (inverse text normalization)</string>
-    <string name="btn_zf_download_model">Download Zipformer model</string>
-    <string name="btn_zf_clear_model">Clear Zipformer model</string>
-    <string name="zf_model_info">Zipformer offers 4 model types with 8 versions:\n
-1. Chinese XL: Chinese and some dialects only. int8 (570MB) and fp16 (1.25GB) versions require separate downloads\n
-2. Chinese Standard: Chinese and some dialects only. int8 (125MB) and fp16 (270MB) versions require separate downloads\n
-3. Chinese-English Standard: Chinese and English support. int8 and fp32 versions. Both quantization versions require only one download, total size 490MB\n
-4. Small Chinese-English: Chinese and English support. int8 and fp32 versions. Both quantization versions require only one download, total size 440MB</string>
-    <string name="zf_download_status_done">Model installed</string>
-    <string name="zf_download_status_downloading">Downloading… %1$d%%</string>
-    <string name="zf_download_status_extracting">Extracting… It may take a while</string>
-    <string name="zf_download_status_failed">Download or extract failed</string>
-    <string name="zf_download_started_in_bg">Started in background. See notification for progress</string>
-    <string name="zf_clear_confirm_title">Clear model?</string>
-    <string name="zf_clear_confirm_message">This will delete downloaded Zipformer model files. You can re-download later. Continue?</string>
-    <string name="zf_clear_done">Model cleared</string>
-    <string name="zf_clear_failed">Clear failed</string>
-    <!-- Variants -->
-    <string name="zf_variant_zh_xl_int8_20250630">Chinese (XL · int8)</string>
-    <string name="zf_variant_zh_xl_fp16_20250630">Chinese (XL · fp16)</string>
-    <string name="zf_variant_zh_int8_20250630">Chinese (int8)</string>
-    <string name="zf_variant_zh_fp16_20250630">Chinese (fp16)</string>
-    <string name="zf_variant_bi_int8_20230220">Zh+En (int8)</string>
-    <string name="zf_variant_bi_fp32_20230220">Zh+En (fp32)</string>
-    <string name="zf_variant_small_bi_int8_20230216">Small Zh+En (int8)</string>
-    <string name="zf_variant_small_bi_fp32_20230216">Small Zh+En (fp32)</string>
-    <!-- Notifications -->
-    <string name="notif_zf_title_zh_xl">Zipformer Chinese XL</string>
-    <string name="notif_zf_title_zh">Zipformer Chinese</string>
-    <string name="notif_zf_title_bi">Zipformer Zh+En</string>
-    <string name="notif_zf_title_small_bi">Zipformer Small Zh+En</string>
+  <string name="label_app_key">X-Api-App-Key</string>
+  <string name="label_access_key">X-Api-Access-Key</string>
+  <string name="label_asr_vendor">ASR Provider</string>
 
-    <string name="btn_close">Close</string>
-    <string name="btn_close_with_seconds">Close (%1$ds)</string>
-    <string name="title_quick_guide">Quick Start Guide</string>
-    <string name="label_trim_trailing_punct">Remove trailing punctuation and emoji on finish</string>
-    <string name="label_mic_haptic">Haptic feedback for keys and floating ball</string>
-    <string name="label_mic_tap_toggle">Use tap to control recording</string>
-    <string name="label_floating_only_when_ime_visible">Only show floating ball when keyboard is visible</string>
-    <string name="label_floating_alpha">Floating ball transparency</string>
-    <string name="label_floating_size">Floating ball size</string>
-    <string name="toast_need_overlay_perm">Please grant "Display over other apps" in system settings to enable the floating ball</string>
-    <string name="toast_need_accessibility_perm">Please enable Accessibility Service in system settings to support this feature</string>
-    <string name="label_floating_asr">Use floating ball for voice recognition</string>
-    <string name="label_floating_write_compat">Floating write-text compatibility mode</string>
-    <string name="desc_floating_write_compat">Some apps expose background placeholder text to Accessibility, which contaminates final insertion. When enabled, in target apps the floating ball switches to Select-All + Paste with an invisible marker to avoid placeholder issues. The clipboard may be used temporarily (best-effort restore). Works for Telegram, Douyin, etc.</string>
-    <string name="label_floating_write_compat_pkgs">Target package names (one per line)</string>
-    <string name="hint_floating_write_compat_pkgs">Enter package or prefix (e.g., org.telegram). A trailing * means prefix match (e.g., org.telegram.*).</string>
-    <string name="label_floating_write_paste">Copy recognition result to clipboard only</string>
-    <string name="desc_floating_write_paste">Applies only to the packages below: in these apps, when using floating voice input, copy the result to the clipboard instead of inserting via Accessibility APIs. If a line contains all, it applies globally.</string>
-    <string name="label_floating_write_paste_pkgs">Target packages (one per line)</string>
-    <string name="hint_floating_write_paste_pkgs">Enter exact package names (e.g., com.tencent.mm). To apply globally, add a single line with all.</string>
-    <string name="cd_floating_asr">Floating ball voice recognition</string>
-    <string name="toast_setup_all_done">All set</string>
-    <string name="toast_setup_enable_keyboard_first">Enable the keyboard in system settings, then come back</string>
-    <string name="toast_setup_choose_keyboard">Please select "LexiSharp Keyboard" as the current input method</string>
-    <string name="toast_vad_sensitivity_applied">VAD sensitivity updated; will apply to the next recording</string>
+  <!-- ============================================== -->
+  <!-- Custom Punctuation -->
+  <!-- ============================================== -->
+  <string name="custom_punct_section_title">Custom Punctuation Buttons</string>
+  <string name="label_custom_punct_1">Button 1 (char or punctuation)</string>
+  <string name="label_custom_punct_2">Button 2 (char or punctuation)</string>
+  <string name="label_custom_punct_3">Button 3 (char or punctuation)</string>
+  <string name="label_custom_punct_4">Button 4 (char or punctuation)</string>
 
-    <!-- Floating ASR status messages -->
-    <string name="floating_asr_error">Recognition failed: %1$s</string>
-    <string name="floating_asr_copied">Copied to clipboard</string>
+  <!-- ============================================== -->
+  <!-- Speech Presets -->
+  <!-- ============================================== -->
+  <string name="label_speech_preset_section">Speech Presets</string>
+  <string name="speech_preset_empty_placeholder">No presets yet</string>
+  <string name="speech_preset_untitled">Untitled preset</string>
+  <string name="hint_speech_preset_name">Preset name</string>
+  <string name="hint_speech_preset_content">Preset content</string>
+  <string name="btn_speech_preset_add">Add Preset</string>
+  <string name="btn_speech_preset_delete">Delete Preset</string>
+  <string name="speech_preset_default_name">Preset %1$d</string>
+  <string name="toast_speech_preset_added">Preset added</string>
+  <string name="toast_speech_preset_deleted">Preset deleted</string>
+  <string name="dialog_speech_preset_delete_title">Delete Preset</string>
+  <string name="dialog_speech_preset_delete_message">Delete \"%1$s\"?</string>
+  <string name="speech_preset_intro">When the ASR result exactly equals a preset Name, it will be replaced by its Content. Useful for quick phrases, signatures, addresses, IDs. Matching: first case-sensitive, then case-insensitive if not matched; triggers only when the entire text equals the Name. May need to enable Trim trailing punctuation.</string>
 
-    <!-- LLM settings -->
-    <string name="label_llm_endpoint">OpenAI Endpoint (e.g., https://api.openai.com/v1 or includes /chat/completions)</string>
-    <string name="label_llm_api_key">API Key</string>
-    <string name="label_llm_model">Model Name (e.g., gpt-4o-mini)</string>
-    <string name="label_llm_temperature">Temperature (0.0 – 2.0)</string>
-    <string name="label_llm_prompt">Post-processing prompt (output only the processed text)</string>
-    <string name="label_llm_prompt_title">Prompt Preset Title</string>
-    <string name="label_llm_prompt_presets">Choose Prompt Preset</string>
-    <string name="btn_add_preset">Add/Save as Preset</string>
-    <string name="btn_delete_preset">Delete Preset</string>
-    <string name="label_llm_choose_profile">Select post-processing model</string>
-    <string name="label_llm_profile_name">Profile name</string>
-    <string name="btn_llm_add_profile">Add profile</string>
-    <string name="btn_llm_delete_profile">Delete profile</string>
-    <string name="toast_llm_profile_added">Profile added</string>
-    <string name="toast_llm_profile_deleted">Profile deleted</string>
-    <string name="untitled_profile">Untitled profile</string>
+  <!-- ============================================== -->
+  <!-- Language Settings -->
+  <!-- ============================================== -->
+  <string name="label_language">App Language</string>
+  <string name="lang_follow_system">Follow System</string>
+  <string name="lang_zh_cn">Simplified Chinese</string>
+  <string name="lang_zh_tw">Traditional Chinese</string>
+  <string name="lang_ja">Japanese</string>
+  <string name="lang_en">English</string>
 
-    <!-- Floating radial menu -->
-    <string name="label_radial_switch_asr">Switch ASR provider</string>
-    <string name="label_radial_switch_ime">Switch input method</string>
-    <string name="label_radial_move">Move floating ball</string>
-    <string name="label_radial_postproc">Toggle AI post-processing</string>
-    <string name="label_radial_switch_prompt">Switch AI post-processing prompt</string>
-    <string name="label_radial_clipboard_upload">Upload Clipboard</string>
-    <string name="label_radial_clipboard_pull">Pull Clipboard</string>
-    <string name="label_radial_toggle_silence_autostop">Toggle auto-stop on silence</string>
-    <string name="label_radial_open_history">ASR History</string>
-    <string name="label_choose_asr_vendor">Choose ASR provider</string>
-    <string name="toast_move_mode_on">Move mode enabled. Tap the ball to exit.</string>
+  <!-- ============================================== -->
+  <!-- General Toasts -->
+  <!-- ============================================== -->
+  <string name="toast_preset_added">Preset added</string>
+  <string name="toast_preset_deleted">Preset deleted</string>
+  <string name="untitled_preset">Untitled preset</string>
+  <string name="switched_preset">Switched: %1$s</string>
 
-    <!-- Custom punctuation settings -->
-    <string name="custom_punct_section_title">Custom Punctuation Buttons</string>
-    <string name="label_custom_punct_1">Button 1 (char or punctuation)</string>
-    <string name="label_custom_punct_2">Button 2 (char or punctuation)</string>
-    <string name="label_custom_punct_3">Button 3 (char or punctuation)</string>
-    <string name="label_custom_punct_4">Button 4 (char or punctuation)</string>
+  <!-- ============================================== -->
+  <!-- Input Related -->
+  <!-- ============================================== -->
+  <string name="label_trim_trailing_punct">Remove trailing punctuation and emoji on finish</string>
+  <string name="label_mic_haptic">Haptic feedback for keys and floating ball</string>
+  <string name="label_mic_tap_toggle">Use tap to control recording</string>
+  <string name="label_test_input">Test input (try the IME here)</string>
+  <string name="btn_test_input">Test Input</string>
 
-    <!-- Speech Presets -->
-    <string name="label_speech_preset_section">Speech Presets</string>
-    <string name="speech_preset_empty_placeholder">No presets yet</string>
-    <string name="speech_preset_untitled">Untitled preset</string>
-    <string name="hint_speech_preset_name">Preset name</string>
-    <string name="hint_speech_preset_content">Preset content</string>
-    <string name="btn_speech_preset_add">Add Preset</string>
-    <string name="btn_speech_preset_delete">Delete Preset</string>
-    <string name="speech_preset_default_name">Preset %1$d</string>
-    <string name="toast_speech_preset_added">Preset added</string>
-    <string name="toast_speech_preset_deleted">Preset deleted</string>
-    <string name="dialog_speech_preset_delete_title">Delete Preset</string>
-    <string name="dialog_speech_preset_delete_message">Delete \"%1$s\"?</string>
-    <string name="speech_preset_intro">When the ASR result exactly equals a preset Name, it will be replaced by its Content. Useful for quick phrases, signatures, addresses, IDs. Matching: first case-sensitive, then case-insensitive if not matched; triggers only when the entire text equals the Name. May need to enable Trim trailing punctuation.</string>
+  <!-- ============================================== -->
+  <!-- General Buttons -->
+  <!-- ============================================== -->
+  <string name="toast_setup_all_done">All set</string>
+  <string name="toast_setup_enable_keyboard_first">Enable the keyboard in system settings, then come back</string>
+  <string name="toast_setup_choose_keyboard">Please select "LexiSharp Keyboard" as the current input method</string>
+  <string name="btn_get_api_key_guide">View Configuration Guide</string>
 
-    <!-- Language & misc -->
-    <string name="label_language">App Language</string>
-    <string name="lang_follow_system">Follow System</string>
-    <string name="lang_zh_cn">Simplified Chinese</string>
-    <string name="lang_zh_tw">Traditional Chinese</string>
-    <string name="lang_ja">Japanese</string>
-    <string name="lang_en">English</string>
-    
-    <string name="toast_preset_added">Preset added</string>
-    <string name="toast_preset_deleted">Preset deleted</string>
-    <string name="untitled_preset">Untitled preset</string>
-    <string name="switched_preset">Switched: %1$s</string>
-    <string name="toast_export_success">Exported: %1$s</string>
-    <string name="toast_export_failed">Export failed</string>
-    <string name="toast_import_success">Imported successfully and applied</string>
-    <string name="toast_import_failed">Import failed or incorrect format</string>
-    
-    <!-- Backup settings -->
-    <string name="title_backup_settings">Backup and Sync</string>
-    <string name="btn_open_backup_settings">Backup and Sync</string>
-    <string name="section_file_backup">File Backup</string>
-    <string name="btn_export_to_file">Export to File</string>
-    <string name="btn_import_from_file">Import from File</string>
-    <string name="section_webdav_sync">WebDAV Sync</string>
+  <!-- ============================================== -->
+  <!-- Silence Auto-stop Settings -->
+  <!-- ============================================== -->
+  <string name="section_silence_autostop">Auto-stop on Silence</string>
+  <string name="label_auto_stop_silence">Auto stop when no speech</string>
+  <string name="label_silence_window_ms">Stop window (ms)</string>
+  <string name="label_silence_sensitivity">Sensitivity (1-10; higher = more sensitive)</string>
 
-    <!-- Debug logging -->
-    <string name="about_debug_title">Debug Log</string>
-    <string name="about_debug_desc">Records states and errors only, without ASR text, input content, or clipboard data. Starting will clear previous logs. Stop and share to export.</string>
-    <string name="btn_debug_start_recording">Start Debug Recording</string>
-    <string name="btn_debug_stop_recording">Stop Recording</string>
-    <string name="btn_debug_export">Share Debug Log</string>
-    <string name="toast_debug_recording_started">Recording started (previous logs cleared)</string>
-    <string name="toast_debug_recording_stopped">Recording stopped</string>
-    <string name="toast_debug_no_log">No log to export</string>
-    <string name="toast_debug_stop_before_export">Stop recording before exporting</string>
-    <string name="toast_debug_failed">Operation failed. Please retry</string>
-    <string name="toast_debug_export_failed">Share failed</string>
-    <string name="hint_webdav_url">WebDAV URL (e.g., https://dav.example.com)</string>
-    <string name="hint_webdav_username">Username (optional)</string>
-    <string name="hint_webdav_password">Password (optional)</string>
-    <string name="btn_webdav_upload">Upload to WebDAV</string>
-    <string name="btn_webdav_download">Restore from WebDAV</string>
-    <string name="toast_webdav_upload_success">Uploaded to WebDAV</string>
-    <string name="toast_webdav_upload_failed">Upload failed: %1$s</string>
-    <string name="toast_webdav_download_success">Imported from WebDAV</string>
-    <string name="toast_webdav_download_failed">Download/Import failed: %1$s</string>
-    <string name="toast_webdav_url_required">Please enter the WebDAV base URL</string>
-    <string name="toast_webdav_directory_created">LexiSharp directory created</string>
-    <string name="tip_backup_contains_secrets">Note: Backup contains keys and credentials. Keep it private.</string>
-    <string name="toast_silence_autostop_on">Auto-stop on silence enabled</string>
-    <string name="toast_silence_autostop_off">Auto-stop on silence disabled</string>
+  <!-- ============================================== -->
+  <!-- Other General Settings -->
+  <!-- ============================================== -->
+  <string name="label_audio_ducking_on_record">Audio ducking during recording</string>
+  <string name="label_headset_mic_priority">Prefer headset microphone (experimental)</string>
+  <string name="label_return_prev_ime_on_hide">Switch back to previous IME when hidden</string>
+  <string name="toast_bt_connect_permission_required">Bluetooth connect permission is required to use headset mic</string>
+  <string name="toast_bt_connect_permission_denied">Bluetooth connect permission denied; headset priority disabled</string>
+  <string name="toast_vad_sensitivity_applied">VAD sensitivity updated; will apply to the next recording</string>
 
-    <!-- Stats -->
-    <string name="label_asr_total_chars">Total characters from speech recognition: %1$d</string>
-
-    <!-- Errors (ASR engines) -->
-    <string name="error_record_permission_denied">Record audio permission not granted</string>
-    <string name="error_audio_init_failed">Recording initialization failed</string>
-    <string name="error_audio_error">Recording error: %1$s</string>
-    <string name="error_audio_empty">Empty audio</string>
-    <string name="error_missing_gemini_key">Gemini API Key not set</string>
-    <string name="error_missing_dashscope_key">DashScope API Key not set</string>
-    <string name="error_missing_siliconflow_key">SiliconFlow API Key not set</string>
-    <string name="error_missing_eleven_key">ElevenLabs API Key not set</string>
-    <string name="error_missing_soniox_key">Soniox API Key not set</string>
-    <string name="error_missing_eleven_model_id">ElevenLabs Model ID not set (required)</string>
-    <string name="error_request_failed_http">Recognition request failed: HTTP %1$d%2$s</string>
-    <string name="error_asr_request_failed_http">ASR request failed: HTTP %1$d%2$s</string>
-    <string name="error_dash_getpolicy_failed_http">getPolicy failed: HTTP %1$d%2$s</string>
-    <string name="error_dash_no_data">getPolicy response missing data</string>
-    <string name="error_dash_missing_upload_host">getPolicy response missing upload_host</string>
-    <string name="error_oss_upload_failed_http">OSS upload failed: %1$d%2$s</string>
-    <string name="error_asr_empty_result">Empty ASR result</string>
-    <string name="error_recognize_failed_with_reason">Recognition failed: %1$s</string>
-    <string name="label_soniox_api_key">API Key (Bearer)</string>
-
-    <!-- User-facing ASR error toasts (floating + keyboard) -->
-    <string name="asr_error_empty_result">No speech recognized. Please try again.</string>
-    <string name="asr_error_network_unavailable">Network connection failed. Check connection and retry.</string>
-    <string name="asr_error_network_handshake">Connection handshake failed. Try again or switch network.</string>
-    <string name="asr_error_mic_permission_denied">Microphone permission required. Enable it in Settings.</string>
-    <string name="asr_error_mic_in_use">Microphone is in use by another app. Try again later.</string>
-    <string name="asr_error_auth_invalid">Authentication failed. Credentials invalid or expired. Update in Settings.</string>
-    <string name="asr_error_auth_forbidden">Forbidden. Please check your service permissions.</string>
-
-    <!-- Enhanced Quick Guide -->
-    <string name="guide_subtitle">Making voice input simpler and more efficient</string>
-    <string name="guide_main_keyboard_title">Main Keyboard Layout</string>
-    <string name="guide_main_keyboard_desc">Main keyboard interface with microphone, post-processing toggle, edit panel entry, and more</string>
-    <string name="guide_edit_panel_title">Edit Panel</string>
-    <string name="guide_edit_panel_desc">Powerful text editing features including cursor movement, text selection, copy/paste, AI processing, and more</string>
-    <string name="guide_numpad_title">Number &amp; Symbol Keyboard</string>
-    <string name="guide_numpad_desc">Number and punctuation input panel with Chinese/English punctuation toggle</string>
-    <string name="guide_core_features_title">Core Features</string>
-    <string name="guide_long_press_title">Press and Hold to Record</string>
-    <string name="guide_long_press_desc">Press and hold the microphone button to start recording, release to transcribe</string>
-    <string name="guide_ai_processing_title">AI Smart Post-processing</string>
-    <string name="guide_ai_processing_desc">Support multiple preset templates to make recognition results more accurate</string>
-    <string name="guide_floating_title">Floating Ball Features</string>
-    <string name="guide_floating_desc">Quick switch input methods or perform floating ball voice recognition</string>
-    <string name="guide_detailed_features_title">Detailed Feature Description</string>
-    <string name="guide_detailed_features_content">【Main Keyboard Features】\n• Microphone Button (center): Press and hold to record, release to transcribe speech to text\n• Edit Panel Entry (top-left): Tap to enter edit panel\n• Enable Post-processing: Toggle AI post-processing on/off\n• Hide Keyboard: Minimize keyboard interface\n• Backspace: Swipe up/left to delete all, swipe down to undo last change\n• Settings: Open application settings\n• Switch Input Method: Quick switch to other keyboards\n• Enter: Send newline\n• Custom Punctuation: Four customizable punctuation keys at bottom\n\n【Edit Panel Features】\n• Microphone Button (center): Press and hold to record voice commands, LLM will modify content based on commands (AI Edit feature)\n• Back to Main: Exit edit panel\n• Apply Preset Prompt: Select AI template and process current text\n• Cursor Movement: Move cursor left/right, long-press for continuous movement\n• Move to Start/End: Quick jump to text beginning/end\n• Selection Mode: Enable to select text while moving cursor\n• Select All: Select all text\n• Copy/Paste: Text copy and paste functions\n• Backspace: Delete characters, supports gestures (same as main keyboard)\n• Number &amp; Symbol Keyboard: Switch to number/symbol input panel\n\n【Number &amp; Symbol Keyboard】\n• Number Row: Quick input for digits 0-9\n• Punctuation Symbols: Two rows of common punctuation marks\n• CN/EN Toggle: Switch between Chinese/English punctuation\n• Space/Enter/Backspace: Basic input functions\n• Back to Edit Panel: Exit number keyboard</string>
-    <string name="guide_first_time_title">First Time Use</string>
-    <string name="guide_mic_icon_desc">Microphone icon</string>
-    <string name="guide_ai_icon_desc">AI processing icon</string>
-    <string name="guide_floating_icon_desc">Floating ball icon</string>
-
-    <!-- Legacy Quick guide (image + text) -->
-    <string name="accessibility_service_description">Allow floating ball to insert ASR results into the current input field. No data is collected or uploaded.</string>
-
-    <!-- Update check -->
-    <string name="update_checking">Checking for updates…</string>
-    <string name="update_no_update">You are using the latest version</string>
-    <string name="update_check_failed">Update check failed: %1$s</string>
-    <string name="update_dialog_title">New Version Available</string>
-    <string name="update_dialog_message">Current version: %1$s\nLatest version: %2$s\n\nWould you like to download?</string>
-    <string name="current_version_info_title">Current Version Info</string>
-    <string name="current_version_message">Current version: %1$s\n\nYou are using the latest version!</string>
-    <string name="btn_download">Download</string>
-    <string name="btn_view_release_page">View Release Page</string>
-    <string name="btn_manual_check">Manual Check</string>
-    <string name="btn_cancel">Cancel</string>
-    <string name="download_source_title">Select Download Source</string>
-    <string name="download_source_github_official">GitHub (official)</string>
-    <string name="download_source_mirror_ghproxy">GitHub mirror (ghproxy.net)</string>
-    <string name="download_source_mirror_gitmirror">GitHub mirror (hub.gitmirror.com)</string>
-    <string name="download_source_mirror_gh_proxynet">GitHub mirror (gh-proxy.net)</string>
-    <string name="update_timestamp_label">Release time: %1$s</string>
-    <string name="update_release_notes_label">Release notes:\n%1$s</string>
-    <string name="error_open_browser">Unable to open browser</string>
-
-    <!-- APK download and installation -->
-    <string name="apk_download_notification_title">Downloading update</string>
-    <string name="apk_download_notification_channel_name">App update download</string>
-    <string name="apk_download_notification_channel_desc">Download app update package and install automatically</string>
-    <string name="apk_download_preparing">Preparing download…</string>
-    <string name="apk_download_progress">Downloading %1$d%% (%2$d MB / %3$d MB)</string>
-    <string name="apk_download_complete">Download complete, preparing to install…</string>
-    <string name="apk_download_complete_click_to_install">Download complete, tap to install</string>
-    <string name="apk_download_failed">Download failed: %1$s</string>
-    <string name="apk_download_started">Update download started</string>
-    <string name="apk_download_start_failed">Failed to start download</string>
-    <string name="apk_install_permission_required_title">Installation permission required</string>
-    <string name="apk_install_permission_required_message">Please allow installation from this source in system settings</string>
-    <string name="apk_install_failed">Installation failed, please install manually</string>
-
-    <!-- Generic toasts -->
-    <string name="toast_accessibility_enabled">Accessibility service enabled. Auto-insert is now available.</string>
-    
-    <!-- ASR History -->
-    <string name="title_asr_history">ASR History</string>
-    <string name="hint_search_history">Search transcripts…</string>
-    <string name="history_section_2h">Within 2 hours</string>
-    <string name="history_section_today">Today</string>
-    <string name="history_section_7d">Last 7 days</string>
-    <string name="history_section_30d">Last 30 days</string>
-    <string name="history_section_older">Older</string>
-    <string name="label_vendor">Vendor</string>
-    <string name="label_source">Source</string>
-    <string name="source_ime">Keyboard</string>
-    <string name="source_floating">Floating</string>
-    <string name="source_ime_full">Keyboard input</string>
-    <string name="source_floating_full">Floating input</string>
-    <string name="label_ai_processed">AI Processed</string>
-    <string name="label_chars_count">Text:%1$d</string>
-    <string name="label_audio_duration_s">Duration:%1$.1f s</string>
-    <!-- History list: total duration and processing duration (non-streaming) -->
-    <string name="meta_total_seconds">total %1$.1fs</string>
-    <string name="meta_proc_seconds">processing time %1$.1fs</string>
-    <string name="ai_processed_yes">Post-processed</string>
-    <string name="ai_processed_no">Not post-processed</string>
-    <string name="label_timestamp">Time</string>
-    <string name="label_time">Time Range</string>
-    <string name="filter_time_all">All</string>
-    <string name="filter_all">All</string>
-    <string name="btn_copy">Copy</string>
-    <string name="toast_copied">Copied</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="menu_filter">Filter</string>
-    <string name="menu_select_all">Select all</string>
-    <string name="menu_clear_selection">Clear selection</string>
-    <string name="menu_delete_selected">Delete selected</string>
-    <string name="dialog_filter_title">Filter</string>
-    <string name="dialog_filter_ok">OK</string>
-    <string name="dialog_filter_cancel">Cancel</string>
-    <string name="dialog_filter_reset">Reset</string>
-    <string name="dialog_delete_selected_title">Confirm Delete</string>
-    <string name="dialog_delete_selected_msg">Delete %1$d selected items? This action cannot be undone.</string>
-    <string name="toast_deleted">Deleted %1$d item(s)</string>
-    <string name="empty_history">No history yet</string>
-    
-    <!-- About -->
-    <string name="btn_about">About</string>
-    <string name="about_title">About</string>
-    <string name="about_app_name">App name: %1$s</string>
-    <string name="about_version">Version: %1$s</string>
-    <string name="about_package">Package: %1$s</string>
-    <string name="about_open_github">Open Project Page</string>
-    <string name="about_project_url">https://github.com/BryceWG/LexiSharp-Keyboard</string>
-    <string name="about_desc">A lightweight voice input IME with multi-vendor ASR and LLM post-processing</string>
-
-    <!-- Settings test input -->
-    <string name="label_test_input">Test input (try the IME here)</string>
-    <string name="btn_test_input">Test Input</string>
-
-    <!-- LLM test call -->
-    <string name="btn_llm_test_call">Test LLM Call</string>
-    <string name="llm_test_running">Testing LLM call…</string>
-    <string name="llm_test_success_title">Test Succeeded</string>
-    <string name="llm_test_success_preview">Response preview: %1$s</string>
-    <string name="llm_test_failed_title">Test Failed</string>
-    <string name="llm_test_failed_reason">Reason: %1$s</string>
-    <string name="llm_test_failed_generic">Call failed</string>
-    <string name="llm_test_missing_params">Please fill API endpoint and model name</string>
-
-    <!-- Common button: open API key guide -->
-    <string name="btn_get_api_key_guide">View Configuration Guide</string>
-
-    <!-- Keyboard height -->
-    <string name="label_keyboard_height">Keyboard scale</string>
-    <string name="keyboard_height_small">Small</string>
-    <string name="keyboard_height_medium">Medium</string>
-    <string name="keyboard_height_large">Large</string>
-
-    <!-- Keyboard bottom padding -->
-    <string name="label_keyboard_bottom_padding">Keyboard bottom padding</string>
-    <string name="keyboard_bottom_padding_value">%d dp</string>
-
-    <!-- Keyboard layout option -->
-    <string name="label_fcitx5_return_on_switcher">IME switch key returns to previous input method</string>
-    <string name="label_hide_recent_task_card">Hide recent task preview</string>
-
-    <!-- Model download notifications -->
-    <string name="notif_channel_model_download">Model Downloads</string>
-    <string name="notif_channel_model_download_desc">Progress of local model download and extraction</string>
-    <string name="notif_model_summary_title">Model Downloads</string>
-    <string name="notif_model_summary_text">Downloading/extracting models in background</string>
-    <string name="notif_model_title_int8">SenseVoice Model (Small int8)</string>
-    <string name="notif_model_title_full">SenseVoice Model (Small fp32)</string>
-
-    <!-- Silence auto-stop (ASR) -->
-    <string name="section_silence_autostop">Auto-stop on Silence</string>
-    <string name="label_auto_stop_silence">Auto stop when no speech</string>
-    <string name="label_silence_window_ms">Stop window (ms)</string>
-    <string name="label_silence_sensitivity">Sensitivity (1-10; higher = more sensitive)</string>
-    <!-- SenseVoice local settings -->
-    <string name="btn_sv_download_model">One-click download SenseVoice model</string>
-    <string name="btn_sv_download_model_int8">One-click download SenseVoice (small int8, ~160MB)</string>
-    <string name="btn_sv_download_model_full">One-click download SenseVoice (small fp32, ~850MB)</string>
-    <string name="btn_sv_clear_model">Clear downloaded model</string>
-    <string name="sv_download_status_downloading">Downloading… %1$d%%</string>
-    <string name="sv_download_status_extracting">Extracting…Please wait</string>
-    <string name="sv_download_status_done">Model installed</string>
-    <string name="sv_download_status_failed">Download or extraction failed</string>
-    <string name="sv_download_started_in_bg">Started background download. Check notification for progress.</string>
-    <string name="sv_clear_confirm_title">Confirm clear model?</string>
-    <string name="sv_clear_confirm_message">This will delete downloaded model files. You can re-download later. Continue?</string>
-    <string name="sv_clear_done">Model cleared</string>
-    <string name="sv_clear_failed">Clear failed</string>
-    <string name="label_sv_model_variant">Model Version</string>
-    <string name="sv_model_small_int8">Small (int8, ~160MB)</string>
-    <string name="sv_model_small_full">Small (fp32, ~850MB)</string>
-    <string name="sv_loading_model">Loading local model…</string>
-    <string name="sv_loading_model_while_listening">Listening… loading local model in background…</string>
-    <string name="sv_model_ready">Local model loaded</string>
-    <string name="sv_model_ready_with_ms">Local model loaded (%1$d ms)</string>
-    <string name="label_sv_preload">Load model on first show</string>
-    <string name="label_sv_keep_alive">Model keep-alive duration</string>
-    <string name="sv_keep_alive_immediate">No keep-alive (unload after recognition)</string>
-    <string name="sv_keep_alive_5m">5 minutes</string>
-    <string name="sv_keep_alive_15m">15 minutes</string>
-    <string name="sv_keep_alive_30m">30 minutes</string>
-    <string name="sv_keep_alive_always">Always keep (until parameters change)</string>
-    <string name="label_sv_threads">Threads (1-8)</string>
-    <string name="label_sv_language">Recognition language</string>
-    <string name="sv_lang_auto">Auto</string>
-    <string name="sv_lang_zh">Chinese (zh)</string>
-    <string name="sv_lang_en">English (en)</string>
-    <string name="sv_lang_ja">Japanese (ja)</string>
-    <string name="sv_lang_ko">Korean (ko)</string>
-    <string name="sv_lang_yue">Cantonese (yue)</string>
-    <string name="label_sv_use_itn">Enable ITN (inverse text normalization)</string>
-    <!-- SyncClipboard settings -->
-    <string name="section_sync_clipboard">Clipboard Sync</string>
-    <string name="label_enable_sync_clipboard">Use SyncClipboard project to sync clipboard</string>
-    <string name="label_sc_server_base">Server base URL (will append /SyncClipboard.json)</string>
-    <string name="label_sc_username">Username</string>
-    <string name="label_sc_password">Password</string>
-    <string name="label_sc_auto_pull">Auto pull clipboard periodically (only when IME is visible)</string>
-    <string name="label_sc_pull_interval">Pull interval (sec, 1-600)</string>
-    <string name="btn_sc_test_pull">Validate</string>
-    <string name="sc_test_success">Pull succeeded</string>
-    <string name="sc_test_failed">Pull failed. Please check URL and credentials.</string>
-    <string name="sc_status_uploaded">Clipboard uploaded successfully</string>
-    <string name="btn_sc_project_home">Project Home</string>
-    <string name="sc_open_browser_failed">Cannot open browser</string>
-    <string name="hint_sc_server_base_placeholder">https://your-server.com/path</string>
-
-    <!-- Audio -->
-    <string name="label_audio_ducking_on_record">Audio ducking during recording</string>
-    <string name="label_headset_mic_priority">Prefer headset microphone (experimental)</string>
-    <string name="label_return_prev_ime_on_hide">Switch back to previous IME when hidden</string>
-    <string name="toast_bt_connect_permission_required">Bluetooth connect permission is required to use headset mic</string>
-    <string name="toast_bt_connect_permission_denied">Bluetooth connect permission denied; headset priority disabled</string>
-
-    <!-- About: Usage stats -->
-    <string name="about_stats_title">Usage Stats</string>
-    <string name="about_days_with_you">LexiSharp has been with you for %1$d days</string>
-    <string name="about_total_audio">Total audio time: %1$s</string>
-    <string name="about_avg_line">Avg audio: %1$s  ·  Avg chars: %2$d  ·  Avg speed: %3$s chars/min</string>
-    <string name="about_daily_weekly_avg">Daily avg (last 7d): %1$d chars, %2$s; Weekly avg (last 4w): %3$d chars, %4$s</string>
-    <string name="about_by_vendor">By provider</string>
-    <string name="about_proc_prefix">processing time</string>
-    <string name="about_last_7_days">Last 7 days (chars)</string>
-    <string name="about_empty_stats_placeholder">No data yet</string>
-
-    <!-- Open Source Acknowledgements -->
-    <string name="about_acknowledgements_title">Acknowledgements</string>
-    <string name="about_acknowledgements_desc">This project is built upon the following excellent open source projects. We sincerely thank their developers:</string>
-    <string name="about_view_full_licenses">View Full Licenses</string>
-    <string name="about_licenses_dialog_title">Third-Party Licenses</string>
-
-    <string name="about_sherpa_onnx_title">k2-fsa/sherpa-onnx</string>
-    <string name="about_sherpa_onnx_desc">Provides technical solution for local ASR models, enabling offline speech recognition</string>
-
-    <string name="about_syncclipboard_title">Jeric-X/SyncClipboard</string>
-    <string name="about_syncclipboard_desc">Provides backend service for clipboard synchronization (not running locally, requires server)</string>
-
-    <string name="about_phosphor_title">phosphor-icons/homepage</string>
-    <string name="about_phosphor_desc">Provides almost all icons used throughout the application</string>
-
-    <string name="unit_chars">chars</string>
-    <string name="unit_0_min">0 min</string>
-    <string name="fmt_h_m">%1$d h %2$d m</string>
-    <string name="fmt_m_s">%1$d m %2$d s</string>
-    <string name="fmt_s">%1$d s</string>
+  <!-- ============================================== -->
+  <!-- General Toasts -->
+  <!-- ============================================== -->
+  <string name="toast_accessibility_enabled">Accessibility service enabled. Auto-insert is now available.</string>
+  <string name="toast_silence_autostop_on">Auto-stop on silence enabled</string>
+  <string name="toast_silence_autostop_off">Auto-stop on silence disabled</string>
 </resources>

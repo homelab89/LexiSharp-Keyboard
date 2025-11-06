@@ -1,0 +1,51 @@
+<resources>
+    <!-- SenseVoice 本地 ASR 配置字串 -->
+    <string name="sensevoice_section_title">SenseVoice 本地 ASR</string>
+    <string name="vendor_sensevoice">SenseVoice（本機非流）</string>
+
+    <!-- SenseVoice local settings -->
+    <string name="label_sv_threads">執行緒數（1-8）</string>
+    <string name="label_sv_language">識別語言</string>
+    <string name="sv_lang_auto">自動</string>
+    <string name="sv_lang_zh">中文 (zh)</string>
+    <string name="sv_lang_en">英語 (en)</string>
+    <string name="sv_lang_ja">日語 (ja)</string>
+    <string name="sv_lang_ko">韓語 (ko)</string>
+    <string name="sv_lang_yue">粵語 (yue)</string>
+    <string name="label_sv_use_itn">啟用 ITN（數字/標點規範化）</string>
+    <string name="btn_sv_download_model">一鍵下載 SenseVoice 模型</string>
+    <string name="btn_sv_download_model_int8">一鍵下載 SenseVoice 模型（small int8，約 160MB）</string>
+    <string name="btn_sv_download_model_full">一鍵下載 SenseVoice 模型（small fp32，約 850MB）</string>
+    <string name="btn_sv_clear_model">清除已下載模型</string>
+    <string name="sv_download_status_downloading">下載中… %1$d%%</string>
+    <string name="sv_download_status_extracting_progress">解壓中… %1$d%%</string>
+    <string name="sv_download_status_done">模型已安裝</string>
+    <string name="sv_download_status_failed">下載或解壓失敗</string>
+    <string name="sv_download_started_in_bg">已開始背景下載，請到通知欄查看進度</string>
+    <string name="sv_clear_confirm_title">確認清除模型？</string>
+    <string name="sv_clear_confirm_message">將刪除已下載的模型檔案，可稍後重新下載。是否繼續？</string>
+    <string name="sv_clear_done">已清除模型</string>
+    <string name="sv_clear_failed">清除失敗</string>
+    <string name="label_sv_model_variant">模型版本</string>
+    <string name="sv_model_small_int8">Small（int8，約160MB）</string>
+    <string name="sv_model_small_full">Small（fp32，約850MB）</string>
+    <string name="sv_loading_model">本機模型載入中…</string>
+    <string name="sv_loading_model_while_listening">正在聆聽…本機模型背景載入中…</string>
+    <string name="sv_model_ready">本機模型載入完成</string>
+    <string name="sv_model_ready_with_ms">本機模型載入完成（%1$d ms）</string>
+    <string name="label_sv_preload">首次顯示時載入模型</string>
+    <string name="label_sv_keep_alive">模型記憶體保留時長</string>
+    <string name="sv_keep_alive_immediate">不保留（識別後立即卸載）</string>
+    <string name="sv_keep_alive_5m">5 分鐘</string>
+    <string name="sv_keep_alive_15m">15 分鐘</string>
+    <string name="sv_keep_alive_30m">30 分鐘</string>
+    <string name="sv_keep_alive_always">始終保持（直到參數變更）</string>
+
+    <!-- Error messages -->
+    <string name="error_local_asr_not_ready">本機引擎未就緒，請在後續整合 sherpa‑onnx 相依與模型後再試</string>
+    <string name="error_sensevoice_model_missing">缺少 SenseVoice 模型檔案，請稍後在設定中配置或下載</string>
+
+    <!-- Model download notifications -->
+    <string name="notif_model_title_int8">SenseVoice 模型（Small int8）</string>
+    <string name="notif_model_title_full">SenseVoice 模型（Small fp32）</string>
+</resources>

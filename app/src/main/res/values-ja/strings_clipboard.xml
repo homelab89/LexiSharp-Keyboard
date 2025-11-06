@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- クリップボード同期関連文字列 - Clipboard sync related strings -->
+
+    <!-- SyncClipboard settings -->
+    <string name="section_sync_clipboard">クリップボード同期</string>
+    <string name="label_enable_sync_clipboard">SyncClipboardプロジェクトを使用してクリップボードを同期</string>
+    <string name="label_sc_server_base">サーバーベースURL（/SyncClipboard.jsonを追加）</string>
+    <string name="label_sc_username">ユーザー名</string>
+    <string name="label_sc_password">パスワード</string>
+    <string name="label_sc_auto_pull">定期的にクリップボードを自動プル（IME表示時のみ）</string>
+    <string name="label_sc_pull_interval">プル間隔（秒、1-600）</string>
+    <string name="btn_sc_test_pull">検証</string>
+    <string name="sc_test_success">プル成功</string>
+    <string name="sc_test_failed">プル失敗。URLと認証情報を確認してください。</string>
+    <string name="sc_status_uploaded">クリップボードが正常にアップロードされました</string>
+    <string name="btn_sc_project_home">プロジェクトホーム</string>
+    <string name="sc_open_browser_failed">ブラウザを開けません</string>
+    <string name="hint_sc_server_base_placeholder">https://your-server.com/path</string>
+</resources>

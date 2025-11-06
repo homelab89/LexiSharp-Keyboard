@@ -1,0 +1,19 @@
+<resources>
+    <!-- 剪貼簿同步相關字串 - Clipboard sync related strings -->
+
+    <!-- SyncClipboard settings -->
+    <string name="section_sync_clipboard">剪貼簿同步</string>
+    <string name="label_enable_sync_clipboard">使用 SyncClipboard 專案來同步剪貼簿</string>
+    <string name="label_sc_server_base">伺服器位址（會自動拼接 /SyncClipboard.json）</string>
+    <string name="label_sc_username">使用者名稱</string>
+    <string name="label_sc_password">密碼</string>
+    <string name="label_sc_auto_pull">自動定時拉取剪貼簿內容（僅在輸入法面板展開時）</string>
+    <string name="label_sc_pull_interval">拉取間隔（秒，1-600）</string>
+    <string name="btn_sc_test_pull">立即驗證</string>
+    <string name="sc_test_success">拉取成功</string>
+    <string name="sc_test_failed">拉取失敗，請檢查位址與憑證</string>
+    <string name="sc_status_uploaded">成功上傳剪貼簿</string>
+    <string name="btn_sc_project_home">專案首頁</string>
+    <string name="sc_open_browser_failed">無法開啟瀏覽器</string>
+    <string name="hint_sc_server_base_placeholder">https://your-server.com/path</string>
+</resources>

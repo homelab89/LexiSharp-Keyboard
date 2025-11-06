@@ -1,0 +1,16 @@
+<resources>
+    <!-- 調試日誌相關字串 - Debug logging related strings -->
+
+    <!-- Debug logging -->
+    <string name="about_debug_title">除錯日誌</string>
+    <string name="about_debug_desc">僅記錄狀態與錯誤，不包含識別文字、輸入內容或剪貼簿內容。開始錄製會清空之前記錄，結束後可透過系統分享匯出日誌。</string>
+    <string name="btn_debug_start_recording">開始錄製除錯日誌</string>
+    <string name="btn_debug_stop_recording">停止錄製</string>
+    <string name="btn_debug_export">匯出除錯日誌</string>
+    <string name="toast_debug_recording_started">已開始錄製（將清空舊記錄）</string>
+    <string name="toast_debug_recording_stopped">已停止錄製</string>
+    <string name="toast_debug_no_log">尚無可匯出的日誌</string>
+    <string name="toast_debug_stop_before_export">請先停止錄製後再匯出</string>
+    <string name="toast_debug_failed">操作失敗，請重試</string>
+    <string name="toast_debug_export_failed">匯出失敗</string>
+</resources>

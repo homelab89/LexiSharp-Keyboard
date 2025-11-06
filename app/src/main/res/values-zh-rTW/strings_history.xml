@@ -1,0 +1,48 @@
+<resources>
+    <!-- 識別歷史相關字串 - ASR history related strings -->
+
+    <string name="btn_open_asr_history">識別歷史</string>
+
+    <!-- ASR History -->
+    <string name="title_asr_history">識別歷史</string>
+    <string name="hint_search_history">搜尋識別文字…</string>
+    <string name="history_section_2h">2 小時內</string>
+    <string name="history_section_today">今天</string>
+    <string name="history_section_7d">近一週</string>
+    <string name="history_section_30d">近一個月</string>
+    <string name="history_section_older">更早</string>
+    <string name="label_vendor">供應商</string>
+    <string name="label_source">來源</string>
+    <string name="source_ime">鍵盤</string>
+    <string name="source_floating">懸浮球</string>
+    <string name="source_ime_full">鍵盤輸入</string>
+    <string name="source_floating_full">懸浮球輸入</string>
+    <string name="label_ai_processed">AI 處理</string>
+    <string name="label_chars_count">字數：%1$d</string>
+    <string name="label_audio_duration_s">用時：%1$.1f 秒</string>
+    <!-- 歷史列表：總用時與處理耗時（非串流） -->
+    <string name="meta_total_seconds">總用時 %1$.1f 秒</string>
+    <string name="meta_proc_seconds">處理耗時 %1$.1f 秒</string>
+    <string name="ai_processed_yes">已後處理</string>
+    <string name="ai_processed_no">未後處理</string>
+    <string name="label_timestamp">時間</string>
+    <string name="label_time">時間範圍</string>
+    <string name="filter_time_all">不限</string>
+    <string name="filter_all">不限</string>
+    <string name="btn_copy">複製</string>
+    <string name="toast_copied">已複製</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="menu_filter">篩選</string>
+    <string name="menu_select_all">全選</string>
+    <string name="menu_clear_selection">取消全選</string>
+    <string name="menu_delete_selected">刪除選中</string>
+    <string name="dialog_filter_title">篩選</string>
+    <string name="dialog_filter_ok">確定</string>
+    <string name="dialog_filter_cancel">取消</string>
+    <string name="dialog_filter_reset">重設</string>
+    <string name="dialog_delete_selected_title">刪除確認</string>
+    <string name="dialog_delete_selected_msg">確定刪除選中的 %1$d 條記錄嗎？此操作無法復原。</string>
+    <string name="toast_deleted">已刪除 %1$d 條記錄</string>
+    <string name="empty_history">尚無識別歷史</string>
+</resources>

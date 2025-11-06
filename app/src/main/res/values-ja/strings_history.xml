@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ASR履歴関連文字列 - ASR history related strings -->
+
+    <string name="btn_open_asr_history">履歴</string>
+
+    <!-- ASR History -->
+    <string name="title_asr_history">ASR履歴</string>
+    <string name="hint_search_history">テキストを検索…</string>
+    <string name="history_section_2h">2時間以内</string>
+    <string name="history_section_today">今日</string>
+    <string name="history_section_7d">過去7日間</string>
+    <string name="history_section_30d">過去30日間</string>
+    <string name="history_section_older">それ以前</string>
+    <string name="label_vendor">ベンダー</string>
+    <string name="label_source">ソース</string>
+    <string name="source_ime">キーボード</string>
+    <string name="source_floating">フローティング</string>
+    <string name="source_ime_full">キーボード入力</string>
+    <string name="source_floating_full">フローティング入力</string>
+    <string name="label_ai_processed">AI処理済み</string>
+    <string name="label_chars_count">テキスト：%1$d</string>
+    <string name="label_audio_duration_s">時間：%1$.1f秒</string>
+    <!-- 履歴リスト：総時間と処理時間（非ストリーミング） -->
+    <string name="meta_total_seconds">合計%1$.1f秒</string>
+    <string name="meta_proc_seconds">処理時間%1$.1f秒</string>
+    <string name="ai_processed_yes">後処理済み</string>
+    <string name="ai_processed_no">未処理</string>
+    <string name="label_timestamp">時間</string>
+    <string name="label_time">時間範囲</string>
+    <string name="filter_time_all">すべて</string>
+    <string name="filter_all">すべて</string>
+    <string name="btn_copy">コピー</string>
+    <string name="toast_copied">コピーしました</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="menu_filter">フィルター</string>
+    <string name="menu_select_all">すべて選択</string>
+    <string name="menu_clear_selection">選択をクリア</string>
+    <string name="menu_delete_selected">選択項目を削除</string>
+    <string name="dialog_filter_title">フィルター</string>
+    <string name="dialog_filter_ok">OK</string>
+    <string name="dialog_filter_cancel">キャンセル</string>
+    <string name="dialog_filter_reset">リセット</string>
+    <string name="dialog_delete_selected_title">削除の確認</string>
+    <string name="dialog_delete_selected_msg">%1$d個の選択項目を削除しますか？この操作は元に戻せません。</string>
+    <string name="toast_deleted">%1$d個のアイテムを削除しました</string>
+    <string name="empty_history">まだ履歴がありません</string>
+</resources>

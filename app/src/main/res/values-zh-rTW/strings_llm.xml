@@ -1,0 +1,31 @@
+<resources>
+    <!-- LLM 相關字串 - LLM related strings -->
+
+    <!-- LLM settings -->
+    <string name="label_llm_endpoint">OpenAI 端點（例如：https://api.openai.com/v1 或包含 /chat/completions）</string>
+    <string name="label_llm_api_key">API Key</string>
+    <string name="label_llm_model">模型名稱（例如：gpt-4o-mini）</string>
+    <string name="label_llm_temperature">溫度（0.0 – 2.0）</string>
+    <string name="label_llm_prompt">後處理提示詞內容（僅輸出處理後的文字）</string>
+    <string name="label_llm_prompt_title">提示詞預設標題</string>
+    <string name="label_llm_prompt_presets">選擇提示詞預設</string>
+    <string name="btn_add_preset">新增/另存為預設</string>
+    <string name="btn_delete_preset">刪除預設</string>
+    <string name="label_llm_choose_profile">選擇後處理模型</string>
+    <string name="label_llm_profile_name">設定檔名稱</string>
+    <string name="btn_llm_add_profile">新增設定檔</string>
+    <string name="btn_llm_delete_profile">刪除設定檔</string>
+    <string name="toast_llm_profile_added">已新增設定檔</string>
+    <string name="toast_llm_profile_deleted">已刪除設定檔</string>
+    <string name="untitled_profile">未命名設定檔</string>
+
+    <!-- LLM test call -->
+    <string name="btn_llm_test_call">測試 LLM 呼叫</string>
+    <string name="llm_test_running">正在測試 LLM 呼叫…</string>
+    <string name="llm_test_success_title">測試成功</string>
+    <string name="llm_test_success_preview">回應片段：%1$s</string>
+    <string name="llm_test_failed_title">測試失敗</string>
+    <string name="llm_test_failed_reason">原因：%1$s</string>
+    <string name="llm_test_failed_generic">呼叫失敗</string>
+    <string name="llm_test_missing_params">請填寫 API 位址與模型名稱</string>
+</resources>

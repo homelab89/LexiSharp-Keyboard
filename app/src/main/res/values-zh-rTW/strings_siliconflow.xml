@@ -1,0 +1,11 @@
+<resources>
+    <!-- SiliconFlow ASR 配置字串 -->
+    <string name="sf_section_title">SiliconFlow 鑑權參數</string>
+    <string name="vendor_sf">SiliconFlow</string>
+
+    <!-- SiliconFlow configuration -->
+    <string name="label_sf_api_key">API Key（Bearer）</string>
+    <string name="label_sf_model_select">選擇模型</string>
+    <string name="sf_model_default_display">FunAudioLLM/SenseVoiceSmall</string>
+    <string name="label_sf_omni_prompt">多模態識別提示詞（可選）</string>
+</resources>
