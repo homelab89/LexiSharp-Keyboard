@@ -266,8 +266,7 @@ class ModelDownloadService : Service() {
     notificationHandler: NotificationHandler
   ): File {
     Log.d(TAG, "Starting extraction for variant: $variant")
-
-    notificationHandler.notifyExtracting()
+    // 解压前准备通知/目录
 
     // 输出目录
     val base = getExternalFilesDir(null) ?: filesDir
@@ -283,8 +282,22 @@ class ModelDownloadService : Service() {
     }
     tmpDir.mkdirs()
 
-    // 解压
-    extractTarBz2Strict(cacheFile, tmpDir)
+    val cancelIntent = notificationHandler.createCancelIntent()
+    // 使用压缩包大小作为总体进度的近似值，避免二次全量扫描带来的长时间转圈
+    val compressedTotal = cacheFile.length()
+    if (compressedTotal > 0L) {
+      // 切换为确定型进度（0%）
+      notificationHandler.notifyExtractProgressImmediate(0, cancelIntent)
+      extractTarBz2WithCompressedProgress(cacheFile, tmpDir, compressedTotal) { percent ->
+        // 百分比已在方法内按压缩读取量计算，这里直接透传
+        notificationHandler.notifyExtractProgress(percent, cancelIntent)
+      }
+    } else {
+      // 回退：无法获取压缩大小时，仍切换为 0% 决定型进度，结束后补 100%
+      notificationHandler.notifyExtractProgressImmediate(0, cancelIntent)
+      extractTarBz2Strict(cacheFile, tmpDir)
+      notificationHandler.notifyExtractProgress(100, cancelIntent)
+    }
 
     Log.d(TAG, "Extraction completed to: ${tmpDir.path}")
     return tmpDir
@@ -387,6 +400,77 @@ class ModelDownloadService : Service() {
   }
 
   // --- 解压与文件工具 ---
+  
+
+  private class CountingInputStream(private val input: java.io.InputStream) : java.io.InputStream() {
+    @Volatile var bytesRead: Long = 0
+      private set
+    override fun read(): Int {
+      val r = input.read()
+      if (r >= 0) bytesRead++
+      return r
+    }
+    override fun read(b: ByteArray, off: Int, len: Int): Int {
+      val n = input.read(b, off, len)
+      if (n > 0) bytesRead += n
+      return n
+    }
+    override fun close() = input.close()
+    override fun available(): Int = input.available()
+    override fun markSupported(): Boolean = input.markSupported()
+    override fun mark(readlimit: Int) = input.mark(readlimit)
+    override fun reset() = input.reset()
+  }
+
+  private suspend fun extractTarBz2WithCompressedProgress(
+    file: File,
+    outDir: File,
+    compressedTotal: Long,
+    onProgress: (Int) -> Unit
+  ) = withContext(Dispatchers.IO) {
+    val counting = CountingInputStream(file.inputStream().buffered(64 * 1024))
+    BZip2CompressorInputStream(counting).use { bz ->
+      TarArchiveInputStream(bz).use { tar ->
+        var entry = tar.nextEntry
+        val buf = ByteArray(64 * 1024)
+        var lastPercent = -1
+        while (entry != null) {
+          val outFile = File(outDir, entry.name)
+          if (entry.isDirectory) {
+            outFile.mkdirs()
+          } else {
+            outFile.parentFile?.mkdirs()
+            var written = 0L
+            java.io.BufferedOutputStream(FileOutputStream(outFile), 64 * 1024).use { bos ->
+              while (true) {
+                val n = tar.read(buf)
+                if (n <= 0) break
+                bos.write(buf, 0, n)
+                written += n
+                // 依据已读取的压缩字节计算进度（单调、无需二次解压）
+                val percent = ((counting.bytesRead * 100) / compressedTotal).toInt().coerceIn(0, 100)
+                if (percent != lastPercent) {
+                  lastPercent = percent
+                  onProgress(percent)
+                }
+              }
+              bos.flush()
+            }
+            // 仍保持严格校验
+            val expected = (entry.size)
+            if (expected >= 0 && written != expected) {
+              try { outFile.delete() } catch (e: Throwable) { Log.w(TAG, "Error deleting mismatched file: ${outFile.path}", e) }
+              throw IllegalStateException("tar entry size mismatch: ${entry.name}")
+            }
+          }
+          entry = tar.nextEntry
+        }
+        // 结束时确保进度到 100%
+        onProgress(100)
+      }
+    }
+  }
+
   private suspend fun extractTarBz2Strict(file: File, outDir: File) = withContext(Dispatchers.IO) {
     BZip2CompressorInputStream(file.inputStream().buffered(64 * 1024)).use { bz ->
       TarArchiveInputStream(bz).use { tar ->
@@ -574,21 +658,43 @@ class NotificationHandler(
     )
   }
 
+
   /**
-   * 通知正在解压（不定进度）
+   * 通知解压进度（带百分比与节流）
    */
-  fun notifyExtracting() {
+  fun notifyExtractProgress(progress: Int, cancelIntent: PendingIntent) {
     val text = when (modelType) {
-      "paraformer" -> context.getString(R.string.pf_download_status_extracting)
-      "zipformer" -> context.getString(R.string.zf_download_status_extracting)
-      else -> context.getString(R.string.sv_download_status_extracting)
+      "paraformer" -> context.getString(R.string.pf_download_status_extracting_progress, progress)
+      "zipformer" -> context.getString(R.string.zf_download_status_extracting_progress, progress)
+      else -> context.getString(R.string.sv_download_status_extracting_progress, progress)
     }
     notifyProgress(
-      progress = 0,
+      progress = progress,
       text = text,
-      indeterminate = true,
+      indeterminate = false,
       ongoing = true,
       done = false,
+      action = cancelIntent,
+      throttle = true
+    )
+  }
+
+  /**
+   * 立即切换为确定型解压进度（不节流），用于首次从转圈切换为0%
+   */
+  fun notifyExtractProgressImmediate(progress: Int, cancelIntent: PendingIntent) {
+    val text = when (modelType) {
+      "paraformer" -> context.getString(R.string.pf_download_status_extracting_progress, progress)
+      "zipformer" -> context.getString(R.string.zf_download_status_extracting_progress, progress)
+      else -> context.getString(R.string.sv_download_status_extracting_progress, progress)
+    }
+    notifyProgress(
+      progress = progress,
+      text = text,
+      indeterminate = false,
+      ongoing = true,
+      done = false,
+      action = cancelIntent,
       throttle = false,
       force = true
     )
