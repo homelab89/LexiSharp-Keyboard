@@ -1,10 +1,10 @@
 {
-  "version": "3.5.1",
-  "version_code": 96,
-  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.5.1",
-  "release_notes": "本次更新包含 6 个提交:\n- refactor(asr): 移除 SenseVoice 伪流式识别模式\n- ui(asr): 添加 Zipformer 模型信息说明文本\n- refactor(asr): 优化英文字符统计\n- feat(asr): 为 Paraformer 和 Zipformer 引擎添加 ITN 支持\n- feat(asr): 新增 Zipformer 本地流式语音识别引擎支持\n- feat(asr): 新增 Paraformer 本地流式语音识别引擎",
+  "version": "3.5.2",
+  "version_code": 97,
+  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.5.2",
+  "release_notes": "本次更新包含 3 个提交:\n- refactor(strings): 拆分各语言字段便于管理\n- feat(asr): 为模型解压添加进度显示功能\n- refactor(ui): 统一 ASR 供应商显示逻辑",
   "important_notice": "本次更新新增了Paraformer和Zipformer本地流式识别引擎，移除了Sensevoice的伪流式识别模式。",
   "notice_level": "info",
   "min_supported_version": "2.6.5",
-  "update_time": "2025-11-05T15:04:58Z"
+  "update_time": "2025-11-06T03:38:49Z"
 }
