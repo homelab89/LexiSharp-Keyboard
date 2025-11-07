@@ -784,6 +784,16 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_SHOWN_QUICK_GUIDE_ONCE, false)
         set(value) = sp.edit { putBoolean(KEY_SHOWN_QUICK_GUIDE_ONCE, value) }
 
+    // 隐私：关闭识别历史记录
+    var disableAsrHistory: Boolean
+        get() = sp.getBoolean(KEY_DISABLE_ASR_HISTORY, false)
+        set(value) = sp.edit { putBoolean(KEY_DISABLE_ASR_HISTORY, value) }
+
+    // 隐私：关闭数据统计记录
+    var disableUsageStats: Boolean
+        get() = sp.getBoolean(KEY_DISABLE_USAGE_STATS, false)
+        set(value) = sp.edit { putBoolean(KEY_DISABLE_USAGE_STATS, value) }
+
     fun addAsrChars(delta: Int) {
         if (delta <= 0) return
         val cur = totalAsrChars
@@ -854,6 +864,23 @@ class Prefs(context: Context) {
             usageStatsJson = json.encodeToString(stats)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to serialize UsageStats", e)
+        }
+    }
+
+    /**
+     * 清空使用统计聚合与总字数。
+     * 注：firstUseDate 不清空，以保持“陪伴天数”展示的连续性。
+     */
+    fun resetUsageStats() {
+        try {
+            usageStatsJson = ""
+        } catch (t: Throwable) {
+            Log.w(TAG, "Failed to reset usageStatsJson", t)
+        }
+        try {
+            totalAsrChars = 0
+        } catch (t: Throwable) {
+            Log.w(TAG, "Failed to reset totalAsrChars", t)
         }
     }
 
@@ -1102,6 +1129,10 @@ class Prefs(context: Context) {
         private const val KEY_FIRST_USE_DATE = "first_use_date"
         private const val KEY_SHOWN_QUICK_GUIDE_ONCE = "shown_quick_guide_once"
 
+        // 隐私：关闭识别历史与使用统计记录
+        private const val KEY_DISABLE_ASR_HISTORY = "disable_asr_history"
+        private const val KEY_DISABLE_USAGE_STATS = "disable_usage_stats"
+
         // SyncClipboard keys
         private const val KEY_SC_ENABLED = "syncclip_enabled"
         private const val KEY_SC_SERVER_BASE = "syncclip_server_base"
@@ -1318,6 +1349,9 @@ class Prefs(context: Context) {
         o.put(KEY_WD_PASSWORD, webdavPassword)
         // 仅导出固定的剪贴板记录
         try { o.put(KEY_CLIP_PINNED_JSON, getPrefString(KEY_CLIP_PINNED_JSON, "")) } catch (t: Throwable) { Log.w(TAG, "Failed to export pinned clip", t) }
+        // 隐私开关
+        try { o.put(KEY_DISABLE_ASR_HISTORY, disableAsrHistory) } catch (_: Throwable) {}
+        try { o.put(KEY_DISABLE_USAGE_STATS, disableUsageStats) } catch (_: Throwable) {}
         return o.toString()
     }
 
@@ -1454,6 +1488,9 @@ class Prefs(context: Context) {
             optString(KEY_SC_PASSWORD)?.let { syncClipboardPassword = it }
             optBool(KEY_SC_AUTO_PULL)?.let { syncClipboardAutoPullEnabled = it }
             optInt(KEY_SC_PULL_INTERVAL_SEC)?.let { syncClipboardPullIntervalSec = it }
+            // 隐私开关
+            optBool(KEY_DISABLE_ASR_HISTORY)?.let { disableAsrHistory = it }
+            optBool(KEY_DISABLE_USAGE_STATS)?.let { disableUsageStats = it }
             // WebDAV 备份
             optString(KEY_WD_URL)?.let { webdavUrl = it }
             optString(KEY_WD_USERNAME)?.let { webdavUsername = it }

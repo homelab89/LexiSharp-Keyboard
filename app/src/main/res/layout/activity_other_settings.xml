@@ -24,6 +24,25 @@
       android:padding="16dp"
       android:orientation="vertical">
 
+    <!-- 隐私与数据：放在最上方的两个总开关 -->
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/switchDisableAsrHistory"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/label_disable_asr_history" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/switchDisableUsageStats"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="4dp"
+      android:text="@string/label_disable_usage_stats" />
+
+    <com.google.android.material.divider.MaterialDivider
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp" />
+
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

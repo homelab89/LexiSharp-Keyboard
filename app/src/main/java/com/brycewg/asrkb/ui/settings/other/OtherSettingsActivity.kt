@@ -51,9 +51,84 @@ class OtherSettingsActivity : AppCompatActivity() {
         setupPunctuationButtons()
         setupSpeechPresets()
         setupSyncClipboard()
+        setupPrivacyToggles()
 
         // Observe ViewModel state
         observeViewModel()
+    }
+
+    // ========== Privacy Toggles ==========
+
+    private var updatingPrivacySwitches = false
+
+    private fun setupPrivacyToggles() {
+        val swDisableHistory = findViewById<MaterialSwitch>(R.id.switchDisableAsrHistory)
+        val swDisableStats = findViewById<MaterialSwitch>(R.id.switchDisableUsageStats)
+
+        // 初始化状态
+        swDisableHistory.isChecked = prefs.disableAsrHistory
+        swDisableStats.isChecked = prefs.disableUsageStats
+
+        fun revertSwitch(s: MaterialSwitch, checked: Boolean) {
+            updatingPrivacySwitches = true
+            try {
+                s.isChecked = checked
+            } finally {
+                updatingPrivacySwitches = false
+            }
+        }
+
+        swDisableHistory.setOnCheckedChangeListener { _, isChecked ->
+            if (updatingPrivacySwitches) return@setOnCheckedChangeListener
+            if (isChecked) {
+                // 弹窗确认并清空历史
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.dialog_disable_asr_history_title)
+                    .setMessage(R.string.dialog_disable_asr_history_message)
+                    .setPositiveButton(R.string.btn_confirm) { _, _ ->
+                        prefs.disableAsrHistory = true
+                        try {
+                            com.brycewg.asrkb.store.AsrHistoryStore(this).clearAll()
+                            Toast.makeText(this, R.string.toast_cleared_history, Toast.LENGTH_SHORT).show()
+                        } catch (e: Throwable) {
+                            android.util.Log.e(TAG, "Failed to clear ASR history", e)
+                        }
+                    }
+                    .setNegativeButton(R.string.btn_cancel) { _, _ ->
+                        revertSwitch(swDisableHistory, false)
+                    }
+                    .setOnCancelListener { revertSwitch(swDisableHistory, false) }
+                    .show()
+            } else {
+                prefs.disableAsrHistory = false
+            }
+        }
+
+        swDisableStats.setOnCheckedChangeListener { _, isChecked ->
+            if (updatingPrivacySwitches) return@setOnCheckedChangeListener
+            if (isChecked) {
+                // 弹窗确认并清空统计
+                com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.dialog_disable_usage_stats_title)
+                    .setMessage(R.string.dialog_disable_usage_stats_message)
+                    .setPositiveButton(R.string.btn_confirm) { _, _ ->
+                        prefs.disableUsageStats = true
+                        try {
+                            prefs.resetUsageStats()
+                            Toast.makeText(this, R.string.toast_cleared_stats, Toast.LENGTH_SHORT).show()
+                        } catch (e: Throwable) {
+                            android.util.Log.e(TAG, "Failed to reset usage stats", e)
+                        }
+                    }
+                    .setNegativeButton(R.string.btn_cancel) { _, _ ->
+                        revertSwitch(swDisableStats, false)
+                    }
+                    .setOnCancelListener { revertSwitch(swDisableStats, false) }
+                    .show()
+            } else {
+                prefs.disableUsageStats = false
+            }
+        }
     }
 
     // ========== Punctuation Buttons ==========

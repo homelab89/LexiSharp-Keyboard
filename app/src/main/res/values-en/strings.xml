@@ -152,6 +152,17 @@
   <string name="toast_bt_connect_permission_denied">Bluetooth connect permission denied; headset priority disabled</string>
   <string name="toast_vad_sensitivity_applied">VAD sensitivity updated; will apply to the next recording</string>
 
+  <!-- Privacy & Data toggles -->
+  <string name="label_disable_asr_history">Disable ASR history</string>
+  <string name="label_disable_usage_stats">Disable usage statistics</string>
+  <string name="dialog_disable_asr_history_title">Disable ASR history?</string>
+  <string name="dialog_disable_asr_history_message">This will clear existing history and stop saving new ASR history. Are you sure to disable this feature?</string>
+  <string name="dialog_disable_usage_stats_title">Disable usage statistics?</string>
+  <string name="dialog_disable_usage_stats_message">This will clear statistics (total characters and aggregated stats) and stop recording new stats. Are you sure to disable this feature?</string>
+  <string name="btn_confirm">Confirm</string>
+  <string name="toast_cleared_history">History cleared</string>
+  <string name="toast_cleared_stats">Statistics cleared</string>
+
   <!-- ============================================== -->
   <!-- General Toasts -->
   <!-- ============================================== -->

@@ -393,25 +393,35 @@ class FloatingAsrService : Service(),
                 try {
                     val audioMs = asrSessionManager.popLastAudioMsForStats()
                     val procMs = asrSessionManager.getLastRequestDuration() ?: 0L
-                    prefs.recordUsageCommit("floating", prefs.asrVendor, audioMs, com.brycewg.asrkb.util.TextSanitizer.countEffectiveChars(text), procMs)
-                    // 写入历史记录（根据设置判断是否经过 AI 处理）
-                    try {
-                        val store = com.brycewg.asrkb.store.AsrHistoryStore(this@FloatingAsrService)
-                        val ai = try { prefs.postProcessEnabled && prefs.hasLlmKeys() } catch (_: Throwable) { false }
-                        store.add(
-                            com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
-                                timestamp = System.currentTimeMillis(),
-                                text = text,
-                                vendorId = prefs.asrVendor.id,
-                                audioMs = audioMs,
-                                procMs = procMs,
-                                source = "floating",
-                                aiProcessed = ai,
-                                charCount = com.brycewg.asrkb.util.TextSanitizer.countEffectiveChars(text)
-                            )
+                    if (!prefs.disableUsageStats) {
+                        prefs.recordUsageCommit(
+                            "floating",
+                            prefs.asrVendor,
+                            audioMs,
+                            com.brycewg.asrkb.util.TextSanitizer.countEffectiveChars(text),
+                            procMs
                         )
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Failed to add ASR history (floating)", e)
+                    }
+                    // 写入历史记录（根据设置判断是否经过 AI 处理）
+                    if (!prefs.disableAsrHistory) {
+                        try {
+                            val store = com.brycewg.asrkb.store.AsrHistoryStore(this@FloatingAsrService)
+                            val ai = try { prefs.postProcessEnabled && prefs.hasLlmKeys() } catch (_: Throwable) { false }
+                            store.add(
+                                com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
+                                    timestamp = System.currentTimeMillis(),
+                                    text = text,
+                                    vendorId = prefs.asrVendor.id,
+                                    audioMs = audioMs,
+                                    procMs = procMs,
+                                    source = "floating",
+                                    aiProcessed = ai,
+                                    charCount = com.brycewg.asrkb.util.TextSanitizer.countEffectiveChars(text)
+                                )
+                            )
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to add ASR history (floating)", e)
+                        }
                     }
                 } catch (t: Throwable) {
                     Log.e(TAG, "Failed to record usage stats (floating)", t)

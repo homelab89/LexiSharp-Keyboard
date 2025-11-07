@@ -152,6 +152,17 @@
   <string name="toast_bt_connect_permission_denied">已拒绝蓝牙连接权限，将停用耳机麦克风优先</string>
   <string name="toast_vad_sensitivity_applied">已应用 VAD 灵敏度，将在下次录音生效</string>
 
+  <!-- 隐私与数据开关 -->
+  <string name="label_disable_asr_history">关闭识别历史记录</string>
+  <string name="label_disable_usage_stats">关闭数据统计记录</string>
+  <string name="dialog_disable_asr_history_title">确认关闭识别历史？</string>
+  <string name="dialog_disable_asr_history_message">关闭后将清除历史记录，且不再保存新的识别历史。是否确认关闭该功能？</string>
+  <string name="dialog_disable_usage_stats_title">确认关闭数据统计？</string>
+  <string name="dialog_disable_usage_stats_message">关闭后将清除统计数据（总字数与使用统计），且不再记录新的统计。是否确认关闭该功能？</string>
+  <string name="btn_confirm">确认</string>
+  <string name="toast_cleared_history">已清除识别历史</string>
+  <string name="toast_cleared_stats">已清除统计数据</string>
+
   <!-- ============================================== -->
   <!-- 通用 Toast -->
   <!-- ============================================== -->

@@ -1075,31 +1075,37 @@ class KeyboardActionHandler(
         // 更新会话上下文
         sessionContext = sessionContext.copy(lastAsrCommitText = finalOut)
 
-        // 统计字数 & 记录使用统计/历史
+        // 统计字数 & 记录使用统计/历史（尊重“关闭识别历史/统计”开关）
         try {
-            prefs.addAsrChars(TextSanitizer.countEffectiveChars(finalOut))
+            if (!prefs.disableUsageStats) {
+                prefs.addAsrChars(TextSanitizer.countEffectiveChars(finalOut))
+            }
             // 记录使用统计（IME）
             try {
                 val audioMs = asrManager.popLastAudioMsForStats()
                 val procMs = asrManager.getLastRequestDuration() ?: 0L
-                prefs.recordUsageCommit("ime", prefs.asrVendor, audioMs, TextSanitizer.countEffectiveChars(finalOut), procMs)
+                if (!prefs.disableUsageStats) {
+                    prefs.recordUsageCommit("ime", prefs.asrVendor, audioMs, TextSanitizer.countEffectiveChars(finalOut), procMs)
+                }
                 // 写入历史记录（AI 后处理）
-                try {
-                    val store = com.brycewg.asrkb.store.AsrHistoryStore(context)
-                    store.add(
-                        com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
-                            timestamp = System.currentTimeMillis(),
-                            text = finalOut,
-                            vendorId = prefs.asrVendor.id,
-                            audioMs = audioMs,
-                            procMs = procMs,
-                            source = "ime",
-                            aiProcessed = true,
-                            charCount = TextSanitizer.countEffectiveChars(finalOut)
+                if (!prefs.disableAsrHistory) {
+                    try {
+                        val store = com.brycewg.asrkb.store.AsrHistoryStore(context)
+                        store.add(
+                            com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
+                                timestamp = System.currentTimeMillis(),
+                                text = finalOut,
+                                vendorId = prefs.asrVendor.id,
+                                audioMs = audioMs,
+                                procMs = procMs,
+                                source = "ime",
+                                aiProcessed = true,
+                                charCount = TextSanitizer.countEffectiveChars(finalOut)
+                            )
                         )
-                    )
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to add ASR history (with postprocess)", e)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to add ASR history (with postprocess)", e)
+                    }
                 }
             } catch (t: Throwable) {
                 Log.e(TAG, "Failed to record usage stats (with postprocess)", t)
@@ -1205,31 +1211,37 @@ class KeyboardActionHandler(
             autoEnterOnce = false
         }
 
-        // 统计字数 & 记录使用统计/历史
+        // 统计字数 & 记录使用统计/历史（尊重“关闭识别历史/统计”开关）
         try {
-            prefs.addAsrChars(TextSanitizer.countEffectiveChars(finalToCommit))
+            if (!prefs.disableUsageStats) {
+                prefs.addAsrChars(TextSanitizer.countEffectiveChars(finalToCommit))
+            }
             // 记录使用统计（IME）
             try {
                 val audioMs = asrManager.popLastAudioMsForStats()
                 val procMs = asrManager.getLastRequestDuration() ?: 0L
-                prefs.recordUsageCommit("ime", prefs.asrVendor, audioMs, TextSanitizer.countEffectiveChars(finalToCommit), procMs)
+                if (!prefs.disableUsageStats) {
+                    prefs.recordUsageCommit("ime", prefs.asrVendor, audioMs, TextSanitizer.countEffectiveChars(finalToCommit), procMs)
+                }
                 // 写入历史记录（无 AI 后处理）
-                try {
-                    val store = com.brycewg.asrkb.store.AsrHistoryStore(context)
-                    store.add(
-                        com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
-                            timestamp = System.currentTimeMillis(),
-                            text = finalToCommit,
-                            vendorId = prefs.asrVendor.id,
-                            audioMs = audioMs,
-                            procMs = procMs,
-                            source = "ime",
-                            aiProcessed = false,
-                            charCount = TextSanitizer.countEffectiveChars(finalToCommit)
+                if (!prefs.disableAsrHistory) {
+                    try {
+                        val store = com.brycewg.asrkb.store.AsrHistoryStore(context)
+                        store.add(
+                            com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
+                                timestamp = System.currentTimeMillis(),
+                                text = finalToCommit,
+                                vendorId = prefs.asrVendor.id,
+                                audioMs = audioMs,
+                                procMs = procMs,
+                                source = "ime",
+                                aiProcessed = false,
+                                charCount = TextSanitizer.countEffectiveChars(finalToCommit)
+                            )
                         )
-                    )
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to add ASR history (no postprocess)", e)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to add ASR history (no postprocess)", e)
+                    }
                 }
             } catch (t: Throwable) {
                 Log.e(TAG, "Failed to record usage stats (no postprocess)", t)

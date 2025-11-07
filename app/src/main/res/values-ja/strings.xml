@@ -153,6 +153,17 @@
   <string name="toast_bt_connect_permission_denied">Bluetooth接続権限が拒否されました。ヘッドセット優先が無効になりました。</string>
   <string name="toast_vad_sensitivity_applied">VAD感度が更新されました。次回の録音に適用されます</string>
 
+  <!-- プライバシーとデータのトグル -->
+  <string name="label_disable_asr_history">ASR履歴を無効化</string>
+  <string name="label_disable_usage_stats">利用統計を無効化</string>
+  <string name="dialog_disable_asr_history_title">ASR履歴を無効にしますか？</string>
+  <string name="dialog_disable_asr_history_message">既存の履歴を削除し、新しいASR履歴を保存しなくなります。この機能を無効にしてもよろしいですか？</string>
+  <string name="dialog_disable_usage_stats_title">利用統計を無効にしますか？</string>
+  <string name="dialog_disable_usage_stats_message">統計データ（総文字数と集計）を削除し、新しい統計を記録しなくなります。この機能を無効にしてもよろしいですか？</string>
+  <string name="btn_confirm">確認</string>
+  <string name="toast_cleared_history">履歴を削除しました</string>
+  <string name="toast_cleared_stats">統計を削除しました</string>
+
   <!-- ============================================== -->
   <!-- 通用 Toast -->
   <!-- ============================================== -->
