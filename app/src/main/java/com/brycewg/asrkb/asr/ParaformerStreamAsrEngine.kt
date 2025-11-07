@@ -407,7 +407,7 @@ private class ReflectiveOnlineStream(val instance: Any) {
 
 private class ReflectiveOnlineRecognizer(private val instance: Any, private val cls: Class<*>) {
     fun createStream(): ReflectiveOnlineStream {
-        val s = cls.getMethod("createStream", String::class.java).invoke(instance, "")
+        val s = cls.getMethod("createStream", String::class.java).invoke(instance, "") as Any
         return ReflectiveOnlineStream(s)
     }
 
@@ -583,7 +583,7 @@ class ParaformerOnnxManager private constructor() {
     private fun createRecognizer(recConfig: Any): Any {
         val ctor = clsOnlineRecognizer!!.getDeclaredConstructor(
             android.content.res.AssetManager::class.java,
-            clsOnlineRecognizerConfig
+            clsOnlineRecognizerConfig!!
         )
         return ctor.newInstance(null, recConfig)
     }
