@@ -137,14 +137,23 @@ class DashscopeStreamAsrEngine(
     if (!running.get()) return
     running.set(false)
 
-    try { audioJob?.cancel() } catch (t: Throwable) { Log.w(TAG, "cancel audio job", t) }
-    audioJob = null
-
+    // 先取消音频采集并等待清理完成，再调用 SDK 的 stop，避免资源冲突
     scope.launch(Dispatchers.IO) {
       try {
         // 通知 UI：录音阶段结束，可复位麦克风按钮
         try { listener.onStopped() } catch (t: Throwable) { Log.e(TAG, "notify stopped failed", t) }
-        // SDK 的 stop 会阻塞到 onComplete / onError
+
+        // 取消音频采集协程，触发 AudioRecord 释放
+        try {
+          audioJob?.cancel()
+          // 等待音频采集协程完全结束，确保 AudioRecord 被完全释放
+          audioJob?.join()
+        } catch (t: Throwable) {
+          Log.w(TAG, "cancel/join audio job failed", t)
+        }
+        audioJob = null
+
+        // AudioRecord 已释放，现在可以安全地停止 SDK（会阻塞到 onComplete / onError）
         recognizer?.stop()
       } catch (t: Throwable) {
         Log.w(TAG, "recognizer.stop() failed", t)
