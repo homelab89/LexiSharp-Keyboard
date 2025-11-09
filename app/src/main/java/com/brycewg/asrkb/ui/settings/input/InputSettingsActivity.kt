@@ -377,9 +377,9 @@ class InputSettingsActivity : AppCompatActivity() {
      * 设置扩展按钮配置对话框
      */
     private fun setupExtensionButtonsSelection(prefs: Prefs, tvExtensionButtons: TextView) {
-        // 获取所有可用的按钮动作（排除NONE）
+        // 获取所有可用的按钮动作（排除 NONE 与 NUMPAD：数字/符号键盘改为固定入口）
         val allActions = com.brycewg.asrkb.ime.ExtensionButtonAction.values()
-            .filter { it != com.brycewg.asrkb.ime.ExtensionButtonAction.NONE }
+            .filter { it != com.brycewg.asrkb.ime.ExtensionButtonAction.NONE && it != com.brycewg.asrkb.ime.ExtensionButtonAction.NUMPAD }
 
         fun updateSummary() {
             val current = listOf(prefs.extBtn1, prefs.extBtn2, prefs.extBtn3, prefs.extBtn4)

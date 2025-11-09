@@ -107,7 +107,7 @@
   <!-- 擴展按鈕配置 -->
   <!-- ============================================== -->
   <string name="label_extension_buttons">擴展按鈕配置</string>
-  <string name="ext_btn_default_summary">數字鍵盤、全選、複製、剪貼簿</string>
+  <string name="ext_btn_default_summary">復原、全選、複製、剪貼簿</string>
   <string name="ext_btn_none_selected">未選擇</string>
   <string name="ext_btn_must_select_4">請選擇恰好 4 個按鈕</string>
   <string name="ext_btn_max_4">最多選擇 4 個按鈕</string>

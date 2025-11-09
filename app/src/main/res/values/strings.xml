@@ -107,7 +107,7 @@
   <!-- 扩展按钮配置 -->
   <!-- ============================================== -->
   <string name="label_extension_buttons">扩展按钮配置</string>
-  <string name="ext_btn_default_summary">数字键盘、全选、复制、剪贴板</string>
+  <string name="ext_btn_default_summary">撤销、全选、复制、剪贴板</string>
   <string name="ext_btn_none_selected">未选择</string>
   <string name="ext_btn_must_select_4">请选择恰好 4 个按钮</string>
   <string name="ext_btn_max_4">最多选择 4 个按钮</string>

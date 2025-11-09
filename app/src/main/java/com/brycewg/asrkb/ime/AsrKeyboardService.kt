@@ -34,6 +34,7 @@ import com.brycewg.asrkb.asr.BluetoothRouteManager
 import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.ui.SettingsActivity
+import com.brycewg.asrkb.ui.AsrVendorUi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -120,10 +121,14 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     private var btnPromptPicker: ImageButton? = null
     private var btnHide: ImageButton? = null
     private var btnImeSwitcher: ImageButton? = null
-    private var btnPunct1: TextView? = null
-    private var btnPunct2: TextView? = null
-    private var btnPunct3: TextView? = null
-    private var btnPunct4: TextView? = null
+    private var btnPunct1: ImageButton? = null
+    private var btnPunct2: View? = null
+    private var btnPunct3: View? = null
+    private var btnPunct4: ImageButton? = null
+    private var btnPunct2Primary: TextView? = null
+    private var btnPunct2Secondary: TextView? = null
+    private var btnPunct3Primary: TextView? = null
+    private var btnPunct3Secondary: TextView? = null
     private var rowExtension: ConstraintLayout? = null
     private var btnExt1: ImageButton? = null
     private var btnExt2: ImageButton? = null
@@ -550,6 +555,10 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         btnPunct2 = view.findViewById(R.id.btnPunct2)
         btnPunct3 = view.findViewById(R.id.btnPunct3)
         btnPunct4 = view.findViewById(R.id.btnPunct4)
+        btnPunct2Primary = view.findViewById(R.id.btnPunct2Primary)
+        btnPunct2Secondary = view.findViewById(R.id.btnPunct2Secondary)
+        btnPunct3Primary = view.findViewById(R.id.btnPunct3Primary)
+        btnPunct3Secondary = view.findViewById(R.id.btnPunct3Secondary)
         rowExtension = view.findViewById<ConstraintLayout>(R.id.rowExtension)
         btnExt1 = view.findViewById(R.id.btnExt1)
         btnExt2 = view.findViewById(R.id.btnExt2)
@@ -960,22 +969,39 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             }
         }
 
-        // 标点按钮
+        // 第一个标点按钮替换为数字/符号键盘入口（普通按钮）
         btnPunct1?.setOnClickListener { v ->
+            performKeyHaptic(v)
+            showNumpadPanel(returnToAiPanel = false)
+        }
+
+        // 自定义标点（合并为两个：btnPunct2 -> 第1/2，btnPunct3 -> 第3/4）
+        // 点按：输入主符号；上滑：输入次符号
+        // 左右两侧按钮（btnPunct1/btnPunct4）还原为常规按钮类型，本步骤不绑定标点功能
+
+        // 左侧合并标点键（1/2）
+        btnPunct2?.setOnClickListener { v ->
             performKeyHaptic(v)
             actionHandler.commitText(currentInputConnection, prefs.punct1)
         }
-        btnPunct2?.setOnClickListener { v ->
-            performKeyHaptic(v)
-            actionHandler.commitText(currentInputConnection, prefs.punct2)
-        }
+        btnPunct2?.setOnTouchListener(createSwipeUpToAltListener(
+            primary = { prefs.punct1 },
+            secondary = { prefs.punct2 }
+        ))
+        // 右侧合并标点键（3/4）
         btnPunct3?.setOnClickListener { v ->
             performKeyHaptic(v)
             actionHandler.commitText(currentInputConnection, prefs.punct3)
         }
+        btnPunct3?.setOnTouchListener(createSwipeUpToAltListener(
+            primary = { prefs.punct3 },
+            secondary = { prefs.punct4 }
+        ))
+
+        // 第四个按键：供应商切换按钮（样式与 Prompt 选择类似）
         btnPunct4?.setOnClickListener { v ->
             performKeyHaptic(v)
-            actionHandler.commitText(currentInputConnection, prefs.punct4)
+            showVendorPicker(v)
         }
 
         // 扩展按钮（可自定义功能）
@@ -1677,10 +1703,51 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
 
     private fun applyPunctuationLabels() {
-        btnPunct1?.text = prefs.punct1
-        btnPunct2?.text = prefs.punct2
-        btnPunct3?.text = prefs.punct3
-        btnPunct4?.text = prefs.punct4
+        // 新布局：中间两个按键显示两行标签
+        btnPunct2Primary?.text = prefs.punct1
+        btnPunct2Secondary?.text = prefs.punct2
+        btnPunct3Primary?.text = prefs.punct3
+        btnPunct3Secondary?.text = prefs.punct4
+    }
+
+    /**
+     * 创建“上滑触发次符号”的触摸监听：
+     * - ACTION_UP 时根据位移决定输入主/次符号
+     */
+    private fun createSwipeUpToAltListener(
+        primary: () -> String,
+        secondary: () -> String
+    ): View.OnTouchListener {
+        val touchSlop = ViewConfiguration.get(this).scaledTouchSlop
+        val thresholdPx = (24f * resources.displayMetrics.density).toInt().coerceAtLeast(touchSlop)
+        var downY = 0f
+        var consumedAlt = false
+        return View.OnTouchListener { v, ev ->
+            when (ev.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    downY = ev.y
+                    consumedAlt = false
+                    false
+                }
+                MotionEvent.ACTION_UP -> {
+                    val dy = downY - ev.y
+                    if (dy >= thresholdPx) {
+                        // 上滑：输入次符号
+                        performKeyHaptic(v)
+                        actionHandler.commitText(currentInputConnection, secondary())
+                        consumedAlt = true
+                        true
+                    } else {
+                        // 非上滑：交给 onClick（输入主符号）
+                        if (!consumedAlt) v.performClick()
+                        consumedAlt = false
+                        true
+                    }
+                }
+                MotionEvent.ACTION_CANCEL -> { consumedAlt = false; false }
+                else -> false
+            }
+        }
     }
 
     /**
@@ -1847,6 +1914,66 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             prefs.activePromptId = preset.id
             clearStatusTextStyle()
             txtStatusText?.text = getString(R.string.switched_preset, preset.title)
+            true
+        }
+        popup.show()
+    }
+
+    private fun showVendorPicker(anchor: View) {
+        val vendors = AsrVendorUi.ordered()
+        val names = AsrVendorUi.names(this)
+        val popup = androidx.appcompat.widget.PopupMenu(anchor.context, anchor)
+        val cur = prefs.asrVendor
+        vendors.forEachIndexed { idx, v ->
+            val item = popup.menu.add(0, idx, idx, names[idx])
+            item.isCheckable = true
+            if (v == cur) item.isChecked = true
+        }
+        popup.menu.setGroupCheckable(0, true, true)
+        popup.setOnMenuItemClickListener { mi ->
+            val position = mi.itemId
+            val vendor = vendors.getOrNull(position)
+            if (vendor != null && vendor != prefs.asrVendor) {
+                val old = prefs.asrVendor
+                prefs.asrVendor = vendor
+
+                // 离开本地引擎时卸载缓存识别器，释放内存
+                try {
+                    if (old == com.brycewg.asrkb.asr.AsrVendor.SenseVoice && vendor != com.brycewg.asrkb.asr.AsrVendor.SenseVoice) {
+                        com.brycewg.asrkb.asr.unloadSenseVoiceRecognizer()
+                    }
+                    if (old == com.brycewg.asrkb.asr.AsrVendor.Paraformer && vendor != com.brycewg.asrkb.asr.AsrVendor.Paraformer) {
+                        com.brycewg.asrkb.asr.unloadParaformerRecognizer()
+                    }
+                    if (old == com.brycewg.asrkb.asr.AsrVendor.Zipformer && vendor != com.brycewg.asrkb.asr.AsrVendor.Zipformer) {
+                        com.brycewg.asrkb.asr.unloadZipformerRecognizer()
+                    }
+                } catch (t: Throwable) {
+                    android.util.Log.e("AsrKeyboardService", "Failed to unload local recognizer", t)
+                }
+
+                // 空闲时立即重建引擎
+                if (actionHandler.getCurrentState() is KeyboardState.Idle) {
+                    asrManager.rebuildEngine()
+                }
+
+                // 切换到本地引擎且启用预加载时，尝试预加载
+                try {
+                    when (vendor) {
+                        com.brycewg.asrkb.asr.AsrVendor.SenseVoice -> if (prefs.svPreloadEnabled) com.brycewg.asrkb.asr.preloadSenseVoiceIfConfigured(this, prefs)
+                        com.brycewg.asrkb.asr.AsrVendor.Paraformer -> if (prefs.pfPreloadEnabled) com.brycewg.asrkb.asr.preloadParaformerIfConfigured(this, prefs)
+                        com.brycewg.asrkb.asr.AsrVendor.Zipformer -> if (prefs.zfPreloadEnabled) com.brycewg.asrkb.asr.preloadZipformerIfConfigured(this, prefs)
+                        else -> {}
+                    }
+                } catch (t: Throwable) {
+                    android.util.Log.e("AsrKeyboardService", "Failed to preload local recognizer", t)
+                }
+
+                // 状态栏提示
+                clearStatusTextStyle()
+                val name = try { AsrVendorUi.name(this, vendor) } catch (_: Throwable) { "" }
+                txtStatusText?.text = getString(R.string.switched_preset, name)
+            }
             true
         }
         popup.show()

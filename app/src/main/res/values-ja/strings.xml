@@ -108,7 +108,7 @@
   <!-- 拡張ボタン設定 -->
   <!-- ============================================== -->
   <string name="label_extension_buttons">拡張ボタン設定</string>
-  <string name="ext_btn_default_summary">数字キーボード、すべて選択、コピー、クリップボード</string>
+  <string name="ext_btn_default_summary">元に戻す、すべて選択、コピー、クリップボード</string>
   <string name="ext_btn_none_selected">未選択</string>
   <string name="ext_btn_must_select_4">正確に4つのボタンを選択してください</string>
   <string name="ext_btn_max_4">最大4つのボタン</string>

@@ -128,12 +128,12 @@ enum class ExtensionButtonAction(
             return values().firstOrNull { it.id == id } ?: NONE
         }
 
-        /**
-         * 获取默认的4个按钮配置
-         * 默认顺序：数字键盘、全选、复制、剪贴板
-         */
-        fun getDefaults(): List<ExtensionButtonAction> {
-            return listOf(NUMPAD, SELECT_ALL, COPY, CLIPBOARD)
-        }
+    /**
+     * 获取默认的4个按钮配置
+     * 默认顺序调整为：撤销、全选、复制、剪贴板
+     */
+    fun getDefaults(): List<ExtensionButtonAction> {
+        return listOf(UNDO, SELECT_ALL, COPY, CLIPBOARD)
+    }
     }
 }

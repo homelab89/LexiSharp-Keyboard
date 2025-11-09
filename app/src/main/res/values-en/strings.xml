@@ -107,7 +107,7 @@
   <!-- Extension Button Configuration -->
   <!-- ============================================== -->
   <string name="label_extension_buttons">Extension Buttons Configuration</string>
-  <string name="ext_btn_default_summary">Numpad, Select All, Copy, Clipboard</string>
+  <string name="ext_btn_default_summary">Undo, Select All, Copy, Clipboard</string>
   <string name="ext_btn_none_selected">Not selected</string>
   <string name="ext_btn_must_select_4">Please select exactly 4 buttons</string>
   <string name="ext_btn_max_4">Maximum 4 buttons</string>
