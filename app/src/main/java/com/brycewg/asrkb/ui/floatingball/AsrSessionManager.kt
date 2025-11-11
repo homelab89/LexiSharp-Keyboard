@@ -58,6 +58,8 @@ class AsrSessionManager(
     private var lastAudioMsForStats: Long = 0L
     // 统计：非流式请求处理耗时（毫秒）
     private var lastRequestDurationMs: Long? = null
+    // 标记：最近一次提交是否实际使用了 AI 输出
+    private var lastAiUsed: Boolean = false
     // 音频焦点请求句柄
     private var audioFocusRequest: AudioFocusRequest? = null
 
@@ -147,6 +149,9 @@ class AsrSessionManager(
     /** 最近一次请求耗时（毫秒），仅非流式模式有效 */
     fun getLastRequestDuration(): Long? = lastRequestDurationMs
 
+    /** 最近一次提交是否实际使用了 AI 输出 */
+    fun wasLastAiUsed(): Boolean = lastAiUsed
+
     /** 清理会话 */
     fun cleanup() {
         try {
@@ -185,6 +190,7 @@ class AsrSessionManager(
             }
 
             var finalText = text
+            lastAiUsed = false
             val stillRecording = (asrEngine?.isRunning == true)
             // 若未收到 onStopped，则在此近似计算录音时长
             if (lastAudioMsForStats == 0L && sessionStartUptimeMs > 0L) {
@@ -210,9 +216,11 @@ class AsrSessionManager(
                 }
                 if (!res.ok) Log.w(TAG, "Post-processing failed; using processed text anyway")
                 finalText = res.text.ifBlank { text }
+                lastAiUsed = (res.usedAi && res.ok)
                 Log.d(TAG, "Post-processing completed: $finalText")
             } else {
                 finalText = com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, text)
+                lastAiUsed = false
             }
 
             // 更新状态
@@ -462,12 +470,16 @@ class AsrSessionManager(
 
         val textOut = if (prefs.postProcessEnabled && prefs.hasLlmKeys()) {
             try {
-                com.brycewg.asrkb.util.AsrFinalFilters.applyWithAi(context, prefs, candidate, postproc).text
+                val res = com.brycewg.asrkb.util.AsrFinalFilters.applyWithAi(context, prefs, candidate, postproc)
+                lastAiUsed = (res.usedAi && res.ok)
+                res.text
             } catch (t: Throwable) {
                 Log.e(TAG, "applyWithAi failed in timeout fallback", t)
+                lastAiUsed = false
                 com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, candidate)
             }
         } else {
+            lastAiUsed = false
             com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, candidate)
         }
 

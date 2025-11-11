@@ -433,7 +433,7 @@ class FloatingAsrService : Service(),
                     if (!prefs.disableAsrHistory) {
                         try {
                             val store = com.brycewg.asrkb.store.AsrHistoryStore(this@FloatingAsrService)
-                            val ai = try { prefs.postProcessEnabled && prefs.hasLlmKeys() } catch (_: Throwable) { false }
+                            val ai = try { asrSessionManager.wasLastAiUsed() } catch (_: Throwable) { false }
                             store.add(
                                 com.brycewg.asrkb.store.AsrHistoryStore.AsrHistoryRecord(
                                     timestamp = System.currentTimeMillis(),

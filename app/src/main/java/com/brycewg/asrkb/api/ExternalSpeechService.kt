@@ -424,9 +424,10 @@ class ExternalSpeechService : Service() {
             if (doAi) {
                 // 执行带 AI 的完整后处理链（IO 在线程内切换）
                 CoroutineScope(Dispatchers.Main).launch {
-                    val out = try {
-                        val processed = com.brycewg.asrkb.util.AsrFinalFilters.applyWithAi(context, prefs, text).text
-                        processed.ifBlank {
+                    val (out, usedAi) = try {
+                        val res = com.brycewg.asrkb.util.AsrFinalFilters.applyWithAi(context, prefs, text)
+                        val processed = res.text
+                        val finalOut = processed.ifBlank {
                             // AI 返回空：回退到简单后处理（包含正则/繁体）
                             try {
                                 com.brycewg.asrkb.util.AsrFinalFilters.applySimple(
@@ -438,9 +439,11 @@ class ExternalSpeechService : Service() {
                                 text
                             }
                         }
+                        finalOut to (res.usedAi && res.ok)
                     } catch (t: Throwable) {
                         Log.w(TAG, "applyWithAi failed, fallback to simple", t)
-                        try { com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, text) } catch (_: Throwable) { text }
+                        val fallback = try { com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, text) } catch (_: Throwable) { text }
+                        fallback to false
                     }
                     // 记录使用统计与识别历史（来源标记为 ime；尊重开关）
                     try {
@@ -460,7 +463,7 @@ class ExternalSpeechService : Service() {
                                     audioMs = audioMs,
                                     procMs = procMs,
                                     source = "ime",
-                                    aiProcessed = true,
+                                    aiProcessed = usedAi,
                                     charCount = chars
                                 )
                             )

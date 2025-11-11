@@ -1136,7 +1136,7 @@ class KeyboardActionHandler(
                 if (!prefs.disableUsageStats) {
                     prefs.recordUsageCommit("ime", prefs.asrVendor, audioMs, TextSanitizer.countEffectiveChars(finalOut), procMs)
                 }
-                // 写入历史记录（AI 后处理）
+                // 写入历史记录（AI 后处理：以实际“是否使用 AI 输出”记录）
                 if (!prefs.disableAsrHistory) {
                     try {
                         val store = com.brycewg.asrkb.store.AsrHistoryStore(context)
@@ -1148,7 +1148,7 @@ class KeyboardActionHandler(
                                 audioMs = audioMs,
                                 procMs = procMs,
                                 source = "ime",
-                                aiProcessed = true,
+                                aiProcessed = (res.usedAi && res.ok),
                                 charCount = TextSanitizer.countEffectiveChars(finalOut)
                             )
                         )

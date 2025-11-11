@@ -85,7 +85,13 @@ object AsrFinalFilters {
     try {
       val rep = prefs.findSpeechPresetReplacement(base)
       if (!rep.isNullOrEmpty()) {
-        return LlmPostProcessor.LlmProcessResult(ok = true, text = rep, errorMessage = null, httpCode = null)
+        return LlmPostProcessor.LlmProcessResult(
+          ok = true,
+          text = rep,
+          errorMessage = null,
+          httpCode = null,
+          usedAi = false
+        )
       }
     } catch (t: Throwable) {
       Log.w(TAG, "speech preset replacement failed (ai branch)", t)
@@ -95,6 +101,7 @@ object AsrFinalFilters {
     var ok = true
     var http: Int? = null
     var err: String? = null
+    var aiAttempted = false
 
     // 少于阈值时自动跳过 AI 后处理（forceAi 时不跳过）
     val skipForShort = try {
@@ -116,11 +123,13 @@ object AsrFinalFilters {
         processed = res.text
         http = res.httpCode
         err = res.errorMessage
+        aiAttempted = true
       } catch (t: Throwable) {
         Log.e(TAG, "LLM post-processing threw", t)
         ok = false
         processed = base
         err = t.message
+        aiAttempted = true
       }
     }
 
@@ -146,7 +155,14 @@ object AsrFinalFilters {
       processed
     }
 
-    return LlmPostProcessor.LlmProcessResult(ok = ok, text = processed, errorMessage = err, httpCode = http)
+    val usedAi = aiAttempted && ok
+    return LlmPostProcessor.LlmProcessResult(
+      ok = ok,
+      text = processed,
+      errorMessage = err,
+      httpCode = http,
+      usedAi = usedAi
+    )
   }
 
   // 正则后处理逻辑已移至 ProRegexFacade（pro/oss 双实现），避免在 main 泄露 Pro 逻辑。

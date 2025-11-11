@@ -51,7 +51,9 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
     val ok: Boolean,
     val text: String,
     val errorMessage: String? = null,
-    val httpCode: Int? = null
+    val httpCode: Int? = null,
+    // 表示本次结果是否“实际使用了 AI 输出”（调用成功并采用其文本）
+    val usedAi: Boolean = false
   )
 
   /**
@@ -294,7 +296,7 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
   ): LlmProcessResult = withContext(Dispatchers.IO) {
     if (input.isBlank()) {
       Log.d(TAG, "Input is blank, skipping processing")
-      return@withContext LlmProcessResult(ok = true, text = input)
+      return@withContext LlmProcessResult(ok = true, text = input, usedAi = false)
     }
 
     val config = getActiveConfig(prefs)
@@ -318,12 +320,12 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
       } else {
         Log.w(TAG, "LLM process() failed: ${result.error}")
       }
-      return@withContext LlmProcessResult(false, text = input, errorMessage = result.error, httpCode = result.httpCode)
+      return@withContext LlmProcessResult(false, text = input, errorMessage = result.error, httpCode = result.httpCode, usedAi = false)
     }
 
     val text = result.text ?: input
     Log.d(TAG, "Text processing completed, output length: ${text.length}")
-    return@withContext LlmProcessResult(true, text = text)
+    return@withContext LlmProcessResult(true, text = text, usedAi = true)
   }
 
   /**
@@ -332,7 +334,7 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
   suspend fun editTextWithStatus(original: String, instruction: String, prefs: Prefs): LlmProcessResult = withContext(Dispatchers.IO) {
     if (original.isBlank() || instruction.isBlank()) {
       Log.d(TAG, "Original or instruction is blank, skipping edit")
-      return@withContext LlmProcessResult(true, text = original)
+      return@withContext LlmProcessResult(true, text = original, usedAi = false)
     }
 
     val config = getActiveConfig(prefs)
@@ -392,12 +394,12 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
       } else {
         Log.w(TAG, "LLM editText() failed: ${result.error}")
       }
-      return@withContext LlmProcessResult(false, text = original, errorMessage = result.error, httpCode = result.httpCode)
+      return@withContext LlmProcessResult(false, text = original, errorMessage = result.error, httpCode = result.httpCode, usedAi = false)
     }
 
     val out = result.text ?: original
 
     Log.d(TAG, "Text editing completed, output length: ${out.length}")
-    return@withContext LlmProcessResult(true, text = out)
+    return@withContext LlmProcessResult(true, text = out, usedAi = true)
   }
 }
