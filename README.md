@@ -4,6 +4,8 @@
 
 **基于 AI 的智能语音输入法 | 让语音输入更自然、更高效**
 
+### 🌐 [官方网站](https://lexikeyboard.brycewg.com)
+
 简体中文 | [English](README_EN.md)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

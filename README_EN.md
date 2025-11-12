@@ -4,6 +4,8 @@
 
 **AI-powered Smart Voice Input Method | Make Voice Input More Natural and Efficient**
 
+### 🌐 [Official Website](https://lexikeyboard.brycewg.com)
+
 English | [简体中文](README.md)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)

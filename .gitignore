@@ -1,6 +1,7 @@
 *.md
 !README.md
 !README_EN.md
+!CHANGELOG.md
 !docs/
 !docs/*.md
 .gradle
@@ -18,3 +19,4 @@ app/src/pro/
 app/oss
 app/pro
 fcitx5-android-lexi-keyboard/
+website/
