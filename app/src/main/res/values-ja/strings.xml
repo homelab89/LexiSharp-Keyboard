@@ -43,7 +43,7 @@
 
   <string name="settings_title">LexiSharpキーボード設定</string>
   <string name="title_input_settings">入力設定</string>
-  <string name="title_asr_settings">ASR設定</string>
+  <string name="title_asr_settings">音声認識設定</string>
   <string name="title_ai_settings">AI後処理設定</string>
   <string name="title_other_settings">その他の設定</string>
 

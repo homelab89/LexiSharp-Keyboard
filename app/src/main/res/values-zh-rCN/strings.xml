@@ -42,7 +42,7 @@
 
   <string name="settings_title">言犀键盘设置</string>
   <string name="title_input_settings">输入设置</string>
-  <string name="title_asr_settings">ASR 设置</string>
+  <string name="title_asr_settings">语音识别设置</string>
   <string name="title_ai_settings">AI 后处理设置</string>
   <string name="title_other_settings">其他设置</string>
 
