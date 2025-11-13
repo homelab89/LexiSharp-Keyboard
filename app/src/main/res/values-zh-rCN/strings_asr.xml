@@ -1,3 +1,4 @@
 <resources>
     <string name="hint_need_keys">需要在设置中填写密钥以启用语音输入</string>
+    <string name="error_only_zip_supported">仅支持导入 .zip 文件</string>
 </resources>

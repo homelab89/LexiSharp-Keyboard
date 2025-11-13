@@ -1,3 +1,4 @@
 <resources>
     <string name="hint_need_keys">需要在設定中填寫金鑰以啟用語音輸入</string>
+    <string name="error_only_zip_supported">僅支援匯入 .zip 檔案</string>
 </resources>

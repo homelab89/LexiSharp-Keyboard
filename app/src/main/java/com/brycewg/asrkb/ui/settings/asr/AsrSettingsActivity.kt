@@ -888,7 +888,7 @@ class AsrSettingsActivity : AppCompatActivity() {
 
         btnImport.setOnClickListener { v ->
             hapticTapIfEnabled(v)
-            pfModelFilePicker.launch("*/*")
+            pfModelFilePicker.launch("application/zip")
         }
 
         btnDl.setOnClickListener { v ->
@@ -903,9 +903,9 @@ class AsrSettingsActivity : AppCompatActivity() {
             val variant = prefs.pfModelVariant
             val isTri = variant.startsWith("trilingual")
             val urlOfficial = if (isTri) {
-                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-paraformer-trilingual-zh-cantonese-en.tar.bz2"
+                "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-paraformer-trilingual-zh-cantonese-en.zip"
             } else {
-                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-paraformer-bilingual-zh-en.tar.bz2"
+                "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-paraformer-bilingual-zh-en.zip"
             }
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.download_source_title)
@@ -1102,7 +1102,7 @@ class AsrSettingsActivity : AppCompatActivity() {
 
         btnImport.setOnClickListener { v ->
             hapticTapIfEnabled(v)
-            zfModelFilePicker.launch("*/*")
+            zfModelFilePicker.launch("application/zip")
         }
 
         btnDl.setOnClickListener { v ->
@@ -1116,12 +1116,12 @@ class AsrSettingsActivity : AppCompatActivity() {
             )
             val variant = prefs.zfModelVariant
             val urlOfficial = when (variant) {
-                "zh-xl-int8-20250630" -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-zh-xlarge-int8-2025-06-30.tar.bz2"
-                "zh-xl-fp16-20250630" -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-zh-xlarge-fp16-2025-06-30.tar.bz2"
-                "zh-int8-20250630" -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-zh-int8-2025-06-30.tar.bz2"
-                "zh-fp16-20250630" -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-zh-fp16-2025-06-30.tar.bz2"
-                "bi-20230220-int8", "bi-20230220-fp32" -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20.tar.bz2"
-                else -> "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16.tar.bz2"
+                "zh-xl-int8-20250630" -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-zh-xlarge-int8-2025-06-30.zip"
+                "zh-xl-fp16-20250630" -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-zh-xlarge-fp16-2025-06-30.zip"
+                "zh-int8-20250630" -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-zh-int8-2025-06-30.zip"
+                "zh-fp16-20250630" -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-zh-fp16-2025-06-30.zip"
+                "bi-20230220-int8", "bi-20230220-fp32" -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20.zip"
+                else -> "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16.zip"
             }
             androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle(R.string.download_source_title)
@@ -1310,9 +1310,9 @@ class AsrSettingsActivity : AppCompatActivity() {
             )
             val variant = prefs.svModelVariant
             val urlOfficial = if (variant == "small-full") {
-                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.tar.bz2"
+                "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.zip"
             } else {
-                "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17.tar.bz2"
+                "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17.zip"
             }
 
             androidx.appcompat.app.AlertDialog.Builder(this)
@@ -1381,7 +1381,7 @@ class AsrSettingsActivity : AppCompatActivity() {
 
         btnSvImport.setOnClickListener { v ->
             hapticTapIfEnabled(v)
-            modelFilePicker.launch("*/*")
+            modelFilePicker.launch("application/zip")
         }
     }
 
@@ -1390,6 +1390,10 @@ class AsrSettingsActivity : AppCompatActivity() {
         tvSvDownloadStatus.text = ""
 
         try {
+            if (!isZipUri(uri)) {
+                tvSvDownloadStatus.text = getString(R.string.sv_import_failed, getString(R.string.error_only_zip_supported))
+                return
+            }
             val variant = prefs.svModelVariant
             ModelDownloadService.startImport(this, uri, variant)
             tvSvDownloadStatus.text = getString(R.string.sv_import_started_in_bg)
@@ -1404,6 +1408,10 @@ class AsrSettingsActivity : AppCompatActivity() {
         tvStatus.text = ""
 
         try {
+            if (!isZipUri(uri)) {
+                tvStatus.text = getString(R.string.pf_import_failed, getString(R.string.error_only_zip_supported))
+                return
+            }
             val variant = prefs.pfModelVariant
             ModelDownloadService.startImport(this, uri, variant)
             tvStatus.text = getString(R.string.pf_import_started_in_bg)
@@ -1418,6 +1426,10 @@ class AsrSettingsActivity : AppCompatActivity() {
         tvStatus.text = ""
 
         try {
+            if (!isZipUri(uri)) {
+                tvStatus.text = getString(R.string.zf_import_failed, getString(R.string.error_only_zip_supported))
+                return
+            }
             val variant = prefs.zfModelVariant
             ModelDownloadService.startImport(this, uri, variant)
             tvStatus.text = getString(R.string.zf_import_started_in_bg)
@@ -1425,6 +1437,21 @@ class AsrSettingsActivity : AppCompatActivity() {
             android.util.Log.e(TAG, "Failed to start zipformer model import", e)
             tvStatus.text = getString(R.string.zf_import_failed, e.message ?: "Unknown error")
         }
+    }
+
+    private fun isZipUri(uri: Uri): Boolean {
+        val name = getDisplayName(uri) ?: uri.lastPathSegment ?: ""
+        return name.lowercase().endsWith(".zip")
+    }
+
+    private fun getDisplayName(uri: Uri): String? {
+        return try {
+            val projection = arrayOf(android.provider.OpenableColumns.DISPLAY_NAME)
+            contentResolver.query(uri, projection, null, null, null)?.use { c ->
+                val idx = c.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                if (idx >= 0 && c.moveToFirst()) c.getString(idx) else null
+            }
+        } catch (_: Throwable) { null }
     }
 
     private fun observeViewModel() {

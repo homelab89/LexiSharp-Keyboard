@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.LocaleHelper
 import com.brycewg.asrkb.ui.SettingsActivity
+import com.brycewg.asrkb.store.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -21,8 +22,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream
-import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipEntry
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
@@ -195,9 +196,14 @@ class ModelDownloadService : Service() {
     modelType: String,
     notificationHandler: NotificationHandler
   ) {
-    val cacheFile = File(cacheDir, key.toSafeFileName() + ".tar.bz2")
+    // 仅支持 .zip 下载源；非 .zip 直接报错（提示更新下载链接）
+    val cacheFile = File(cacheDir, key.toSafeFileName() + ".zip")
 
     try {
+      if (!url.lowercase().substringBefore('#').substringBefore('?').endsWith(".zip")) {
+        throw IllegalArgumentException(getString(R.string.error_only_zip_supported))
+      }
+
       // 下载文件
       downloadFile(url, cacheFile, notificationHandler)
 
@@ -215,9 +221,11 @@ class ModelDownloadService : Service() {
       notificationHandler.notifySuccess(doneText)
     } catch (t: Throwable) {
       Log.e(TAG, "Download task failed for key=$key, url=$url", t)
-      val failText = when (modelType) {
-        "paraformer" -> getString(R.string.pf_download_status_failed)
-        "zipformer" -> getString(R.string.zf_download_status_failed)
+      val onlyZipMsg = getString(R.string.error_only_zip_supported)
+      val failText = when {
+        t.message == onlyZipMsg -> onlyZipMsg
+        modelType == "paraformer" -> getString(R.string.pf_download_status_failed)
+        modelType == "zipformer" -> getString(R.string.zf_download_status_failed)
         else -> getString(R.string.sv_download_status_failed)
       }
       notificationHandler.notifyFailed(failText)
@@ -251,29 +259,58 @@ class ModelDownloadService : Service() {
     variant: String,
     notificationHandler: NotificationHandler
   ) {
-    val cacheFile = File(cacheDir, key.toSafeFileName() + ".tar.bz2")
+    // 仅支持 .zip 导入：先根据显示名或路径判断并在服务侧再次校验
+    val cacheFile = File(cacheDir, key.toSafeFileName() + ".zip")
 
     try {
+      val displayName = getDisplayNameFromUri(uri) ?: uri.lastPathSegment ?: ""
+      if (!displayName.lowercase().endsWith(".zip")) {
+        throw IllegalArgumentException(getString(R.string.error_only_zip_supported))
+      }
+
       // 从 Uri 复制文件到缓存目录
       copyFileFromUri(uri, cacheFile, notificationHandler)
 
-      // 检测模型类型
-      val modelType = detectModelType(cacheFile)
-      if (modelType == null) {
-        throw IllegalStateException(getString(R.string.sv_import_failed, "无法识别模型类型"))
+      // 通过压缩包文件名精准识别模型类型与变体
+      val typeAndVariant = detectModelTypeAndVariantFromFileName(displayName)
+        ?: throw IllegalStateException(getString(R.string.sv_import_failed, "无法识别模型类型"))
+      val modelType = typeAndVariant.first
+      val detectedVariant = typeAndVariant.second
+
+      // 更新通知处理器（类型与变体），以便文案准确：
+      // Paraformer/Zipformer(bi*) 包含双量化，保持用户当前变体文案；SenseVoice 与 Zip zh* 精确展示
+      notificationHandler.updateModelType(modelType)
+      val shouldUpdateVariant = when (modelType) {
+        "sensevoice" -> true
+        "zipformer" -> detectedVariant.startsWith("zh")
+        else -> false // paraformer 保持用户选择
+      }
+      if (shouldUpdateVariant) notificationHandler.updateVariant(detectedVariant)
+
+      // 同步首选项中的变体，确保后续加载/校验路径一致
+      try {
+        val prefs = Prefs(this@ModelDownloadService)
+        when (modelType) {
+          // SenseVoice：二选一，直接同步用户选择
+          "sensevoice" -> prefs.svModelVariant = detectedVariant
+          // Paraformer：单包含 int8+fp32，两者均可用，不覆盖用户当前偏好
+          "paraformer" -> { /* no-op */ }
+          // Zipformer：zh/zh-xl 为单量化包，同步；bilingual 系列包含双量化，不覆盖
+          "zipformer" -> if (detectedVariant.startsWith("zh")) prefs.zfModelVariant = detectedVariant
+        }
+      } catch (e: Throwable) {
+        Log.w(TAG, "Failed to persist detected variant: $detectedVariant for $modelType", e)
       }
 
-      // 更新通知处理器的模型类型
-      notificationHandler.updateModelType(modelType)
+      // 解压归档（仅支持 ZIP）
+      val installVariant = if (modelType == "zipformer" && !detectedVariant.startsWith("zh")) variant else detectedVariant
+      val modelDir = extractArchive(cacheFile, key, installVariant, modelType, notificationHandler)
 
-      // 解压归档
-      val modelDir = extractArchive(cacheFile, key, variant, modelType, notificationHandler)
+      // 验证并安装模型（使用检测到的变体决定最终安装路径）
+      verifyAndInstallModel(modelDir, installVariant, modelType)
 
-      // 验证并安装模型
-      verifyAndInstallModel(modelDir, variant, modelType)
-
-      // 构造成功消息，包含模型类型和版本信息
-      val modelInfo = getModelInfo(modelType, variant)
+      // 构造成功消息
+      val modelInfo = getModelInfo(modelType, installVariant)
       val successMessage = getString(R.string.sv_import_success, modelInfo)
       notificationHandler.notifySuccess(successMessage)
     } catch (t: Throwable) {
@@ -347,44 +384,44 @@ class ModelDownloadService : Service() {
   }
 
   /**
-   * 检测模型类型
-   * 通过读取 tar.bz2 文件内容来判断是哪种模型
+   * 根据压缩包文件名识别模型类型（不解压内容）
    */
-  private suspend fun detectModelType(file: File): String? = withContext(Dispatchers.IO) {
-    try {
-      var hasTokensTxt = false
-      var hasSenseVoiceModel = false
-      var hasParaformerModel = false
-      var hasZipformerModel = false
+  private fun detectModelTypeFromFileName(name: String): String? {
+    val n = name.lowercase()
+    return when {
+      n.contains("paraformer") -> "paraformer"
+      n.contains("zipformer") -> "zipformer"
+      n.contains("sense-voice") || n.contains("sensevoice") -> "sensevoice"
+      else -> null
+    }
+  }
 
-      BZip2CompressorInputStream(file.inputStream().buffered(64 * 1024)).use { bz ->
-        TarArchiveInputStream(bz).use { tar ->
-          var entry = tar.nextEntry
-          while (entry != null) {
-            val name = entry.name.lowercase()
+  /**
+   * 基于压缩包“完整文件名”精准识别模型类型与应用内变体编码
+   * 要求：文件名在转换为 .zip 时不改主名，仅改后缀
+   */
+  private fun detectModelTypeAndVariantFromFileName(name: String): Pair<String, String>? {
+    val base = name.substringAfterLast('/')
+      .substringBeforeLast('.')
+      .lowercase()
+    return when (base) {
+      // SenseVoice
+      "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17" -> "sensevoice" to "small-full"
+      "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17" -> "sensevoice" to "small-int8"
 
-            when {
-              name.endsWith("tokens.txt") -> hasTokensTxt = true
-              name.contains("sense-voice") || name.endsWith("model.int8.onnx") -> hasSenseVoiceModel = true
-              name.contains("paraformer") -> hasParaformerModel = true
-              name.contains("zipformer") || name.contains("encoder-epoch") || name.contains("decoder-epoch") || name.contains("joiner-epoch") -> hasZipformerModel = true
-            }
+      // Paraformer（主包名不含量化，默认按 int8 归类）
+      "sherpa-onnx-streaming-paraformer-bilingual-zh-en" -> "paraformer" to "bilingual-int8"
+      "sherpa-onnx-streaming-paraformer-trilingual-zh-cantonese-en" -> "paraformer" to "trilingual-int8"
 
-            entry = tar.nextEntry
-          }
-        }
-      }
+      // Zipformer（精确到量化/日期）
+      "sherpa-onnx-streaming-zipformer-zh-xlarge-int8-2025-06-30" -> "zipformer" to "zh-xl-int8-20250630"
+      "sherpa-onnx-streaming-zipformer-zh-xlarge-fp16-2025-06-30" -> "zipformer" to "zh-xl-fp16-20250630"
+      "sherpa-onnx-streaming-zipformer-zh-int8-2025-06-30" -> "zipformer" to "zh-int8-20250630"
+      "sherpa-onnx-streaming-zipformer-zh-fp16-2025-06-30" -> "zipformer" to "zh-fp16-20250630"
+      "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20" -> "zipformer" to "bi-20230220-int8"
+      "sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16" -> "zipformer" to "bi-small-20230216-int8"
 
-      // 根据检测到的特征返回模型类型
-      return@withContext when {
-        hasSenseVoiceModel && hasTokensTxt -> "sensevoice"
-        hasParaformerModel && hasTokensTxt -> "paraformer"
-        hasZipformerModel && hasTokensTxt -> "zipformer"
-        else -> null // 无法识别
-      }
-    } catch (e: Exception) {
-      Log.e(TAG, "Error detecting model type", e)
-      null
+      else -> null
     }
   }
 
@@ -494,20 +531,13 @@ class ModelDownloadService : Service() {
     tmpDir.mkdirs()
 
     val cancelIntent = notificationHandler.createCancelIntent()
-    // 使用压缩包大小作为总体进度的近似值，避免二次全量扫描带来的长时间转圈
     val compressedTotal = cacheFile.length()
-    if (compressedTotal > 0L) {
-      // 切换为确定型进度（0%）
-      notificationHandler.notifyExtractProgressImmediate(0, cancelIntent)
-      extractTarBz2WithCompressedProgress(cacheFile, tmpDir, compressedTotal) { percent ->
-        // 百分比已在方法内按压缩读取量计算，这里直接透传
-        notificationHandler.notifyExtractProgress(percent, cancelIntent)
-      }
-    } else {
-      // 回退：无法获取压缩大小时，仍切换为 0% 决定型进度，结束后补 100%
-      notificationHandler.notifyExtractProgressImmediate(0, cancelIntent)
-      extractTarBz2Strict(cacheFile, tmpDir)
-      notificationHandler.notifyExtractProgress(100, cancelIntent)
+    notificationHandler.notifyExtractProgressImmediate(0, cancelIntent)
+    if (detectArchiveType(cacheFile) != ArchiveType.ZIP) {
+      throw IllegalStateException(getString(R.string.error_only_zip_supported))
+    }
+    extractZipWithCompressedProgress(cacheFile, tmpDir, compressedTotal) { percent ->
+      notificationHandler.notifyExtractProgress(percent, cancelIntent)
     }
 
     Log.d(TAG, "Extraction completed to: ${tmpDir.path}")
@@ -633,88 +663,65 @@ class ModelDownloadService : Service() {
     override fun reset() = input.reset()
   }
 
-  private suspend fun extractTarBz2WithCompressedProgress(
+  private enum class ArchiveType { ZIP, UNKNOWN }
+
+  private fun detectArchiveType(file: File): ArchiveType {
+    return try {
+      file.inputStream().use { ins ->
+        val header = ByteArray(4)
+        val n = ins.read(header)
+        if (n >= 2 && header[0] == 0x50.toByte() && header[1] == 0x4B.toByte()) { // PK
+          ArchiveType.ZIP
+        } else ArchiveType.UNKNOWN
+      }
+    } catch (e: Throwable) {
+      Log.w(TAG, "detectArchiveType failed", e)
+      ArchiveType.UNKNOWN
+    }
+  }
+
+
+  private suspend fun extractZipWithCompressedProgress(
     file: File,
     outDir: File,
     compressedTotal: Long,
     onProgress: (Int) -> Unit
   ) = withContext(Dispatchers.IO) {
     val counting = CountingInputStream(file.inputStream().buffered(64 * 1024))
-    BZip2CompressorInputStream(counting).use { bz ->
-      TarArchiveInputStream(bz).use { tar ->
-        var entry = tar.nextEntry
-        val buf = ByteArray(64 * 1024)
-        var lastPercent = -1
-        while (entry != null) {
-          val outFile = File(outDir, entry.name)
-          if (entry.isDirectory) {
-            outFile.mkdirs()
-          } else {
-            outFile.parentFile?.mkdirs()
+    ZipInputStream(counting).use { zis ->
+      val buf = ByteArray(64 * 1024)
+      var entry: ZipEntry? = zis.nextEntry
+      var lastPercent = -1
+      while (entry != null) {
+        val outFile = File(outDir, entry.name)
+        if (entry.isDirectory) {
+          outFile.mkdirs()
+        } else {
+          outFile.parentFile?.mkdirs()
+          java.io.BufferedOutputStream(FileOutputStream(outFile), 64 * 1024).use { bos ->
             var written = 0L
-            java.io.BufferedOutputStream(FileOutputStream(outFile), 64 * 1024).use { bos ->
-              while (true) {
-                val n = tar.read(buf)
-                if (n <= 0) break
-                bos.write(buf, 0, n)
-                written += n
-                // 依据已读取的压缩字节计算进度（单调、无需二次解压）
+            while (true) {
+              val n = zis.read(buf)
+              if (n <= 0) break
+              bos.write(buf, 0, n)
+              written += n
+              if (compressedTotal > 0L) {
                 val percent = ((counting.bytesRead * 100) / compressedTotal).toInt().coerceIn(0, 100)
                 if (percent != lastPercent) {
                   lastPercent = percent
                   onProgress(percent)
                 }
               }
-              bos.flush()
             }
-            // 仍保持严格校验
-            val expected = (entry.size)
-            if (expected >= 0 && written != expected) {
-              try { outFile.delete() } catch (e: Throwable) { Log.w(TAG, "Error deleting mismatched file: ${outFile.path}", e) }
-              throw IllegalStateException("tar entry size mismatch: ${entry.name}")
-            }
+            bos.flush()
           }
-          entry = tar.nextEntry
         }
-        // 结束时确保进度到 100%
-        onProgress(100)
+        // CRC 校验在 closeEntry 时由 ZipInputStream 执行；若失败会抛异常
+        zis.closeEntry()
+        entry = zis.nextEntry
       }
-    }
-  }
-
-  private suspend fun extractTarBz2Strict(file: File, outDir: File) = withContext(Dispatchers.IO) {
-    BZip2CompressorInputStream(file.inputStream().buffered(64 * 1024)).use { bz ->
-      TarArchiveInputStream(bz).use { tar ->
-        var entry = tar.nextEntry
-        val buf = ByteArray(64 * 1024)
-        while (entry != null) {
-          val outFile = File(outDir, entry.name)
-          if (entry.isDirectory) {
-            outFile.mkdirs()
-          } else {
-            outFile.parentFile?.mkdirs()
-            var written = 0L
-            java.io.BufferedOutputStream(FileOutputStream(outFile), 64 * 1024).use { bos ->
-              while (true) {
-                val n = tar.read(buf)
-                if (n <= 0) break
-                bos.write(buf, 0, n)
-                written += n
-              }
-              bos.flush()
-            }
-            if (written != entry.size) {
-              try {
-                outFile.delete()
-              } catch (e: Throwable) {
-                Log.w(TAG, "Error deleting mismatched file: ${outFile.path}", e)
-              }
-              throw IllegalStateException("tar entry size mismatch: ${entry.name}")
-            }
-          }
-          entry = tar.nextEntry
-        }
-      }
+      // 结束时确保进度到 100%
+      onProgress(100)
     }
   }
 
@@ -774,6 +781,19 @@ class ModelDownloadService : Service() {
     }
     return null
   }
+
+  private fun getDisplayNameFromUri(uri: android.net.Uri): String? {
+    return try {
+      val projection = arrayOf(android.provider.OpenableColumns.DISPLAY_NAME)
+      contentResolver.query(uri, projection, null, null, null)?.use { c ->
+        val idx = c.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+        if (idx >= 0 && c.moveToFirst()) c.getString(idx) else null
+      }
+    } catch (e: Throwable) {
+      Log.w(TAG, "Failed to get display name from uri: $uri", e)
+      null
+    }
+  }
 }
 
 /**
@@ -819,7 +839,7 @@ class NotificationHandler(
   private val context: Context,
   private val notificationManager: NotificationManager,
   val key: DownloadKey,
-  private val variant: String,
+  private var variant: String,
   private var modelType: String
 ) {
   companion object {
@@ -839,6 +859,12 @@ class NotificationHandler(
    */
   fun updateModelType(newModelType: String) {
     modelType = newModelType
+    title = getTitleForVariant()
+  }
+
+  /** 更新变体编码（用于导入时根据文件名精准识别） */
+  fun updateVariant(newVariant: String) {
+    variant = newVariant
     title = getTitleForVariant()
   }
 

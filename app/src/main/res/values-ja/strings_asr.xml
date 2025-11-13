@@ -1,3 +1,4 @@
 <resources>
     <string name="hint_need_keys">音声入力を有効にするには、設定でキーを入力してください</string>
+    <string name="error_only_zip_supported">.zip ファイルのみ対応しています</string>
 </resources>
