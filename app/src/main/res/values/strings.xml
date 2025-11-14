@@ -123,6 +123,7 @@
   <string name="ext_btn_numpad">Numpad</string>
   <string name="ext_btn_undo">Undo</string>
   <string name="ext_btn_hide">Hide keyboard</string>
+  <string name="ext_btn_silence_autostop">Auto-stop on silence</string>
   <string name="status_copied">Copied</string>
   <string name="status_pasted">Pasted</string>
   <string name="status_nothing_to_undo">Nothing to undo</string>

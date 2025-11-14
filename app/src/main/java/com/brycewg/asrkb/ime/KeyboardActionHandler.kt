@@ -455,6 +455,17 @@ class KeyboardActionHandler(
                 // 显示剪贴板管理面板（需要 IME 支持）
                 ExtensionButtonActionResult.NEED_SHOW_CLIPBOARD
             }
+            com.brycewg.asrkb.ime.ExtensionButtonAction.SILENCE_AUTOSTOP_TOGGLE -> {
+                val newValue = !prefs.autoStopOnSilenceEnabled
+                prefs.autoStopOnSilenceEnabled = newValue
+                val msgRes = if (newValue) {
+                    R.string.toast_silence_autostop_on
+                } else {
+                    R.string.toast_silence_autostop_off
+                }
+                uiListener?.onStatusMessage(context.getString(msgRes))
+                ExtensionButtonActionResult.SUCCESS
+            }
             com.brycewg.asrkb.ime.ExtensionButtonAction.UNDO -> {
                 if (ic == null) return ExtensionButtonActionResult.FAILED
                 val success = handleUndo(ic)

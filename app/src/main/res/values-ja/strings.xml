@@ -124,6 +124,7 @@
   <string name="ext_btn_numpad">数字キーボード</string>
   <string name="ext_btn_undo">取り消す</string>
   <string name="ext_btn_hide">キーボードを非表示</string>
+  <string name="ext_btn_silence_autostop">無音時自動停止</string>
   <string name="status_copied">コピーしました</string>
   <string name="status_pasted">貼り付けました</string>
   <string name="status_nothing_to_undo">取り消す操作がありません</string>

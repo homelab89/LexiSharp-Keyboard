@@ -76,6 +76,15 @@ enum class ExtensionButtonAction(
     ),
 
     /**
+     * 录音判停开关（无人说话自动停止录音）
+     */
+    SILENCE_AUTOSTOP_TOGGLE(
+        id = "silence_autostop_toggle",
+        titleResId = R.string.ext_btn_silence_autostop,
+        iconResId = R.drawable.hand_palm
+    ),
+
+    /**
      * 光标左移一位（长按连发）
      */
     CURSOR_LEFT(

@@ -123,6 +123,7 @@
   <string name="ext_btn_numpad">数字键盘</string>
   <string name="ext_btn_undo">撤销</string>
   <string name="ext_btn_hide">收起键盘</string>
+  <string name="ext_btn_silence_autostop">录音判停</string>
   <string name="status_copied">已复制</string>
   <string name="status_pasted">已粘贴</string>
   <string name="status_nothing_to_undo">无可撤销的操作</string>

@@ -1453,6 +1453,23 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         updateBtn(btnExt4, prefs.extBtn4)
     }
 
+    /**
+     * 同步主界面扩展按钮（配置为静音判停开关的按钮）图标为开启/关闭态。
+     */
+    private fun updateSilenceAutoStopExtButtonsUi() {
+        val enabled = prefs.autoStopOnSilenceEnabled
+        fun updateBtn(btn: ImageButton?, action: ExtensionButtonAction) {
+            if (action == ExtensionButtonAction.SILENCE_AUTOSTOP_TOGGLE) {
+                btn?.setImageResource(if (enabled) R.drawable.hand_palm_fill else R.drawable.hand_palm)
+                btn?.isSelected = enabled
+            }
+        }
+        updateBtn(btnExt1, prefs.extBtn1)
+        updateBtn(btnExt2, prefs.extBtn2)
+        updateBtn(btnExt3, prefs.extBtn3)
+        updateBtn(btnExt4, prefs.extBtn4)
+    }
+
     private fun selectAllText() {
         val ic = currentInputConnection ?: return
         inputHelper.selectAll(ic)
@@ -1834,6 +1851,12 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                 hideKeyboardPanel()
             }
         }
+
+        if (action == ExtensionButtonAction.SILENCE_AUTOSTOP_TOGGLE &&
+            result == KeyboardActionHandler.ExtensionButtonActionResult.SUCCESS
+        ) {
+            updateSilenceAutoStopExtButtonsUi()
+        }
     }
 
     /**
@@ -1881,8 +1904,9 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         setupExtensionButton(btnExt2, prefs.extBtn2)
         setupExtensionButton(btnExt3, prefs.extBtn3)
         setupExtensionButton(btnExt4, prefs.extBtn4)
-        // 初始应用时同步选择按钮的选中态
+        // 初始应用时同步选择按钮与静音判停按钮的选中态
         updateSelectExtButtonsUi()
+        updateSilenceAutoStopExtButtonsUi()
     }
 
     private fun vibrateTick() {

@@ -123,6 +123,7 @@
   <string name="ext_btn_numpad">數字鍵盤</string>
   <string name="ext_btn_undo">復原</string>
   <string name="ext_btn_hide">隱藏鍵盤</string>
+  <string name="ext_btn_silence_autostop">錄音判停</string>
   <string name="status_copied">已複製</string>
   <string name="status_pasted">已貼上</string>
   <string name="status_nothing_to_undo">無可復原的操作</string>
