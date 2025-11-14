@@ -439,6 +439,8 @@ class FloatingMenuHelper(
      * @param title 标题
      * @param texts 文本条目列表，仅展示内容
      * @param onItemClick 点击条目回调（已在本方法中先执行，再移除面板）
+     * @param initialVisibleCount 初次渲染的条目数量上限
+     * @param loadMoreCount 每次滚动触发追加的条目数量
      * @param onDismiss 面板关闭回调
      */
     fun showScrollableTextPanel(
@@ -447,6 +449,8 @@ class FloatingMenuHelper(
         title: String,
         texts: List<String>,
         onItemClick: (String) -> Unit,
+        initialVisibleCount: Int = Int.MAX_VALUE,
+        loadMoreCount: Int = Int.MAX_VALUE,
         onDismiss: () -> Unit
     ): View? {
         try {
@@ -510,7 +514,18 @@ class FloatingMenuHelper(
                 }
             )
 
-            texts.forEach { text ->
+            val normalizedInitial = when {
+                initialVisibleCount <= 0 -> 0
+                initialVisibleCount == Int.MAX_VALUE -> texts.size
+                else -> initialVisibleCount
+            }
+            val normalizedLoadMore = when {
+                loadMoreCount <= 0 -> maxOf(1, normalizedInitial.coerceAtLeast(1))
+                else -> loadMoreCount
+            }
+            var loadedCount = 0
+
+            fun addTextView(text: String) {
                 val tv = TextView(context).apply {
                     this.text = text
                     setTextColor(UiColors.panelFgVariant(context))
@@ -538,6 +553,38 @@ class FloatingMenuHelper(
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     ).apply { topMargin = dp(4) }
                 )
+            }
+
+            fun appendBatch(maxCount: Int) {
+                if (texts.isEmpty() || loadedCount >= texts.size) return
+                val remaining = texts.size - loadedCount
+                val target = if (maxCount == Int.MAX_VALUE) remaining else maxCount.coerceAtMost(remaining)
+                if (target <= 0) return
+                texts.subList(loadedCount, loadedCount + target).forEach { text ->
+                    addTextView(text)
+                }
+                loadedCount += target
+            }
+
+            appendBatch(normalizedInitial)
+
+            val threshold = dp(24)
+            if (loadedCount < texts.size) {
+                scroll.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+                    val child = try {
+                        scroll.getChildAt(0)
+                    } catch (e: Throwable) {
+                        Log.w(TAG, "Failed to get scroll child on change", e)
+                        null
+                    } ?: return@setOnScrollChangeListener
+                    val remaining = child.measuredHeight - (scrollY + scroll.height)
+                    if (remaining <= threshold) {
+                        appendBatch(normalizedLoadMore)
+                        if (loadedCount >= texts.size) {
+                            scroll.setOnScrollChangeListener(null)
+                        }
+                    }
+                }
             }
 
             val paramsContainer = android.widget.FrameLayout.LayoutParams(

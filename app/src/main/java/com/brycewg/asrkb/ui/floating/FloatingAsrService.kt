@@ -1029,7 +1029,9 @@ class FloatingAsrService : Service(),
                 } catch (e: Throwable) {
                     Log.e(TAG, "Failed to copy history text", e)
                 }
-            }
+            },
+            initialVisibleCount = 20,
+            loadMoreCount = 20
         ) {
             vendorMenuView = null
             touchActiveGuard = false
