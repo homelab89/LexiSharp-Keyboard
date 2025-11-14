@@ -1057,35 +1057,64 @@ class FloatingAsrService : Service(),
             }
         } catch (e: Throwable) {
             Log.e(TAG, "Failed to init clipboard manager for upload", e)
-        }
     }
+  }
 
-    private fun pullClipboardOnceFromMenu() {
-        try {
-            val mgr = com.brycewg.asrkb.clipboard.SyncClipboardManager(this, prefs, serviceScope)
-            serviceScope.launch(kotlinx.coroutines.Dispatchers.IO) {
-                val ok = try {
-                    mgr.pullNow(updateClipboard = true).first
-                } catch (t: Throwable) {
-                    Log.e(TAG, "Failed to pull clipboard", t)
-                    false
-                }
-                handler.post {
-                    try {
-                        Toast.makeText(
-                            this@FloatingAsrService,
-                            getString(if (ok) R.string.sc_test_success else R.string.sc_test_failed),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } catch (e: Throwable) {
-                        Log.e(TAG, "Failed to show pull result toast", e)
-                    }
-                }
-            }
-        } catch (e: Throwable) {
-            Log.e(TAG, "Failed to init clipboard manager for pull", e)
+  private fun pullClipboardOnceFromMenu() {
+    try {
+      val mgr = com.brycewg.asrkb.clipboard.SyncClipboardManager(this, prefs, serviceScope)
+      serviceScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+        val ok = try {
+          mgr.pullNow(updateClipboard = true).first
+        } catch (t: Throwable) {
+          Log.e(TAG, "Failed to pull clipboard", t)
+          false
         }
+
+        var hadFile = false
+        var fileDownloaded = false
+
+        if (ok) {
+          val fileName = try {
+            prefs.syncClipboardLastFileName
+          } catch (e: Throwable) {
+            Log.e(TAG, "Failed to read last clipboard file name after pull", e)
+            ""
+          }
+          if (fileName.isNotEmpty()) {
+            hadFile = true
+            val result = try {
+              mgr.downloadFileDirect(fileName)
+            } catch (e: Throwable) {
+              Log.e(TAG, "Failed to download clipboard file from floating menu", e)
+              false to null
+            }
+            fileDownloaded = result.first
+          }
+        }
+
+        handler.post {
+          try {
+            val msgRes = when {
+              !ok -> R.string.sc_test_failed
+              hadFile && fileDownloaded -> R.string.clip_file_download_success
+              hadFile && !fileDownloaded -> R.string.clip_file_download_failed
+              else -> R.string.sc_test_success
+            }
+            Toast.makeText(
+              this@FloatingAsrService,
+              getString(msgRes),
+              Toast.LENGTH_SHORT
+            ).show()
+          } catch (e: Throwable) {
+            Log.e(TAG, "Failed to show pull result toast", e)
+          }
+        }
+      }
+    } catch (e: Throwable) {
+      Log.e(TAG, "Failed to init clipboard manager for pull", e)
     }
+  }
 
     // ==================== 辅助方法 ====================
 

@@ -471,12 +471,19 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         tv.background = null
         tv.setPaddingRelative(0, 0, 0, 0)
 
-        // 启用点击粘贴
+        // 启用点击：文本类型为粘贴，文件类型为拉取
         tv.isClickable = true
         tv.isFocusable = true
         tv.setOnClickListener { v ->
             performKeyHaptic(v)
-            actionHandler.handleClipboardPreviewClick(currentInputConnection)
+            if (preview.type == ClipboardPreviewType.FILE) {
+                val entryId = preview.fileEntryId
+                if (!entryId.isNullOrEmpty()) {
+                    downloadClipboardFileById(entryId)
+                }
+            } else {
+                actionHandler.handleClipboardPreviewClick(currentInputConnection)
+            }
         }
 
         // 若当前处于录音波形显示，临时切换为文本以展示预览
@@ -1089,8 +1096,22 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         if (clipAdapter == null) {
             clipAdapter = ClipboardPanelAdapter { e ->
                 performKeyHaptic(clipList)
-                clipStore?.pasteInto(currentInputConnection, e.text)
-                hideClipboardPanel()
+                when (e.type) {
+                    com.brycewg.asrkb.clipboard.EntryType.TEXT -> {
+                        // 文本类型：粘贴到输入框
+                        clipStore?.pasteInto(currentInputConnection, e.text)
+                        hideClipboardPanel()
+                    }
+                    com.brycewg.asrkb.clipboard.EntryType.IMAGE,
+                    com.brycewg.asrkb.clipboard.EntryType.FILE -> {
+                        // 文件类型：未下载则先拉取，已下载则尝试打开
+                        if (e.downloadStatus == com.brycewg.asrkb.clipboard.DownloadStatus.COMPLETED && e.localFilePath != null) {
+                            openFile(e.localFilePath)
+                        } else {
+                            downloadClipboardFile(e)
+                        }
+                    }
+                }
             }
             clipList?.layoutManager = LinearLayoutManager(this)
             clipList?.adapter = clipAdapter
@@ -1178,9 +1199,20 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     }
 
     private fun refreshClipboardList() {
-        val list = clipStore?.getAll().orEmpty()
-        clipAdapter?.submitList(list)
-        clipTxtCount?.text = getString(R.string.clip_count_format, list.size)
+        val all = clipStore?.getAll().orEmpty()
+        var fileSeen = false
+        val filtered = all.filter { entry ->
+            if (entry.type == com.brycewg.asrkb.clipboard.EntryType.TEXT) {
+                true
+            } else if (!fileSeen) {
+                fileSeen = true
+                true
+            } else {
+                false
+            }
+        }
+        clipAdapter?.submitList(filtered)
+        clipTxtCount?.text = getString(R.string.clip_count_format, filtered.size)
     }
 
     /**
@@ -2086,7 +2118,29 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                                 txtStatusText?.postDelayed({ actionHandler.reShowClipboardPreviewIfAny() }, 900)
                             }
                         }
-                    }
+
+                        override fun onFilePulled(type: com.brycewg.asrkb.clipboard.EntryType, fileName: String, serverFileName: String) {
+                            rootView?.post {
+                                // 刷新剪贴板列表显示新文件
+                                if (isClipboardPanelVisible) {
+                                    refreshClipboardList()
+                                }
+                                // 在键盘信息栏展示文件预览（文件名 + 格式）
+                                val store = clipStore
+                                if (store != null) {
+                                    val all = store.getAll()
+                                    val entry = all.firstOrNull {
+                                        it.type != com.brycewg.asrkb.clipboard.EntryType.TEXT &&
+                                            (it.serverFileName == serverFileName || it.fileName == fileName)
+                                    }
+                                    if (entry != null) {
+                                        actionHandler.showClipboardFilePreview(entry)
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    clipStore
                 )
             }
             syncClipboardManager?.start()
@@ -2096,6 +2150,131 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             }
         } else {
             syncClipboardManager?.stop()
+        }
+    }
+
+    /**
+     * 下载剪贴板文件（通过条目引用）
+     */
+    private fun downloadClipboardFile(entry: com.brycewg.asrkb.clipboard.ClipboardHistoryStore.Entry) {
+        serviceScope.launch(Dispatchers.IO) {
+            try {
+                val success = syncClipboardManager?.downloadFile(entry.id) ?: false
+                rootView?.post {
+                    if (success) {
+                        android.widget.Toast.makeText(
+                            this@AsrKeyboardService,
+                            getString(R.string.clip_file_download_success),
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                        // 刷新列表显示下载完成状态
+                        if (isClipboardPanelVisible) {
+                            refreshClipboardList()
+                        }
+                    } else {
+                        android.widget.Toast.makeText(
+                            this@AsrKeyboardService,
+                            getString(R.string.clip_file_download_failed),
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                        // 刷新列表显示失败状态
+                        if (isClipboardPanelVisible) {
+                            refreshClipboardList()
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("AsrKeyboardService", "Failed to download file", e)
+                rootView?.post {
+                    android.widget.Toast.makeText(
+                        this@AsrKeyboardService,
+                        getString(R.string.clip_file_download_error, e.message ?: ""),
+                        android.widget.Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    /**
+     * 通过剪贴板条目 ID 下载文件（用于信息栏预览点击）。
+     */
+    private fun downloadClipboardFileById(entryId: String) {
+        val store = clipStore ?: return
+        val entry = store.getEntryById(entryId) ?: return
+        downloadClipboardFile(entry)
+    }
+
+    /**
+     * 打开已下载的文件
+     */
+    private fun openFile(filePath: String) {
+        try {
+            val file = java.io.File(filePath)
+            if (!file.exists()) {
+                android.widget.Toast.makeText(
+                    this,
+                    getString(R.string.clip_file_not_found),
+                    android.widget.Toast.LENGTH_SHORT
+                ).show()
+                return
+            }
+
+            val uri = androidx.core.content.FileProvider.getUriForFile(
+                this,
+                "${packageName}.fileprovider",
+                file
+            )
+
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, getMimeType(file))
+                addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+
+            try {
+                startActivity(intent)
+            } catch (e: android.content.ActivityNotFoundException) {
+                // 如果没有应用可以打开，则使用系统分享
+                val shareIntent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+                    type = getMimeType(file)
+                    putExtra(android.content.Intent.EXTRA_STREAM, uri)
+                    addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startActivity(android.content.Intent.createChooser(shareIntent, getString(R.string.clip_file_open_chooser_title)).apply {
+                    addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+                })
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("AsrKeyboardService", "Failed to open file: $filePath", e)
+            android.widget.Toast.makeText(
+                this,
+                getString(R.string.clip_file_open_failed, e.message ?: ""),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /**
+     * 根据文件扩展名获取 MIME 类型
+     */
+    private fun getMimeType(file: java.io.File): String {
+        val extension = file.extension.lowercase()
+        return when (extension) {
+            "jpg", "jpeg" -> "image/jpeg"
+            "png" -> "image/png"
+            "gif" -> "image/gif"
+            "webp" -> "image/webp"
+            "pdf" -> "application/pdf"
+            "txt" -> "text/plain"
+            "doc", "docx" -> "application/msword"
+            "xls", "xlsx" -> "application/vnd.ms-excel"
+            "ppt", "pptx" -> "application/vnd.ms-powerpoint"
+            "zip" -> "application/zip"
+            "mp4" -> "video/mp4"
+            "mp3" -> "audio/mpeg"
+            else -> "*/*"
         }
     }
 

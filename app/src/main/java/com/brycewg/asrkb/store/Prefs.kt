@@ -994,6 +994,11 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_SC_LAST_UP_HASH, "") ?: ""
         set(value) = sp.edit { putString(KEY_SC_LAST_UP_HASH, value) }
 
+    // 记录最近一次处理的云端剪贴板文件名（用于避免重复文件预览）
+    var syncClipboardLastFileName: String
+        get() = sp.getString(KEY_SC_LAST_FILE_NAME, "") ?: ""
+        set(value) = sp.edit { putString(KEY_SC_LAST_FILE_NAME, value) }
+
     // ---- 备份/同步（WebDAV）偏好项 ----
     var webdavUrl: String
         get() = sp.getString(KEY_WD_URL, "") ?: ""
@@ -1160,6 +1165,7 @@ class Prefs(context: Context) {
         private const val KEY_SC_AUTO_PULL = "syncclip_auto_pull"
         private const val KEY_SC_PULL_INTERVAL_SEC = "syncclip_pull_interval_sec"
         private const val KEY_SC_LAST_UP_HASH = "syncclip_last_uploaded_hash"
+        private const val KEY_SC_LAST_FILE_NAME = "syncclip_last_file_name"
 
         // WebDAV 备份
         private const val KEY_WD_URL = "wd_url"

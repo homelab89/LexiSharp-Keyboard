@@ -765,7 +765,22 @@ class KeyboardActionHandler(
      */
     fun showClipboardPreview(fullText: String) {
         // 不预截断，交由 UI TextView 的 ellipsize 控制单行显示范围
-        val preview = ClipboardPreview(fullText, fullText)
+        val preview = ClipboardPreview(fullText, fullText, ClipboardPreviewType.TEXT, null)
+        sessionContext = sessionContext.copy(clipboardPreview = preview)
+        uiListener?.onShowClipboardPreview(preview)
+    }
+
+    /**
+     * 显示文件类型的剪贴板预览（仅展示文件名和格式）。
+     */
+    fun showClipboardFilePreview(entry: com.brycewg.asrkb.clipboard.ClipboardHistoryStore.Entry) {
+        val label = entry.getDisplayLabel()
+        val preview = ClipboardPreview(
+            fullText = label,
+            displaySnippet = label,
+            type = ClipboardPreviewType.FILE,
+            fileEntryId = entry.id
+        )
         sessionContext = sessionContext.copy(clipboardPreview = preview)
         uiListener?.onShowClipboardPreview(preview)
     }
@@ -782,8 +797,11 @@ class KeyboardActionHandler(
      * 处理剪贴板预览点击（粘贴）
      */
     fun handleClipboardPreviewClick(ic: InputConnection?) {
+        val preview = sessionContext.clipboardPreview ?: return
+        // 仅文本类型预览支持点击粘贴
+        if (preview.type != ClipboardPreviewType.TEXT) return
         if (ic == null) return
-        val text = sessionContext.clipboardPreview?.fullText
+        val text = preview.fullText
         if (!text.isNullOrEmpty()) {
             inputHelper.finishComposingText(ic)
             saveUndoSnapshot(ic)

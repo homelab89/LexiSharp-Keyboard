@@ -32,4 +32,12 @@
     <string name="clip_unpinned">Unpinned</string>
     <string name="clip_deleted">Deleted</string>
     <string name="clip_cannot_delete_pinned">Pinned. Swipe right to unpin</string>
+
+    <!-- Clipboard file sync / download -->
+    <string name="clip_file_download_success">File downloaded</string>
+    <string name="clip_file_download_failed">File download failed</string>
+    <string name="clip_file_download_error">File download error: %1$s</string>
+    <string name="clip_file_not_found">File not found</string>
+    <string name="clip_file_open_chooser_title">Open file</string>
+    <string name="clip_file_open_failed">Cannot open file: %1$s</string>
 </resources>

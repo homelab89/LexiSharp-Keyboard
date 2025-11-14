@@ -32,4 +32,12 @@
     <string name="clip_unpinned">已取消固定</string>
     <string name="clip_deleted">已删除</string>
     <string name="clip_cannot_delete_pinned">该记录已固定，请右滑取消固定</string>
+
+    <!-- 剪贴板文件同步 / 下载 -->
+    <string name="clip_file_download_success">文件下载成功</string>
+    <string name="clip_file_download_failed">文件下载失败</string>
+    <string name="clip_file_download_error">文件下载出错：%1$s</string>
+    <string name="clip_file_not_found">文件不存在</string>
+    <string name="clip_file_open_chooser_title">打开文件</string>
+    <string name="clip_file_open_failed">无法打开文件：%1$s</string>
 </resources>

@@ -73,11 +73,21 @@ data class PostprocCommit(
 )
 
 /**
+ * 剪贴板预览类型：区分文本与文件。
+ */
+enum class ClipboardPreviewType {
+    TEXT,
+    FILE
+}
+
+/**
  * 剪贴板预览状态
  */
 data class ClipboardPreview(
     val fullText: String,
-    val displaySnippet: String
+    val displaySnippet: String,
+    val type: ClipboardPreviewType = ClipboardPreviewType.TEXT,
+    val fileEntryId: String? = null
 )
 
 /**

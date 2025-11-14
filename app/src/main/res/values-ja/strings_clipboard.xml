@@ -33,4 +33,12 @@
     <string name="clip_unpinned">固定を解除しました</string>
     <string name="clip_deleted">削除しました</string>
     <string name="clip_cannot_delete_pinned">固定済みです。右スワイプで解除してください</string>
+
+    <!-- クリップボードファイルの同期 / ダウンロード -->
+    <string name="clip_file_download_success">ファイルをダウンロードしました</string>
+    <string name="clip_file_download_failed">ファイルのダウンロードに失敗しました</string>
+    <string name="clip_file_download_error">ファイルのダウンロード中にエラーが発生しました: %1$s</string>
+    <string name="clip_file_not_found">ファイルが見つかりません</string>
+    <string name="clip_file_open_chooser_title">ファイルを開く</string>
+    <string name="clip_file_open_failed">ファイルを開けません: %1$s</string>
 </resources>

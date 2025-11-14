@@ -37,10 +37,15 @@ class ClipboardPanelAdapter(
     class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val tv: TextView = itemView.findViewById(R.id.tvEntry)
         private val pin: View? = itemView.findViewById(R.id.viewPinned)
-        fun bind(e: ClipboardHistoryStore.Entry, onClick: (ClipboardHistoryStore.Entry) -> Unit) {
-            tv.text = e.text
-            pin?.visibility = if (e.pinned) View.VISIBLE else View.GONE
+
+        fun bind(
+            e: ClipboardHistoryStore.Entry,
+            onClick: (ClipboardHistoryStore.Entry) -> Unit
+        ) {
+            // 文本与文件统一使用 Entry 自带的展示文案，文件为「EXT-名称」形式
+            tv.text = e.getDisplayLabel()
             itemView.setOnClickListener { onClick(e) }
+            pin?.visibility = if (e.pinned) View.VISIBLE else View.GONE
         }
     }
 }
