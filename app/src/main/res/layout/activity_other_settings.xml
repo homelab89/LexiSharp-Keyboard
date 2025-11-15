@@ -24,6 +24,12 @@
       android:padding="16dp"
       android:orientation="vertical">
 
+    <ViewStub
+      android:id="@+id/pro_inject_stub_other"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp" />
+
     <!-- 隐私与数据：放在最上方的两个总开关 -->
     <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/switchDisableAsrHistory"

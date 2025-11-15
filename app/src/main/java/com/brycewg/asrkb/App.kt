@@ -18,6 +18,10 @@ class App : Application() {
         super.onCreate()
         // 在可用时为所有Activity启用Material You动态颜色 (Android 12+)
         DynamicColors.applyToActivitiesIfAvailable(this)
+        // Pro：安装自定义配色生命周期回调
+        try {
+            ProUiInjector.setupProCustomColors(this)
+        } catch (_: Throwable) { }
         // 应用应用内语言设置（空表示跟随系统）
         try {
             val prefs = Prefs(this)

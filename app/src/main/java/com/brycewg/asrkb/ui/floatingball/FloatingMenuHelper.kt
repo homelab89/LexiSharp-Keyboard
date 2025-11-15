@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.UiColors
+import com.brycewg.asrkb.ProUiInjector
 import com.google.android.material.color.DynamicColors
 
 /**
@@ -33,7 +34,8 @@ class FloatingMenuHelper(
     // 包裹动态主题的上下文，用于创建所有视图
     private val context: Context = run {
         val themedCtx = ContextThemeWrapper(rawContext, R.style.Theme_ASRKeyboard)
-        DynamicColors.wrapContextIfAvailable(themedCtx)
+        val dynCtx = DynamicColors.wrapContextIfAvailable(themedCtx)
+        ProUiInjector.wrapContextWithProColors(dynCtx)
     }
 
     /**

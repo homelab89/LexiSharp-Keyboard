@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
-import android.view.ContextThemeWrapper
 import android.graphics.PixelFormat
 import android.os.Build
 import android.util.Log
@@ -16,8 +15,10 @@ import android.view.WindowInsets
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.graphics.toColorInt
+import android.view.ContextThemeWrapper
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.UiColors
+import com.brycewg.asrkb.ProUiInjector
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.ui.widgets.ProcessingSpinnerView
 import com.google.android.material.color.DynamicColors
@@ -73,9 +74,10 @@ class FloatingBallViewManager(
         try {
             val themedCtx = ContextThemeWrapper(context, R.style.Theme_ASRKeyboard)
             val dynCtx = DynamicColors.wrapContextIfAvailable(themedCtx)
-            monetContext = dynCtx
+            val coloredCtx = ProUiInjector.wrapContextWithProColors(dynCtx)
+            monetContext = coloredCtx
 
-            val view = LayoutInflater.from(dynCtx).inflate(R.layout.floating_asr_ball, null, false)
+            val view = LayoutInflater.from(coloredCtx).inflate(R.layout.floating_asr_ball, null, false)
             ballIcon = view.findViewById(R.id.ballIcon)
             ripple1 = view.findViewById(R.id.ripple1)
             ripple2 = view.findViewById(R.id.ripple2)

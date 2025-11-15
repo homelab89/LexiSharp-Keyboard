@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.inputmethodservice.InputMethodService
 import android.os.Vibrator
 import android.view.LayoutInflater
+import android.view.ContextThemeWrapper
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.HapticFeedbackConstants
@@ -33,6 +34,7 @@ import com.brycewg.asrkb.asr.AsrVendor
 import com.brycewg.asrkb.asr.BluetoothRouteManager
 import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.store.Prefs
+import com.brycewg.asrkb.ProUiInjector
 import com.brycewg.asrkb.ui.SettingsActivity
 import com.brycewg.asrkb.ui.AsrVendorUi
 import kotlinx.coroutines.CoroutineScope
@@ -114,6 +116,10 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     private var isNumpadPanelVisible: Boolean = false
     // 数字/符号面板返回目标：true 表示返回到 AI 编辑面板；false 表示返回到主键盘
     private var numpadReturnToAiPanel: Boolean = false
+    private var appliedCustomColorOverlay: String = ""
+    private var pendingCustomColorRefresh: Boolean = false
+    private var isRebuildingCustomColors: Boolean = false
+    private var imeViewVisible: Boolean = false
     private var btnSettings: ImageButton? = null
     private var btnEnter: ImageButton? = null
     private var btnPostproc: ImageButton? = null
@@ -182,6 +188,7 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     override fun onCreate() {
         super.onCreate()
         prefs = Prefs(this)
+        appliedCustomColorOverlay = prefs.proCustomColorOverlay
 
         // 初始化组件
         inputHelper = InputConnectionHelper("AsrKeyboardService")
@@ -207,17 +214,24 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         // 监听设置变化以即时刷新键盘 UI
         val r = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == ACTION_REFRESH_IME_UI) {
-                    val v = rootView
-                    if (v != null) {
-                        applyKeyboardHeightScale(v)
-                        applyExtensionButtonConfig()
-                        v.requestLayout()
-                        // 第二次异步重算，确保尺寸变化与父容器测量完成后 padding/overlay 位置也被同步
-                        v.post {
+                when (intent?.action) {
+                    ACTION_REFRESH_IME_UI -> {
+                        val v = rootView
+                        if (v != null) {
                             applyKeyboardHeightScale(v)
+                            applyExtensionButtonConfig()
                             v.requestLayout()
+                            // 第二次异步重算，确保尺寸变化与父容器测量完成后 padding/overlay 位置也被同步
+                            v.post {
+                                applyKeyboardHeightScale(v)
+                                v.requestLayout()
+                            }
                         }
+                        ensureCustomColorsSynced()
+                    }
+                    ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED -> {
+                        pendingCustomColorRefresh = true
+                        ensureCustomColorsSynced()
                     }
                 }
             }
@@ -227,7 +241,10 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             androidx.core.content.ContextCompat.registerReceiver(
                 /* context = */ this,
                 /* receiver = */ r,
-                /* filter = */ IntentFilter(ACTION_REFRESH_IME_UI),
+                /* filter = */ IntentFilter().apply {
+                    addAction(ACTION_REFRESH_IME_UI)
+                    addAction(ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED)
+                },
                 /* flags = */ androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
             )
         } catch (e: Throwable) {
@@ -254,10 +271,21 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
     @SuppressLint("InflateParams")
     override fun onCreateInputView(): View {
-        // IME context often uses a framework theme; wrap with our theme and Material dynamic colors.
-        val themedContext = android.view.ContextThemeWrapper(this, R.style.Theme_ASRKeyboard_Ime)
+        val view = createKeyboardView()
+        appliedCustomColorOverlay = prefs.proCustomColorOverlay
+        pendingCustomColorRefresh = false
+        return view
+    }
+
+    private fun createKeyboardView(): View {
+        val themedContext = ContextThemeWrapper(this, R.style.Theme_ASRKeyboard_Ime)
         val dynamicContext = com.google.android.material.color.DynamicColors.wrapContextIfAvailable(themedContext)
-        val view = LayoutInflater.from(dynamicContext).inflate(R.layout.keyboard_view, null, false)
+        val coloredContext = ProUiInjector.wrapContextWithProColors(dynamicContext)
+        val view = LayoutInflater.from(coloredContext).inflate(R.layout.keyboard_view, null, false)
+        return setupKeyboardView(view)
+    }
+
+    private fun setupKeyboardView(view: View): View {
         rootView = view
 
         // 应用 Window Insets 以适配 Android 15 边缘到边缘显示
@@ -282,13 +310,48 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         view.post { syncSystemBarsToKeyboardBackground(view) }
 
         // Pro：注入 IME 侧额外功能
-        try { com.brycewg.asrkb.ProUiInjector.injectIntoImeKeyboard(this, view) } catch (_: Throwable) { }
+        try { ProUiInjector.injectIntoImeKeyboard(this, view) } catch (_: Throwable) { }
 
         return view
     }
 
+    private fun rebuildKeyboardForCustomColors() {
+        val desiredOverlay = prefs.proCustomColorOverlay
+        if (!pendingCustomColorRefresh && desiredOverlay == appliedCustomColorOverlay) {
+            return
+        }
+        if (!imeViewVisible) {
+            pendingCustomColorRefresh = true
+            return
+        }
+        if (isRebuildingCustomColors) return
+        try {
+            isRebuildingCustomColors = true
+            val newView = createKeyboardView()
+            setInputView(newView)
+            rootView = newView
+            appliedCustomColorOverlay = desiredOverlay
+            pendingCustomColorRefresh = false
+        } catch (t: Throwable) {
+            android.util.Log.e("AsrKeyboardService", "Failed to rebuild keyboard for custom colors", t)
+        } finally {
+            isRebuildingCustomColors = false
+        }
+    }
+
+    private fun ensureCustomColorsSynced() {
+        if (prefs.proCustomColorOverlay != appliedCustomColorOverlay) {
+            pendingCustomColorRefresh = true
+        }
+        if (pendingCustomColorRefresh) {
+            rebuildKeyboardForCustomColors()
+        }
+    }
+
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
+        imeViewVisible = true
+        ensureCustomColorsSynced()
         // 每次键盘视图启动时应用一次高度/底部间距等缩放
         applyKeyboardHeightScale(rootView)
         rootView?.requestLayout()
@@ -375,6 +438,7 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
+        imeViewVisible = false
         DebugLogManager.log("ime", "finish_input_view")
         try {
             syncClipboardManager?.stop()

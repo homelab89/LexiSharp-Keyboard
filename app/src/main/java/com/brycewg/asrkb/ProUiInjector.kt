@@ -1,11 +1,21 @@
 package com.brycewg.asrkb
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
+import com.brycewg.asrkb.store.Prefs
+import java.lang.ref.WeakReference
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * 将 Pro 专属 UI 动态注入到主工程预留的插槽中。
@@ -13,6 +23,12 @@ import android.view.ViewStub
  */
 object ProUiInjector {
   private const val TAG = "ProUiInjector"
+  const val ACTION_PRO_CUSTOM_COLORS_CHANGED = "com.brycewg.asrkb.pro.CUSTOM_COLORS_CHANGED"
+
+  @Volatile private var customColorLifecycleRegistered: Boolean = false
+  private val customColorActivityRefs = CopyOnWriteArrayList<WeakReference<Activity>>()
+  private val customColorHandler = Handler(Looper.getMainLooper())
+  private var customColorPrefsListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
 
   /**
    * 备份设置页注入：
@@ -45,6 +61,32 @@ object ProUiInjector {
       }
     } catch (t: Throwable) {
       if (BuildConfig.DEBUG) Log.d(TAG, "skip pro ui inject: ${t.message}")
+    }
+  }
+
+  /**
+   * 其他设置页注入：
+   * - main 布局提供 ViewStub：@id/pro_inject_stub_other
+   * - pro 侧提供布局：res/layout/pro_other_custom_colors.xml（包含自定义配色入口卡片）
+   */
+  fun injectIntoOtherSettings(activity: Activity, root: View) {
+    if (!Edition.isPro) return
+    val res = activity.resources
+    val pkg = activity.packageName
+    try {
+      val layoutId = res.getIdentifier("pro_other_custom_colors", "layout", pkg)
+      if (layoutId == 0) return
+      val stubId = res.getIdentifier("pro_inject_stub_other", "id", pkg)
+      val stub = if (stubId != 0) root.findViewById<ViewStub?>(stubId) else null
+      val inflater = LayoutInflater.from(activity)
+      if (stub != null) {
+        stub.layoutResource = layoutId
+        stub.inflate()
+      } else if (root is ViewGroup) {
+        inflater.inflate(layoutId, root, true)
+      }
+    } catch (t: Throwable) {
+      if (BuildConfig.DEBUG) Log.d(TAG, "skip pro inject(other): ${t.message}")
     }
   }
 
@@ -154,6 +196,7 @@ object ProUiInjector {
       // Pro: 正则后处理
       if (sp.contains("pro_regex_enabled")) o.put("pro_regex_enabled", sp.getBoolean("pro_regex_enabled", false))
       if (sp.contains("pro_regex_rules_json")) o.put("pro_regex_rules_json", sp.getString("pro_regex_rules_json", ""))
+      if (sp.contains("pro_custom_color_overlay")) o.put("pro_custom_color_overlay", sp.getString("pro_custom_color_overlay", ""))
       o.toString()
     } catch (t: Throwable) {
       if (BuildConfig.DEBUG) Log.d(TAG, "buildBackupJson merge(pro) failed: ${t.message}")
@@ -180,6 +223,7 @@ object ProUiInjector {
       if (o.has("pro_trad_convert_variant")) edit.putString("pro_trad_convert_variant", o.optString("pro_trad_convert_variant", "std"))
       if (o.has("pro_regex_enabled")) edit.putBoolean("pro_regex_enabled", o.optBoolean("pro_regex_enabled", false))
       if (o.has("pro_regex_rules_json")) edit.putString("pro_regex_rules_json", o.optString("pro_regex_rules_json", ""))
+      if (o.has("pro_custom_color_overlay")) edit.putString("pro_custom_color_overlay", o.optString("pro_custom_color_overlay", ""))
       edit.apply()
 
       // 触发 Pro 侧自动备份调度刷新（仅 Pro 变体会有接收者）
@@ -243,6 +287,107 @@ object ProUiInjector {
       }
     } catch (t: Throwable) {
       if (BuildConfig.DEBUG) Log.d(TAG, "skip pro ime inject: ${t.message}")
+    }
+  }
+
+  fun setupProCustomColors(application: Application) {
+    if (!Edition.isPro) return
+    if (customColorLifecycleRegistered) return
+    customColorLifecycleRegistered = true
+    application.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
+      override fun onActivityPreCreated(activity: Activity, savedInstanceState: Bundle?) {
+        try { applyCustomColorsToActivity(activity) } catch (t: Throwable) {
+          if (BuildConfig.DEBUG) Log.d(TAG, "apply custom colors failed: ${t.message}")
+        }
+      }
+
+      override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        customColorActivityRefs.add(WeakReference(activity))
+        pruneCustomColorActivities(null)
+      }
+
+      override fun onActivityDestroyed(activity: Activity) {
+        pruneCustomColorActivities(activity)
+      }
+
+      override fun onActivityStarted(activity: Activity) {}
+      override fun onActivityResumed(activity: Activity) {}
+      override fun onActivityPaused(activity: Activity) {}
+      override fun onActivityStopped(activity: Activity) {}
+      override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+    })
+
+    val sp = application.getSharedPreferences("asr_prefs", Context.MODE_PRIVATE)
+    val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+      if (key == Prefs.KEY_PRO_CUSTOM_COLOR_OVERLAY) {
+        customColorHandler.post {
+          notifyCustomColorChanged(application)
+          recreateTrackedActivities()
+        }
+      }
+    }
+    sp.registerOnSharedPreferenceChangeListener(listener)
+    customColorPrefsListener = listener
+  }
+
+  fun wrapContextWithProColors(context: Context): Context {
+    if (!Edition.isPro) return context
+    val overlayId = resolveCustomColorOverlayResId(context)
+    return if (overlayId != 0) ContextThemeWrapper(context, overlayId) else context
+  }
+
+  private fun applyCustomColorsToActivity(activity: Activity) {
+    val overlayId = resolveCustomColorOverlayResId(activity)
+    if (overlayId != 0) {
+      try {
+        activity.theme?.applyStyle(overlayId, true)
+      } catch (t: Throwable) {
+        if (BuildConfig.DEBUG) Log.d(TAG, "Failed to apply custom color overlay: ${t.message}")
+      }
+    }
+  }
+
+  private fun resolveCustomColorOverlayResId(context: Context): Int {
+    if (!Edition.isPro) return 0
+    val overlayName = try {
+      val appCtx = context.applicationContext ?: context
+      val sp = appCtx.getSharedPreferences("asr_prefs", Context.MODE_PRIVATE)
+      sp.getString(Prefs.KEY_PRO_CUSTOM_COLOR_OVERLAY, "") ?: ""
+    } catch (_: Throwable) {
+      ""
+    }
+    if (overlayName.isBlank()) return 0
+    return context.resources.getIdentifier(overlayName, "style", context.packageName)
+  }
+
+  private fun recreateTrackedActivities() {
+    pruneCustomColorActivities(null)
+    customColorActivityRefs.forEach { ref ->
+      val activity = ref.get()
+      if (activity != null) {
+        try {
+          activity.recreate()
+        } catch (t: Throwable) {
+          if (BuildConfig.DEBUG) Log.d(TAG, "Failed to recreate activity for custom colors: ${t.message}")
+        }
+      }
+    }
+  }
+
+  private fun pruneCustomColorActivities(target: Activity?) {
+    customColorActivityRefs.removeAll { ref ->
+      val activity = ref.get()
+      activity == null || (target != null && activity == target)
+    }
+  }
+
+  private fun notifyCustomColorChanged(context: Context) {
+    if (!Edition.isPro) return
+    try {
+      val intent = android.content.Intent(ACTION_PRO_CUSTOM_COLORS_CHANGED)
+      context.sendBroadcast(intent)
+    } catch (t: Throwable) {
+      if (BuildConfig.DEBUG) Log.d(TAG, "Failed to broadcast custom color change: ${t.message}")
     }
   }
 }
