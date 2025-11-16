@@ -1240,6 +1240,8 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         }
 
         refreshClipboardList()
+        // 应用与主键盘一致的背景色
+        layoutClipboardPanel?.let { applyKeyboardBackgroundColor(it) }
         layoutClipboardPanel?.visibility = View.VISIBLE
         // 同步高度：与主键盘一致
         if (mainHeight != null && mainHeight > 0) {
