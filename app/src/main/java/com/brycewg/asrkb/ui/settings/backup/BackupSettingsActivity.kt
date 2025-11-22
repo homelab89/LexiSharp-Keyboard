@@ -2,7 +2,6 @@ package com.brycewg.asrkb.ui.settings.backup
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -50,14 +49,6 @@ class BackupSettingsActivity : AppCompatActivity() {
 
         setupFileSection()
         setupWebdavSection()
-
-        // Pro: 注入自动备份等专属 UI
-        try {
-            val root = findViewById<android.view.View>(android.R.id.content)
-            com.brycewg.asrkb.ProUiInjector.injectIntoBackupSettings(this, root)
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to inject pro UI", e)
-        }
     }
 
     // ================= 文件导入/导出 =================
@@ -92,7 +83,7 @@ class BackupSettingsActivity : AppCompatActivity() {
     private fun exportSettings(uri: Uri) {
         try {
             contentResolver.openOutputStream(uri)?.use { os ->
-                val jsonString = com.brycewg.asrkb.ProUiInjector.buildBackupJson(this, prefs)
+                val jsonString = prefs.exportJsonString()
                 os.write(jsonString.toByteArray(Charsets.UTF_8))
                 os.flush()
             }
@@ -113,7 +104,6 @@ class BackupSettingsActivity : AppCompatActivity() {
 
             val success = prefs.importJsonString(json)
             if (success) {
-                try { com.brycewg.asrkb.ProUiInjector.applyProImport(this, json) } catch (e: Exception) { Log.e(TAG, "Failed to apply pro import", e) }
                 // 导入完成后，通知 IME 即时刷新（包含高度与按钮交换等）
                 try {
                     sendBroadcast(android.content.Intent(com.brycewg.asrkb.ime.AsrKeyboardService.ACTION_REFRESH_IME_UI))
@@ -183,7 +173,6 @@ class BackupSettingsActivity : AppCompatActivity() {
             val ok = text != null && prefs.importJsonString(text)
             withContext(Dispatchers.Main) {
                 if (ok) {
-                    try { com.brycewg.asrkb.ProUiInjector.applyProImport(this@BackupSettingsActivity, text!!) } catch (e: Exception) { Log.e(TAG, "Failed to apply pro import", e) }
                     try { sendBroadcast(android.content.Intent(com.brycewg.asrkb.ime.AsrKeyboardService.ACTION_REFRESH_IME_UI)) } catch (e: Exception) { Log.e(TAG, "Failed to send refresh broadcast", e) }
                     Toast.makeText(this@BackupSettingsActivity, getString(R.string.toast_webdav_download_success), Toast.LENGTH_SHORT).show()
                 } else {

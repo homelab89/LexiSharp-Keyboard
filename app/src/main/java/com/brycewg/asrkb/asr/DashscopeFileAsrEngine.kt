@@ -75,12 +75,7 @@ class DashscopeFileAsrEngine(
                 .build()
 
             val basePrompt = prefs.dashPrompt.trim()
-            val sysPrompt = try {
-                // Pro 版可注入个性化上下文
-                com.brycewg.asrkb.asr.ProAsrHelper.buildPromptWithContext(context, basePrompt)
-            } catch (t: Throwable) {
-                basePrompt
-            }
+            val sysPrompt = basePrompt
             val systemMessage = MultiModalMessage.builder()
                 .role(Role.SYSTEM.getValue())
                 .content(listOf(mapOf("text" to sysPrompt)))

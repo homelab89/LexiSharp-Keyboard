@@ -116,13 +116,6 @@ class AsrSettingsActivity : AppCompatActivity() {
         setupVendorSpecificSettings()
         observeViewModel()
 
-        // Pro：注入“个性化识别热词管理”入口
-        try {
-            val root = findViewById<android.view.View>(android.R.id.content)
-            com.brycewg.asrkb.ProUiInjector.injectIntoAsrSettings(this, root)
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Failed to inject pro UI (ASR)", e)
-        }
     }
 
     override fun onResume() {
@@ -257,12 +250,6 @@ class AsrSettingsActivity : AppCompatActivity() {
     }
 
     private fun setupVolcengineSettings() {
-        // Pro：在火山引擎分组内注入“双重识别”
-        try {
-            com.brycewg.asrkb.ProUiInjector.injectIntoVolcStreamingExtras(this, groupVolc)
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Failed to inject pro UI (Volc streaming in-group)", e)
-        }
 
         // EditTexts
         findViewById<EditText>(R.id.etAppKey).apply {

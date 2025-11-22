@@ -13,7 +13,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.brycewg.asrkb.R
-import com.brycewg.asrkb.ProUiInjector
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.ui.installExplainedSwitch
 import com.google.android.material.appbar.MaterialToolbar
@@ -56,10 +55,6 @@ class OtherSettingsActivity : AppCompatActivity() {
         setupSyncClipboard()
         setupPrivacyToggles()
 
-        // Pro：注入自定义配色入口
-        try {
-            ProUiInjector.injectIntoOtherSettings(this, findViewById(android.R.id.content))
-        } catch (_: Throwable) { }
 
         // Observe ViewModel state
         observeViewModel()

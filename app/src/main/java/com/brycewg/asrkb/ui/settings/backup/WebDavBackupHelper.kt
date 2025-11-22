@@ -12,8 +12,8 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
- * WebDAV 备份公共辅助：供主工程与 Pro 变体（后台任务）共用。
- * 注意：不做任何 UI 提示，调用方自行处理结果与提示。
+ * WebDAV 备份公共辅助：供主工程复用的后台任务工具。
+ * 注意：不包含任何 UI 展示，调用方需自行提示。
  */
 object WebDavBackupHelper {
   private const val TAG = "WebDavBackupHelper"
@@ -39,7 +39,7 @@ object WebDavBackupHelper {
         ensureDirectoryExists(prefs, baseUrl, http)
 
         val fileUrl = buildFileUrl(baseUrl)
-        val payload = try { com.brycewg.asrkb.ProUiInjector.buildBackupJson(context, prefs) } catch (_: Throwable) { prefs.exportJsonString() }
+        val payload = prefs.exportJsonString()
         val body: RequestBody = payload.toRequestBody(JSON_MEDIA)
         val reqBuilder = Request.Builder().url(fileUrl).put(body)
         addBasicAuthIfNeeded(reqBuilder, prefs)

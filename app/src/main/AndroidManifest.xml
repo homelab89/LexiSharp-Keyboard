@@ -170,7 +170,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!-- 外部输入法联动（AIDL）：对外服务（OSS/Pro 通用） -->
         <service
             android:name=".api.ExternalSpeechService"
             android:exported="true" />

@@ -6,21 +6,13 @@ import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.store.Prefs
 
 /**
- * 识别结果后处理的小工具：统一封装常用过滤与可选 AI 后处理。
- *
- * 约定：
- * - 简单路径（applySimple）：仅执行“去除句末标点/emoji”和（Pro）繁体转换。
- * - 完整路径（applyWithAi）：在简单过滤基础上可选执行 LLM 后处理，并在结束后再次修剪句末标点；最后进行繁体转换。
- *
- * 注意：
- * - Pro 繁体转换通过 ProTradFacade 门面；OSS 变体为 no-op。
- * - 调用方可根据业务选择同步（简单）或异步（含 LLM）。
+ * 识别结果末处理：统一封装去尾处理与可选 AI 后处理
  */
 object AsrFinalFilters {
   private const val TAG = "AsrFinalFilters"
 
   /**
-   * 仅执行本地过滤：去除句末标点/emoji + （Pro）繁体转换。
+   * 执行基础过滤：去除句末标点/emoji，并处理预置替换
    */
   fun applySimple(context: Context, prefs: Prefs, input: String): String {
     var out = input
@@ -32,37 +24,21 @@ object AsrFinalFilters {
       Log.w(TAG, "trimTrailingPunct failed", t)
     }
 
-    // 语音预设替换：在本地修剪后优先匹配，命中则跳过后续所有处理（含正则/繁体）
-    try {
+    // 预置替换（最高优先级，直接返回替换文案）
+    return try {
       val rep = prefs.findSpeechPresetReplacement(out)
-      if (!rep.isNullOrEmpty()) {
-        return rep
-      }
+      if (!rep.isNullOrEmpty()) rep else out
     } catch (t: Throwable) {
       Log.w(TAG, "speech preset replacement failed", t)
-    }
-
-    // Pro 门面：正则表达式后处理（若开启）
-    out = try { ProRegexFacade.applyIfEnabled(context, out) } catch (t: Throwable) {
-      Log.w(TAG, "regex post-processing failed", t)
       out
     }
-
-    out = try { ProTradFacade.maybeToTraditional(context, out) } catch (t: Throwable) {
-      Log.w(TAG, "traditional convert failed", t)
-      out
-    }
-    return out
   }
-
-  // 已移除旧的 trimIfEnabled/toTraditionalIfEnabled 辅助函数，统一通过 applySimple/applyWithAi 管线处理。
 
   /**
    * 可选 AI 后处理：
    * - 先按需要去除句末标点；
    * - 若开启 LLM 且配置完整，调用 LLM 后处理；
-   * - 结束后再次按需要去除句末标点；
-   * - 最后执行（Pro）繁体转换。
+   * - 结束后再次按需要去除句末标点
    * 返回值沿用 LlmPostProcessor 的结果结构，text 字段为最终可提交文本。
    */
   suspend fun applyWithAi(
@@ -108,8 +84,7 @@ object AsrFinalFilters {
       if (forceAi || prefs.postprocSkipUnderChars <= 0) {
         false
       } else {
-        val effective = TextSanitizer.countEffectiveChars(base)
-        effective < prefs.postprocSkipUnderChars
+        TextSanitizer.countEffectiveChars(base) < prefs.postprocSkipUnderChars
       }
     } catch (t: Throwable) {
       Log.w(TAG, "skip threshold calculation failed", t)
@@ -141,20 +116,6 @@ object AsrFinalFilters {
       processed
     }
 
-    // 正则表达式后处理（Pro 门面；OSS 为 no-op）
-    processed = try { ProRegexFacade.applyIfEnabled(context, processed) } catch (t: Throwable) {
-      Log.w(TAG, "regex post-processing failed", t)
-      processed
-    }
-
-    // 繁体转换（Pro/OSS 门面）
-    processed = try {
-      ProTradFacade.maybeToTraditional(context, processed)
-    } catch (t: Throwable) {
-      Log.w(TAG, "traditional convert failed", t)
-      processed
-    }
-
     val usedAi = aiAttempted && ok
     return LlmPostProcessor.LlmProcessResult(
       ok = ok,
@@ -164,6 +125,4 @@ object AsrFinalFilters {
       usedAi = usedAi
     )
   }
-
-  // 正则后处理逻辑已移至 ProRegexFacade（pro/oss 双实现），避免在 main 泄露 Pro 逻辑。
 }

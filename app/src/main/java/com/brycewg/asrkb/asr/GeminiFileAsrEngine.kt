@@ -55,12 +55,7 @@ class GeminiFileAsrEngine(
             val apiKey = apiKeys.random()
             val model = prefs.gemModel.ifBlank { Prefs.DEFAULT_GEM_MODEL }
             val basePrompt = prefs.gemPrompt.ifBlank { DEFAULT_GEM_PROMPT }
-            // Pro功能：动态拼接个性化热词和上下文信息
-            val prompt = try {
-                com.brycewg.asrkb.asr.ProAsrHelper.buildPromptWithContext(context, basePrompt)
-            } catch (t: Throwable) {
-                basePrompt
-            }
+            val prompt = basePrompt
 
             val body = buildGeminiRequestBody(b64, prompt, model)
             val req = Request.Builder()
@@ -127,7 +122,7 @@ class GeminiFileAsrEngine(
                 if (prefs.geminiDisableThinking) {
                     // 根据模型类型设置合适的 thinkingBudget
                     val budget = when {
-                        model.contains("2.5-pro", ignoreCase = true) -> 128 // Pro 最低 128
+                        model.contains("2.5-pro", ignoreCase = true) -> 128
                         model.contains("2.5-flash", ignoreCase = true) -> 0  // Flash 可以为 0
                         else -> 0 // 其他情况默认为 0
                     }

@@ -242,7 +242,7 @@ class ExternalSpeechService : Service() {
             val scope = CoroutineScope(Dispatchers.Main)
             return when (vendor) {
                 AsrVendor.Volc -> if (streamingPreferred) {
-                    ProAsrHelper.createVolcStreamingEngine(context, scope, prefs, this)
+                    VolcStreamAsrEngine(context, scope, prefs, this)
                 } else {
                     VolcFileAsrEngine(
                         context,
@@ -322,12 +322,8 @@ class ExternalSpeechService : Service() {
         private fun buildPushPcmEngine(vendor: AsrVendor, streamingPreferred: Boolean): StreamingAsrEngine? {
             val scope = CoroutineScope(Dispatchers.Main)
             return when (vendor) {
-                // 火山引擎：该流式就流式，该非流式就非流式
                 AsrVendor.Volc -> if (streamingPreferred) {
-                    // Pro: 走双重识别（推送PCM版本）；OSS: 回落到原始流式（externalPcmMode=true）
-                    com.brycewg.asrkb.asr.ProAsrHelper.createVolcStreamingEngineForPushPcm(
-                        context, scope, prefs, this
-                    )
+                    VolcStreamAsrEngine(context, scope, prefs, this, externalPcmMode = true)
                 } else {
                     com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
                         context, scope, prefs, this,
@@ -501,7 +497,7 @@ class ExternalSpeechService : Service() {
                     try { (context as? ExternalSpeechService)?.onSessionDone(id) } catch (t: Throwable) { Log.w(TAG, "remove session on final failed", t) }
                 }
             } else {
-                // 仅本地过滤：去尾标点 +（Pro）繁体
+                // 应用简单末处理：去尾标点和预置替换
                 val out = try {
                     com.brycewg.asrkb.util.AsrFinalFilters.applySimple(context, prefs, text)
                 } catch (t: Throwable) {

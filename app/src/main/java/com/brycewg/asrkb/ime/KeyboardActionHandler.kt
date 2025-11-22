@@ -481,12 +481,7 @@ class KeyboardActionHandler(
                 ExtensionButtonActionResult.NEED_HIDE_KEYBOARD
             }
             else -> {
-                // Pro 畅说模式：通过动作 ID 识别，避免在 OSS 变体直接依赖 Pro 常量
-                return if (action.id == "continuous_talk_toggle") {
-                    ExtensionButtonActionResult.NEED_TOGGLE_CONTINUOUS_TALK
-                } else {
-                    ExtensionButtonActionResult.FAILED
-                }
+                ExtensionButtonActionResult.FAILED
             }
         }
     }

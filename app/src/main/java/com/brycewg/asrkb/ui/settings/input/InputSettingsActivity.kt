@@ -273,9 +273,7 @@ class InputSettingsActivity : AppCompatActivity() {
         // 初始应用一次"从最近任务中排除"设置
         applyExcludeFromRecents(prefs.hideRecentTaskCard)
 
-        // Pro：注入输入设置额外 UI
         val root = findViewById<View>(android.R.id.content)
-        com.brycewg.asrkb.ProUiInjector.injectIntoInputSettings(this, root)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

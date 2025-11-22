@@ -15,7 +15,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.brycewg.asrkb.LocaleHelper
-import com.brycewg.asrkb.ProUiInjector
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.asr.BluetoothRouteManager
 import com.brycewg.asrkb.asr.AsrVendor
@@ -141,24 +140,6 @@ class FloatingAsrService : Service(),
             Log.e(TAG, "Failed to register hint receiver", e)
         }
 
-        val colorReceiver = object : android.content.BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED) {
-                    refreshFloatingUiColors()
-                }
-            }
-        }
-        customColorReceiver = colorReceiver
-        try {
-            androidx.core.content.ContextCompat.registerReceiver(
-                /* context = */ this,
-                /* receiver = */ colorReceiver,
-                /* filter = */ android.content.IntentFilter(ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED),
-                /* flags = */ androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
-            )
-        } catch (e: Throwable) {
-            Log.e(TAG, "Failed to register customColorReceiver", e)
-        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -201,7 +182,6 @@ class FloatingAsrService : Service(),
         return START_STICKY
     }
 
-    private var customColorReceiver: android.content.BroadcastReceiver? = null
 
     override fun onDestroy() {
         super.onDestroy()
@@ -224,12 +204,6 @@ class FloatingAsrService : Service(),
         } catch (e: Throwable) {
             Log.e(TAG, "Failed to unregister receiver", e)
         }
-        try {
-            customColorReceiver?.let { unregisterReceiver(it) }
-        } catch (e: Throwable) {
-            Log.e(TAG, "Failed to unregister customColorReceiver", e)
-        }
-        customColorReceiver = null
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -331,22 +305,6 @@ class FloatingAsrService : Service(),
         DebugLogManager.log("float", "hide")
     }
 
-    private fun refreshFloatingUiColors() {
-        handler.post {
-            try {
-                hideRadialMenu()
-                hideVendorMenu()
-            } catch (t: Throwable) {
-                Log.w(TAG, "Failed to hide menus before refreshing colors", t)
-            }
-            menuHelper = FloatingMenuHelper(this@FloatingAsrService, windowManager)
-            val hadView = viewManager.getBallView() != null
-            if (hadView) {
-                hideBall()
-                showBall("custom_colors")
-            }
-        }
-    }
 
     private fun handleResetBallPosition() {
         try {

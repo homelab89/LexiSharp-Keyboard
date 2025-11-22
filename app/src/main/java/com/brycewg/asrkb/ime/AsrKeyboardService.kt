@@ -36,7 +36,6 @@ import com.brycewg.asrkb.asr.BluetoothRouteManager
 import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.asr.VadDetector
 import com.brycewg.asrkb.store.Prefs
-import com.brycewg.asrkb.ProUiInjector
 import com.brycewg.asrkb.ui.SettingsActivity
 import com.brycewg.asrkb.ui.AsrVendorUi
 import kotlinx.coroutines.CoroutineScope
@@ -93,7 +92,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     private lateinit var asrManager: AsrSessionManager
     private lateinit var actionHandler: KeyboardActionHandler
     private lateinit var backspaceGestureHandler: BackspaceGestureHandler
-    private lateinit var continuousTalkManager: ContinuousTalkManager
 
     // ========== 视图引用 ==========
     private var rootView: View? = null
@@ -121,9 +119,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     private var isNumpadPanelVisible: Boolean = false
     // 数字/符号面板返回目标：true 表示返回到 AI 编辑面板；false 表示返回到主键盘
     private var numpadReturnToAiPanel: Boolean = false
-    private var appliedCustomColorOverlay: String = ""
-    private var pendingCustomColorRefresh: Boolean = false
-    private var isRebuildingCustomColors: Boolean = false
     private var imeViewVisible: Boolean = false
     private var btnSettings: ImageButton? = null
     private var btnEnter: ImageButton? = null
@@ -193,7 +188,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     override fun onCreate() {
         super.onCreate()
         prefs = Prefs(this)
-        appliedCustomColorOverlay = prefs.proCustomColorOverlay
 
         // 初始化组件
         inputHelper = InputConnectionHelper("AsrKeyboardService")
@@ -207,13 +201,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             LlmPostProcessor()
         )
         backspaceGestureHandler = BackspaceGestureHandler(inputHelper)
-        continuousTalkManager = ContinuousTalkManager(
-            service = this,
-            prefs = prefs,
-            asrManager = asrManager,
-            actionHandler = actionHandler,
-            serviceScope = serviceScope
-        )
 
         // 设置监听器
         asrManager.setListener(actionHandler)
@@ -239,13 +226,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                                 v.requestLayout()
                             }
                         }
-                        ensureCustomColorsSynced()
-                        // 设置变更时同步 Pro 畅说模式状态
-                        continuousTalkManager.onPrefsChanged()
-                    }
-                    ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED -> {
-                        pendingCustomColorRefresh = true
-                        ensureCustomColorsSynced()
                     }
                 }
             }
@@ -257,7 +237,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                 /* receiver = */ r,
                 /* filter = */ IntentFilter().apply {
                     addAction(ACTION_REFRESH_IME_UI)
-                    addAction(ProUiInjector.ACTION_PRO_CUSTOM_COLORS_CHANGED)
                 },
                 /* flags = */ androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED
             )
@@ -269,7 +248,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     override fun onDestroy() {
         super.onDestroy()
         try {
-            continuousTalkManager.onDestroy()
         } catch (_: Throwable) { }
         asrManager.cleanup()
         serviceScope.cancel()
@@ -288,17 +266,13 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
     @SuppressLint("InflateParams")
     override fun onCreateInputView(): View {
-        val view = createKeyboardView()
-        appliedCustomColorOverlay = prefs.proCustomColorOverlay
-        pendingCustomColorRefresh = false
-        return view
+        return createKeyboardView()
     }
 
   private fun createKeyboardView(): View {
     val themedContext = ContextThemeWrapper(this, R.style.Theme_ASRKeyboard_Ime)
     val dynamicContext = com.google.android.material.color.DynamicColors.wrapContextIfAvailable(themedContext)
-    val coloredContext = ProUiInjector.wrapContextWithProColors(dynamicContext)
-    val view = LayoutInflater.from(coloredContext).inflate(R.layout.keyboard_view, null, false)
+    val view = LayoutInflater.from(dynamicContext).inflate(R.layout.keyboard_view, null, false)
     return setupKeyboardView(view)
   }
 
@@ -329,49 +303,12 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         // 同步系统导航栏颜色
         view.post { syncSystemBarsToKeyboardBackground(view) }
 
-        // Pro：注入 IME 侧额外功能
-        try { ProUiInjector.injectIntoImeKeyboard(this, view) } catch (_: Throwable) { }
-
         return view
-    }
-
-    private fun rebuildKeyboardForCustomColors() {
-        val desiredOverlay = prefs.proCustomColorOverlay
-        if (!pendingCustomColorRefresh && desiredOverlay == appliedCustomColorOverlay) {
-            return
-        }
-        if (!imeViewVisible) {
-            pendingCustomColorRefresh = true
-            return
-        }
-        if (isRebuildingCustomColors) return
-        try {
-            isRebuildingCustomColors = true
-            val newView = createKeyboardView()
-            setInputView(newView)
-            rootView = newView
-            appliedCustomColorOverlay = desiredOverlay
-            pendingCustomColorRefresh = false
-        } catch (t: Throwable) {
-            android.util.Log.e("AsrKeyboardService", "Failed to rebuild keyboard for custom colors", t)
-        } finally {
-            isRebuildingCustomColors = false
-        }
-    }
-
-    private fun ensureCustomColorsSynced() {
-        if (prefs.proCustomColorOverlay != appliedCustomColorOverlay) {
-            pendingCustomColorRefresh = true
-        }
-        if (pendingCustomColorRefresh) {
-            rebuildKeyboardForCustomColors()
-        }
     }
 
     override fun onStartInputView(info: EditorInfo?, restarting: Boolean) {
         super.onStartInputView(info, restarting)
         imeViewVisible = true
-        ensureCustomColorsSynced()
         // 每次键盘视图启动时应用一次高度/底部间距等缩放
         applyKeyboardHeightScale(rootView)
         rootView?.requestLayout()
@@ -405,8 +342,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             onStateChanged(actionHandler.getCurrentState())
         }
 
-        // Pro：再次注入以覆盖可能被标点标签刷新影响的 UI
-        try { rootView?.let { com.brycewg.asrkb.ProUiInjector.injectIntoImeKeyboard(this, it) } } catch (_: Throwable) { }
 
         // 同步系统栏颜色
         rootView?.post { syncSystemBarsToKeyboardBackground(rootView) }
@@ -442,8 +377,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
             }
         }
 
-        // 同步 Pro 畅说模式（如已开启则在键盘展示时启动监听）
-        continuousTalkManager.onImeViewShown()
     }
 
     override fun onUpdateSelection(
@@ -462,8 +395,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
     override fun onFinishInputView(finishingInput: Boolean) {
         super.onFinishInputView(finishingInput)
         imeViewVisible = false
-        // 键盘收起时通知 Pro 畅说模式停止监听
-        continuousTalkManager.onImeViewHidden()
         DebugLogManager.log("ime", "finish_input_view")
         try {
             syncClipboardManager?.stop()
@@ -2000,9 +1931,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                 hideKeyboardPanel()
             }
             KeyboardActionHandler.ExtensionButtonActionResult.NEED_TOGGLE_CONTINUOUS_TALK -> {
-                // 由 Pro 连续畅说管理器根据最新偏好启动/停止畅说模式
-                continuousTalkManager.onExtensionToggleRequested()
-                // 重新应用扩展按钮配置以刷新选中态
                 applyExtensionButtonConfig()
             }
         }
@@ -2059,24 +1987,10 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
         setupExtensionButton(btnExt2, prefs.extBtn2)
         setupExtensionButton(btnExt3, prefs.extBtn3)
         setupExtensionButton(btnExt4, prefs.extBtn4)
-        // 初始应用时同步选择按钮与静音判停按钮的选中态
         updateSelectExtButtonsUi()
         updateSilenceAutoStopExtButtonsUi()
-        // Pro：同步畅说模式扩展按钮选中态
-        continuousTalkManager.applyExtensionButtonUi(
-            btnExt1, prefs.extBtn1,
-            btnExt2, prefs.extBtn2,
-            btnExt3, prefs.extBtn3,
-            btnExt4, prefs.extBtn4
-        )
     }
 
-    /**
-     * 仅供 Pro 畅说模式管理器调用，用于在偏好变更后刷新扩展按钮 UI。
-     */
-    internal fun applyExtensionButtonConfigForContinuousTalk() {
-        applyExtensionButtonConfig()
-    }
 
     private fun vibrateTick() {
         if (!prefs.micHapticEnabled) return
@@ -2189,8 +2103,6 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                 clearStatusTextStyle()
                 val name = try { AsrVendorUi.name(this, vendor) } catch (_: Throwable) { "" }
                 txtStatusText?.text = getString(R.string.switched_preset, name)
-                // 供应商切换后，同步 Pro 畅说模式支持状态（可能因切换到/离开伪流式引擎而发生变化）
-                continuousTalkManager.onVendorChanged()
             }
             true
         }

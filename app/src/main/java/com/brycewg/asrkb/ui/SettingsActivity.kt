@@ -32,7 +32,6 @@ import com.brycewg.asrkb.ui.setup.SetupState
 import com.brycewg.asrkb.ui.setup.SetupStateMachine
 import com.brycewg.asrkb.ui.update.UpdateChecker
 import com.brycewg.asrkb.ui.update.ApkDownloadService
-import com.brycewg.asrkb.ui.update.ProUpdateDialogFacade
 import com.brycewg.asrkb.ui.about.AboutActivity
 import com.brycewg.asrkb.ui.settings.input.InputSettingsActivity
 import com.brycewg.asrkb.ui.settings.asr.AsrSettingsActivity
@@ -118,15 +117,15 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        // 授权返回后：若已下载APK且具备安装权限，自动继续安装（仅 OSS 版本）
-        if (updatesEnabled && !ProUpdateDialogFacade.shouldShowProDialog()) {
+        // 授权返回后：若已下载APK且具备安装权限，自动继续安装
+        if (updatesEnabled) {
             maybeResumePendingApkInstall()
         }
 
         // 检查无障碍服务是否刚刚被启用，给予用户反馈
         checkAccessibilityServiceJustEnabled()
 
-        // 每天首次进入设置页时，静默检查一次更新（仅在有新版本时弹窗提示，非 Pro 渠道）
+        // 每日首次进入设置页时自动检查是否有新版本
         if (updatesEnabled) {
             maybeAutoCheckUpdatesDaily()
         }
@@ -215,7 +214,7 @@ class SettingsActivity : AppCompatActivity() {
             showQuickGuide()
         }
 
-        // 检查更新（Pro 渠道隐藏）
+        // 手动检查更新入口
         findViewById<Button>(R.id.btnCheckUpdate)?.let { btn ->
             if (updatesEnabled) {
                 btn.setOnClickListener { checkForUpdates() }
@@ -505,11 +504,6 @@ class SettingsActivity : AppCompatActivity() {
      * 显示更新对话框
      */
     private fun showUpdateDialog(result: UpdateChecker.UpdateCheckResult) {
-        // Pro 版本显示特殊的更新对话框（引导到 Play 商店）
-        if (ProUpdateDialogFacade.shouldShowProDialog()) {
-            ProUpdateDialogFacade.showProUpdateDialog(this, result)
-            return
-        }
 
         // OSS 版本显示标准更新对话框（提供 APK 下载）
         val messageBuilder = StringBuilder()

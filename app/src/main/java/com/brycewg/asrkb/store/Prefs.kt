@@ -163,10 +163,6 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_HIDE_RECENT_TASK_CARD, false)
         set(value) = sp.edit { putBoolean(KEY_HIDE_RECENT_TASK_CARD, value) }
 
-    // Pro：自定义配色覆盖主题（空字符串表示跟随系统 Monet）
-    var proCustomColorOverlay: String
-        get() = sp.getString(KEY_PRO_CUSTOM_COLOR_OVERLAY, "") ?: ""
-        set(value) = sp.edit { putString(KEY_PRO_CUSTOM_COLOR_OVERLAY, value.trim()) }
 
     // 应用内语言（空字符串表示跟随系统；如："zh-Hans"、"en"）
     var appLanguageTag: String
@@ -1094,7 +1090,6 @@ class Prefs(context: Context) {
         private const val KEY_FCITX5_RETURN_ON_SWITCHER = "fcitx5_return_on_switcher"
         private const val KEY_RETURN_PREV_IME_ON_HIDE = "return_prev_ime_on_hide"
         private const val KEY_HIDE_RECENT_TASK_CARD = "hide_recent_task_card"
-        internal const val KEY_PRO_CUSTOM_COLOR_OVERLAY = "pro_custom_color_overlay"
         private const val KEY_FLOATING_WRITE_COMPAT_ENABLED = "floating_write_compat_enabled"
         private const val KEY_FLOATING_WRITE_PASTE_ENABLED = "floating_write_paste_enabled"
         private const val KEY_FLOATING_ASR_ENABLED = "floating_asr_enabled"
@@ -1332,7 +1327,6 @@ class Prefs(context: Context) {
         o.put(KEY_FLOATING_POS_Y, floatingBallPosY)
         o.put(KEY_FLOATING_ASR_ENABLED, floatingAsrEnabled)
         o.put(KEY_FLOATING_ONLY_WHEN_IME_VISIBLE, floatingSwitcherOnlyWhenImeVisible)
-        o.put(KEY_PRO_CUSTOM_COLOR_OVERLAY, proCustomColorOverlay)
         
         o.put(KEY_POSTPROC_ENABLED, postProcessEnabled)
         o.put(KEY_AI_EDIT_DEFAULT_TO_LAST_ASR, aiEditDefaultToLastAsr)
@@ -1485,7 +1479,6 @@ class Prefs(context: Context) {
             optInt(KEY_FLOATING_POS_Y)?.let { floatingBallPosY = it }
             optBool(KEY_FLOATING_ASR_ENABLED)?.let { floatingAsrEnabled = it }
             optBool(KEY_FLOATING_ONLY_WHEN_IME_VISIBLE)?.let { floatingSwitcherOnlyWhenImeVisible = it }
-            optString(KEY_PRO_CUSTOM_COLOR_OVERLAY)?.let { proCustomColorOverlay = it }
             
             optBool(KEY_FLOATING_WRITE_COMPAT_ENABLED)?.let { floatingWriteTextCompatEnabled = it }
             optString(KEY_FLOATING_WRITE_COMPAT_PACKAGES)?.let { floatingWriteCompatPackages = it }

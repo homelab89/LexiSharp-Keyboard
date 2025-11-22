@@ -416,8 +416,7 @@ class AsrSessionManager(
         return when (prefs.asrVendor) {
             AsrVendor.Volc -> if (prefs.hasVolcKeys()) {
                 if (prefs.volcStreamingEnabled) {
-                    // 通过 Pro 门面创建（OSS 返回原始引擎，Pro 可能返回双重识别包装）
-                    com.brycewg.asrkb.asr.ProAsrHelper.createVolcStreamingEngine(context, serviceScope, prefs, this)
+                    VolcStreamAsrEngine(context, serviceScope, prefs, this)
                 } else {
                     VolcFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
                 }

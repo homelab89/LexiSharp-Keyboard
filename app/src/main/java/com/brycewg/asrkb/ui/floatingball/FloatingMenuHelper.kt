@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.UiColors
-import com.brycewg.asrkb.ProUiInjector
 import com.google.android.material.color.DynamicColors
 
 /**
@@ -35,7 +34,7 @@ class FloatingMenuHelper(
     private val context: Context = run {
         val themedCtx = ContextThemeWrapper(rawContext, R.style.Theme_ASRKeyboard)
         val dynCtx = DynamicColors.wrapContextIfAvailable(themedCtx)
-        ProUiInjector.wrapContextWithProColors(dynCtx)
+        dynCtx
     }
 
     /**

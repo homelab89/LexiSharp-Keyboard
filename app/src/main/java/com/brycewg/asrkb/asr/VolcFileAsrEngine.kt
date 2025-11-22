@@ -104,19 +104,6 @@ class VolcFileAsrEngine(
             put("enable_itn", true)
             put("enable_punc", true)
             put("enable_ddc", prefs.volcDdcEnabled)
-
-            // Pro功能：动态注入个性化热词和上下文信息
-            try {
-                val volcContext = com.brycewg.asrkb.asr.ProAsrHelper.buildVolcContext(context)
-                if (volcContext != null) {
-                    val corpus = JSONObject().apply {
-                        put("context", volcContext)
-                    }
-                    put("corpus", corpus)
-                }
-            } catch (t: Throwable) {
-                Log.e(TAG, "Failed to inject Volc context", t)
-            }
         }
         return JSONObject().apply {
             put("user", user)
