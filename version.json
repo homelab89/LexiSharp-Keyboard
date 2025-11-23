@@ -1,10 +1,10 @@
 {
-  "version": "3.7.1",
-  "version_code": 114,
-  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.7.1",
-  "release_notes": "本次更新包含 12 个提交:\n- fix(asr): TeleSpeech 模型添加下载进度通知支持\n- fix(asr): 在会话结束后重置预览片段\n- feat(asr): 为 TeleSpeech 引擎添加 ITN 支持\n- feat(asr): 为本地模型添加伪流式语音识别支持\n- feat(ui): 为错误状态文本添加自动复制功能\n- fix(asr): 修复 ElevenLabs WebSocket URL 构建问题并优化转写处理逻辑\n- feat(ui): 为状态文本添加跑马灯效果\n- fix(ui): 为剪贴板面板应用主键盘背景色\n- feat(asr): 添加 TeleSpeech 本地离线语音识别支持\n- feat(ui): 优化键盘主题配色方案\n- pro(feat): 添加自定义配色功能\n- feat(eleven): 添加ElevenLabs流式语音识别支持",
+  "version": "3.7.2",
+  "version_code": 115,
+  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.7.2",
+  "release_notes": "本次更新包含 4 个提交:\n- build: 更新项目文档和版本信息至 v3.7.2并重构构建配置\n- feat(ui): 添加模型选择引导功能\n- refactor(build): 移除多变体构建，统一为开源版本\n- pro(asr): 添加畅说模式支持",
   "important_notice": "本次更新支持了从小企鹅输入法调用言犀的语音识别能力。使用方式：\n1. 下载修改版的Fcitx(0.1.2beta3)：https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases，需要卸载之前的Fcitx，注意数据备份\n 2. 打开Fcitx设置-虚拟键盘-空格键长按行为-语音输入（AIDL）\n 3. 在Lexi Keyboard设置(3.6.2以上)-输入设置-允许外部输入法联动（AIDL），新版无需启用悬浮球和无障碍功能\n 4. 在小企鹅输入法面板，长按空格键即可语音输入",
   "notice_level": "info",
   "min_supported_version": "2.6.5",
-  "update_time": "2025-11-17T02:55:09Z"
+  "update_time": "2025-11-23T06:11:19Z"
 }
