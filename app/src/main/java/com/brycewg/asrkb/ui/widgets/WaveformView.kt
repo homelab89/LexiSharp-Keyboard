@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import jaygoo.widget.wlv.WaveLineView
+import kotlin.math.pow
 
 /**
  * 实时音频波形视图（封装第三方 WaveLineView）
@@ -20,11 +21,16 @@ class WaveformView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var isActive = false
+
+    /** 波形灵敏度（1-10），数值越大响应越明显 */
+    var sensitivity: Int = 5
+        set(value) { field = value.coerceIn(1, 10) }
+
     private val waveView: WaveLineView = WaveLineView(context).apply {
         // 透明背景，融入容器
         setBackGroundColor(Color.TRANSPARENT)
-        // 默认灵敏度与速度可根据需要调整
-        setSensibility(8)
+        // 提高灵敏度使波形更明显（范围1-10，10最灵敏）
+        setSensibility(10)
         setMoveSpeed(250f)
     }
 
@@ -44,8 +50,11 @@ class WaveformView @JvmOverloads constructor(
     /** 更新振幅（0.0 - 1.0） */
     fun updateAmplitude(amplitude: Float) {
         if (!isActive) return
+        // 根据灵敏度计算增益：sens=1→0.25, sens=5→1.0, sens=10→12.0
+        val gain = 0.25f * (48.0).pow((sensitivity - 1) / 9.0).toFloat()
+        val boosted = (amplitude * gain).coerceIn(0f, 1f)
         // 映射到 [0,100] 并设置音量，WaveLineView 内部做平滑
-        val vol = (amplitude.coerceIn(0f, 1f) * 100f).toInt()
+        val vol = (boosted * 100f).toInt()
         waveView.setVolume(vol)
     }
 

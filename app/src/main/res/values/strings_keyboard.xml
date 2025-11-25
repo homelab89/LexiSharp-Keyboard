@@ -52,6 +52,9 @@
     <string name="label_keyboard_bottom_padding">Keyboard bottom padding</string>
     <string name="keyboard_bottom_padding_value">%d dp</string>
 
+    <!-- Waveform sensitivity -->
+    <string name="label_waveform_sensitivity">Waveform sensitivity (1-10; higher = more responsive)</string>
+
     <!-- Keyboard layout option -->
     <string name="label_fcitx5_return_on_switcher">IME switch key returns to previous input method</string>
     <string name="label_hide_recent_task_card">Hide recent task preview</string>

@@ -65,6 +65,8 @@ class InputSettingsActivity : AppCompatActivity() {
         val tvLanguage = findViewById<TextView>(R.id.tvLanguageValue)
         val sliderBottomPadding = findViewById<com.google.android.material.slider.Slider>(R.id.sliderBottomPadding)
         val tvBottomPaddingValue = findViewById<TextView>(R.id.tvBottomPaddingValue)
+        val sliderWaveformSensitivity = findViewById<com.google.android.material.slider.Slider>(R.id.sliderWaveformSensitivity)
+        val tvWaveformSensitivityValue = findViewById<TextView>(R.id.tvWaveformSensitivityValue)
         val tvExtensionButtons = findViewById<TextView>(R.id.tvExtensionButtonsValue)
 
         fun applyPrefsToUi() {
@@ -113,6 +115,9 @@ class InputSettingsActivity : AppCompatActivity() {
 
         // 底部间距调节
         setupBottomPaddingSlider(prefs, sliderBottomPadding, tvBottomPaddingValue)
+
+        // 波形灵敏度调节
+        setupWaveformSensitivitySlider(prefs, sliderWaveformSensitivity, tvWaveformSensitivityValue)
 
         // 应用语言选择（点击弹出单选对话框）
         setupLanguageSelection(prefs, tvLanguage)
@@ -328,6 +333,29 @@ class InputSettingsActivity : AppCompatActivity() {
     }
 
     /**
+     * 设置波形灵敏度滑杆
+     */
+    private fun setupWaveformSensitivitySlider(
+        prefs: Prefs,
+        slider: com.google.android.material.slider.Slider,
+        tvValue: TextView
+    ) {
+        // 初始化滑动条值
+        slider.value = prefs.waveformSensitivity.toFloat()
+        tvValue.text = prefs.waveformSensitivity.toString()
+
+        // 监听滑动条变化
+        slider.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                val sens = value.toInt()
+                prefs.waveformSensitivity = sens
+                tvValue.text = sens.toString()
+                sendRefreshBroadcast()
+            }
+        }
+    }
+
+    /**
      * 设置应用语言选择对话框
      */
     private fun setupLanguageSelection(prefs: Prefs, tvLanguage: TextView) {
@@ -410,7 +438,9 @@ class InputSettingsActivity : AppCompatActivity() {
      * 发送刷新 IME UI 的广播
      */
     private fun sendRefreshBroadcast() {
-        sendBroadcast(Intent(AsrKeyboardService.ACTION_REFRESH_IME_UI))
+        sendBroadcast(Intent(AsrKeyboardService.ACTION_REFRESH_IME_UI).apply {
+            setPackage(packageName)
+        })
     }
 
     /**

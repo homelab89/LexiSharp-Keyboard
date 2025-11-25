@@ -230,6 +230,8 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                         if (v != null) {
                             applyKeyboardHeightScale(v)
                             applyExtensionButtonConfig()
+                            // 更新波形灵敏度
+                            waveformView?.sensitivity = prefs.waveformSensitivity
                             v.requestLayout()
                             // 第二次异步重算，确保尺寸变化与父容器测量完成后 padding/overlay 位置也被同步
                             v.post {
@@ -631,6 +633,8 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
         // 为波形视图应用动态颜色（通过 UiColors 统一获取主色）
         waveformView?.setWaveformColor(UiColors.primary(view))
+        // 应用波形灵敏度设置
+        waveformView?.sensitivity = prefs.waveformSensitivity
 
         // 修复麦克风垂直位置
         micBaseGroupHeight = -1
