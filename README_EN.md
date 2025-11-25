@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎙️ LexiSharp Keyboard
+# 🎙️ Lexi Keyboard
 
 **AI-powered Smart Voice Input Method | Make Voice Input More Natural and Efficient**
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎙️ 言犀键盘 (LexiSharp Keyboard)
+# 🎙️ 言犀键盘 (Lexi Keyboard)
 
 **基于 AI 的智能语音输入法 | 让语音输入更自然、更高效**
 
