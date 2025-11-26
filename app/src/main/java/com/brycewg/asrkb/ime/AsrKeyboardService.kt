@@ -1478,6 +1478,14 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
 
     private fun showRecordingGesturesOverlay(state: KeyboardState.Listening?) {
         rowRecordingGestures?.visibility = View.VISIBLE
+        // 根据点按/长按模式设置按钮文案
+        if (prefs.micTapToggleEnabled) {
+            btnGestureCancel?.text = getString(R.string.label_recording_tap_cancel)
+            btnGestureSend?.text = getString(R.string.label_recording_tap_send)
+        } else {
+            btnGestureCancel?.text = getString(R.string.label_recording_gesture_cancel)
+            btnGestureSend?.text = getString(R.string.label_recording_gesture_send)
+        }
         applyLockZoneUi(state)
     }
 

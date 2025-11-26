@@ -30,6 +30,8 @@
   <string name="toggle_off">關閉</string>
   <string name="label_recording_gesture_cancel">左滑取消</string>
   <string name="label_recording_gesture_send">右滑發送</string>
+  <string name="label_recording_tap_cancel">點擊取消</string>
+  <string name="label_recording_tap_send">點擊發送</string>
   <string name="hint_swipe_down_lock">下滑鎖定錄音</string>
   <string name="hint_tap_to_stop_recording">點按結束錄音</string>
 

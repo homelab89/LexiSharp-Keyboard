@@ -30,6 +30,8 @@
   <string name="toggle_off">OFF</string>
   <string name="label_recording_gesture_cancel">Swipe Left Cancel</string>
   <string name="label_recording_gesture_send">Swipe Right Send</string>
+  <string name="label_recording_tap_cancel">Tap to Cancel</string>
+  <string name="label_recording_tap_send">Tap to Send</string>
   <string name="hint_swipe_down_lock">Swipe down to lock recording</string>
   <string name="hint_tap_to_stop_recording">Tap to stop recording</string>
 

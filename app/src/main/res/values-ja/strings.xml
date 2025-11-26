@@ -31,6 +31,8 @@
   <string name="toggle_off">OFF</string>
   <string name="label_recording_gesture_cancel">左スワイプ キャンセル</string>
   <string name="label_recording_gesture_send">右スワイプ 送信</string>
+  <string name="label_recording_tap_cancel">タップで取消</string>
+  <string name="label_recording_tap_send">タップで送信</string>
   <string name="hint_swipe_down_lock">下にスワイプしてロック</string>
   <string name="hint_tap_to_stop_recording">タップで録音停止</string>
 
