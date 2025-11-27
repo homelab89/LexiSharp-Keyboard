@@ -207,6 +207,40 @@
             android:scaleType="fitCenter"
             android:src="@drawable/powered_by_siliconflow_light"
             android:contentDescription="@string/sf_powered_by_desc" />
+
+          <!-- Register SiliconFlow account prompt -->
+          <TextView
+            style="@style/SettingsHint"
+            android:layout_marginTop="12dp"
+            android:text="@string/sf_free_register_hint" />
+
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnSfFreeRegister"
+              style="@style/Widget.Material3.Button.TonalButton"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginEnd="4dp"
+              app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+              android:text="@string/btn_sf_free_register" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnSfFreeGuide"
+              style="@style/Widget.Material3.Button.OutlinedButton"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:layout_marginStart="4dp"
+              app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+              android:text="@string/btn_sf_free_guide" />
+          </LinearLayout>
+          
         </LinearLayout>
 
         <!-- 自有 API Key 配置（仅在免费服务禁用时显示） -->

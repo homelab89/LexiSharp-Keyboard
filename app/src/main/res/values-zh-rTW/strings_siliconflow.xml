@@ -25,4 +25,9 @@
 
     <!-- SiliconFlow Powered By -->
     <string name="sf_powered_by_desc">由 SiliconFlow 提供支援</string>
+
+    <!-- SiliconFlow 免費服務註冊提示 -->
+    <string name="sf_free_register_hint">註冊您自己的硅基流動帳號，即可使用更多模型。您將獲得 14 元贈金，支援使用大部分模型。</string>
+    <string name="btn_sf_free_register">註冊帳號</string>
+    <string name="btn_sf_free_guide">查看設定教學</string>
 </resources>

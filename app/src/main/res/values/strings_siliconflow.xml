@@ -25,4 +25,9 @@
 
     <!-- SiliconFlow Powered By -->
     <string name="sf_powered_by_desc">Powered by SiliconFlow</string>
+
+    <!-- SiliconFlow Free Registration Prompt -->
+    <string name="sf_free_register_hint">Register your own SiliconFlow account for access to more models. You\'ll receive ¥14 bonus credits, which supports most models.</string>
+    <string name="btn_sf_free_register">Register Account</string>
+    <string name="btn_sf_free_guide">Setup Guide</string>
 </resources>

@@ -452,6 +452,18 @@ class AsrSettingsActivity : AppCompatActivity() {
             }
         }
 
+        // 免费服务注册按钮
+        findViewById<MaterialButton>(R.id.btnSfFreeRegister).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely("https://cloud.siliconflow.cn/i/g8thUcWa")
+        }
+
+        // 免费服务配置教程按钮
+        findViewById<MaterialButton>(R.id.btnSfFreeGuide).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely("https://brycewg.notion.site/lexisharp-keyboard-providers-guide")
+        }
+
         // 自有 API Key 配置
         findViewById<EditText>(R.id.etSfApiKey).apply {
             setText(prefs.sfApiKey)

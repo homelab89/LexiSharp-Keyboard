@@ -25,4 +25,9 @@
 
     <!-- SiliconFlow Powered By -->
     <string name="sf_powered_by_desc">Powered by SiliconFlow</string>
+
+    <!-- SiliconFlow 無料サービス登録案内 -->
+    <string name="sf_free_register_hint">SiliconFlow アカウントを登録すると、より多くのモデルを利用できます。14元のボーナスクレジットが付与され、ほとんどのモデルに対応しています。</string>
+    <string name="btn_sf_free_register">アカウント登録</string>
+    <string name="btn_sf_free_guide">設定ガイド</string>
 </resources>

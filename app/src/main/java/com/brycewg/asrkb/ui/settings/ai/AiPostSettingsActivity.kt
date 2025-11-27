@@ -1,6 +1,8 @@
 package com.brycewg.asrkb.ui.settings.ai
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -164,6 +166,18 @@ class AiPostSettingsActivity : AppCompatActivity() {
         // 免费服务模型选择
         tvSfFreeLlmModel.setOnClickListener {
             showSfFreeLlmModelSelectionDialog()
+        }
+
+        // 免费服务注册按钮
+        findViewById<com.google.android.material.button.MaterialButton>(R.id.btnSfFreeLlmRegister).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely("https://cloud.siliconflow.cn/i/g8thUcWa")
+        }
+
+        // 免费服务配置教程按钮
+        findViewById<com.google.android.material.button.MaterialButton>(R.id.btnSfFreeLlmGuide).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely("https://brycewg.notion.site/lexisharp-keyboard-providers-guide")
         }
     }
 
@@ -541,6 +555,18 @@ class AiPostSettingsActivity : AppCompatActivity() {
     private fun hapticTapIfEnabled(view: View?) {
         if (prefs.micHapticEnabled) {
             view?.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+        }
+    }
+
+    /**
+     * Opens a URL safely in browser with error handling
+     */
+    private fun openUrlSafely(url: String) {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        } catch (e: Throwable) {
+            Toast.makeText(this, getString(R.string.error_open_browser), Toast.LENGTH_SHORT).show()
         }
     }
 }
