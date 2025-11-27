@@ -29,28 +29,16 @@
         style="@style/SettingsSectionTitle.First"
         android:text="@string/section_file_backup" />
 
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+      <LinearLayout style="@style/SettingsButtonRow">
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnExportToFile"
-          style="@style/Widget.Material3.Button.TonalButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
+          style="@style/SettingsRowButtonLeft"
           android:text="@string/btn_export_to_file" />
-
-        <View android:layout_width="8dp" android:layout_height="0dp" />
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnImportFromFile"
-          style="@style/Widget.Material3.Button.OutlinedButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
+          style="@style/SettingsRowButtonRight"
           android:text="@string/btn_import_from_file" />
       </LinearLayout>
 
@@ -92,28 +80,16 @@
           android:autofillHints="password" />
       </com.google.android.material.textfield.TextInputLayout>
 
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+      <LinearLayout style="@style/SettingsButtonRow">
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnWebdavUpload"
-          style="@style/Widget.Material3.Button.TonalButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
+          style="@style/SettingsRowButtonLeft"
           android:text="@string/btn_webdav_upload" />
-
-        <View android:layout_width="8dp" android:layout_height="0dp" />
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnWebdavDownload"
-          style="@style/Widget.Material3.Button.OutlinedButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
+          style="@style/SettingsRowButtonRight"
           android:text="@string/btn_webdav_download" />
       </LinearLayout>
 

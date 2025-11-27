@@ -71,8 +71,7 @@
 
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchFloatingWriteCompat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/SettingsSwitch"
         android:layout_marginTop="12dp"
         android:text="@string/label_floating_write_compat" />
 
@@ -92,8 +91,7 @@
       <!-- 悬浮球写入文字采取粘贴方案 -->
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchFloatingWritePaste"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/SettingsSwitch"
         android:layout_marginTop="12dp"
         android:text="@string/label_floating_write_paste" />
 

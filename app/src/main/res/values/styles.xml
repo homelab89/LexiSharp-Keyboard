@@ -10,13 +10,14 @@
 
     <!-- ==================== 设置页面样式 ==================== -->
 
-    <!-- Section 标题：粗体、主色、上边距 16dp -->
+    <!-- Section 标题：粗体、主色、上边距 16dp、16sp -->
     <style name="SettingsSectionTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!-- Section 标题（首个，无上边距） -->
@@ -146,6 +147,15 @@
         <item name="android:layout_marginTop">2dp</item>
     </style>
 
+    <!-- Slider 旁边的数值显示 -->
+    <style name="SettingsSliderValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
     <!-- 提示/说明文字（小字号、次要色） -->
     <style name="SettingsHint">
         <item name="android:layout_width">match_parent</item>
@@ -168,6 +178,19 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 统计信息文字（居中显示） -->
+    <style name="SettingsStatsText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <!-- ==================== 关于页面样式 ==================== -->

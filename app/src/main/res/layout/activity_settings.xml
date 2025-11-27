@@ -13,16 +13,8 @@
 
   <TextView
     android:id="@+id/tvAsrTotalChars"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="4dp"
-    android:textColor="?attr/colorOnSurface"
-    android:textSize="14sp"
-    android:text="@string/label_asr_total_chars"
-    android:textAlignment="center" />
+    style="@style/SettingsStatsText"
+    android:text="@string/label_asr_total_chars" />
 
   <ScrollView
     android:layout_width="match_parent"

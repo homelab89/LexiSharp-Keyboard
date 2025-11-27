@@ -128,29 +128,16 @@
           style="@style/SettingsTextInput.MultiLine" />
       </com.google.android.material.textfield.TextInputLayout>
 
-      <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+      <LinearLayout style="@style/SettingsButtonRow">
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnSpeechPresetAdd"
-          style="@style/Widget.Material3.Button.TonalButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
-          android:layout_marginEnd="8dp"
-          android:text="@string/btn_speech_preset_add"
-          app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule" />
+          style="@style/SettingsRowButtonLeft"
+          android:text="@string/btn_speech_preset_add" />
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnSpeechPresetDelete"
-          style="@style/Widget.Material3.Button.OutlinedButton"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_weight="1"
+          style="@style/SettingsRowButtonRight"
           android:text="@string/btn_speech_preset_delete" />
       </LinearLayout>
 
@@ -228,28 +215,16 @@
             android:maxLength="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          android:layout_marginTop="8dp">
+        <LinearLayout style="@style/SettingsButtonRow">
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnScTestPull"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_sc_test_pull"
-            app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule" />
+            style="@style/SettingsRowButtonLeft"
+            android:text="@string/btn_sc_test_pull" />
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnScProjectHome"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            style="@style/SettingsRowButtonRight"
             android:text="@string/btn_sc_project_home" />
         </LinearLayout>
 

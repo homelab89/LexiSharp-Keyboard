@@ -122,12 +122,8 @@
 
           <TextView
             android:id="@+id/tvBottomPaddingValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            style="@style/SettingsSliderValue"
             android:minWidth="48dp"
-            android:textAlignment="textEnd"
-            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="0 dp" />
 
         </LinearLayout>
@@ -156,12 +152,8 @@
 
           <TextView
             android:id="@+id/tvWaveformSensitivityValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            style="@style/SettingsSliderValue"
             android:minWidth="24dp"
-            android:textAlignment="textEnd"
-            android:textColor="?attr/colorOnSurfaceVariant"
             android:text="5" />
 
         </LinearLayout>
