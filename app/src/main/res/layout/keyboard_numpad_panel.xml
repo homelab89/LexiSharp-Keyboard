@@ -97,20 +97,14 @@
                 
                 <ImageButton
                     android:id="@+id/np_btnBackspace"
+                    style="@style/NpKeyImageButton"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
                     android:layout_weight="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="0dp"
                     android:tag="key40"
-                    android:background="@drawable/bg_key_rect_button"
-                    android:clipToOutline="true"
                     android:contentDescription="@string/cd_backspace"
-                    android:foreground="@null"
-                    android:padding="6dp"
-                    android:src="@drawable/backspace_toggle"
-                    android:stateListAnimator="@animator/key_button_state_list"
-                    android:tint="?attr/colorOnSurfaceVariant" />
+                    android:src="@drawable/backspace_toggle" />
             </LinearLayout>
 
         </LinearLayout>
@@ -130,35 +124,23 @@
 
         <ImageButton
             android:id="@+id/np_btnBack"
+            style="@style/NpKeyImageButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
             android:layout_weight="2"
             android:layout_marginEnd="4dp"
             android:tag="key40"
-            android:background="@drawable/bg_key_rect_button"
-            android:clipToOutline="true"
             android:contentDescription="@string/cd_numpad_back"
-            android:foreground="@null"
-            android:padding="6dp"
-            android:src="@drawable/arrow_u_up_left_toggle"
-            android:stateListAnimator="@animator/key_button_state_list"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            android:src="@drawable/arrow_u_up_left_toggle" />
 
         <ImageButton
             android:id="@+id/np_btnPunctToggle"
+            style="@style/NpKeyImageButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
             android:tag="key40"
-            android:background="@drawable/bg_key_rect_button"
-            android:clipToOutline="true"
             android:contentDescription="@string/cd_punct_lang_toggle"
-            android:foreground="@null"
-            android:padding="6dp"
-            android:src="@drawable/translate"
-            android:stateListAnimator="@animator/key_button_state_list"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            android:src="@drawable/translate" />
 
         <TextView
             android:id="@+id/np_key_space"
@@ -171,19 +153,13 @@
 
         <ImageButton
             android:id="@+id/np_btnEnter"
+            style="@style/NpKeyImageButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
             android:layout_weight="2"
             android:layout_marginEnd="0dp"
             android:tag="key40"
-            android:background="@drawable/bg_key_rect_button"
-            android:clipToOutline="true"
             android:contentDescription="@string/cd_enter"
-            android:foreground="@null"
-            android:padding="6dp"
-            android:src="@drawable/key_return_toggle"
-            android:stateListAnimator="@animator/key_button_state_list"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            android:src="@drawable/key_return_toggle" />
     </LinearLayout>
 
 </LinearLayout>

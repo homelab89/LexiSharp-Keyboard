@@ -27,52 +27,36 @@
       <!-- AI 编辑默认范围：上次识别结果 -->
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchAiEditPreferLastAsr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/SettingsSwitch.First"
         android:text="@string/label_ai_edit_default_use_last_asr" />
 
       <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        style="@style/SettingsDivider" />
 
       <!-- 少于特定字数时跳过 AI 后处理：小标题 -->
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/title_ai_skip_under"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold" />
+        style="@style/SettingsSectionTitle"
+        android:text="@string/title_ai_skip_under" />
 
       <!-- 少于特定字数时跳过 AI 后处理（0 表示不启用） -->
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/label_ai_skip_under_chars"
         app:helperText="@string/helper_ai_skip_under_chars">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etSkipAiUnderChars"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsTextInput"
           android:inputType="number"
-          android:maxLength="4"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          android:maxLength="4" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        style="@style/SettingsDivider" />
 
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchSfFreeLlmEnabled"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsSwitch"
         android:text="@string/label_sf_free_llm_enabled" />
 
       <!-- 免费 LLM 详情（仅在开启时显示） -->
@@ -84,31 +68,16 @@
         android:visibility="gone">
 
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="4dp"
-          android:text="@string/sf_free_llm_description"
-          android:textColor="?attr/colorOnSurfaceVariant"
-          android:textSize="12sp" />
+          style="@style/SettingsHint"
+          android:text="@string/sf_free_llm_description" />
 
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:text="@string/label_sf_free_llm_model"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold" />
+          style="@style/SettingsSectionTitle"
+          android:text="@string/label_sf_free_llm_model" />
 
         <TextView
           android:id="@+id/tvSfFreeLlmModel"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:foreground="?attr/selectableItemBackground"
-          android:textColor="?attr/colorOnSurfaceVariant" />
+          style="@style/SettingsClickableValue" />
 
         <!-- Powered by SiliconFlow Logo -->
         <ImageView
@@ -131,42 +100,24 @@
 
         <TextView
           android:id="@+id/titleCustomLlm"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:text="@string/label_llm_choose_profile"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold" />
+          style="@style/SettingsSectionTitle"
+          android:text="@string/label_llm_choose_profile" />
 
         <TextView
           android:id="@+id/tvLlmProfilesValue"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:foreground="?attr/selectableItemBackground"
-          android:textColor="?attr/colorOnSurfaceVariant"
+          style="@style/SettingsClickableValue"
           android:text="@string/untitled_profile" />
-        <Spinner
-            android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone" />
+
+        <Spinner style="@style/SettingsHiddenSpinner" />
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:boxBackgroundMode="outline"
+          style="@style/SettingsTextInputLayout"
           android:hint="@string/label_llm_profile_name">
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLlmProfileName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurfaceVariant" />
+            style="@style/SettingsTextInput"
+            android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -194,134 +145,84 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:boxBackgroundMode="outline"
+          style="@style/SettingsTextInputLayout"
           android:hint="@string/label_llm_endpoint">
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLlmEndpoint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textUri"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurfaceVariant" />
+            style="@style/SettingsTextInput"
+            android:inputType="textUri" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:boxBackgroundMode="outline"
+          style="@style/SettingsTextInputLayout"
           android:hint="@string/label_llm_api_key">
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLlmApiKey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurfaceVariant" />
+            style="@style/SettingsTextInput"
+            android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:boxBackgroundMode="outline"
+          style="@style/SettingsTextInputLayout"
           android:hint="@string/label_llm_model">
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLlmModel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurfaceVariant" />
+            style="@style/SettingsTextInput"
+            android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:boxBackgroundMode="outline"
+          style="@style/SettingsTextInputLayout"
           android:hint="@string/label_llm_temperature">
 
           <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLlmTemperature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
-            android:textColor="?attr/colorOnSurface"
-            android:textColorHint="?attr/colorOnSurfaceVariant" />
+            style="@style/SettingsTextInput"
+            android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
           android:id="@+id/btnLlmTestCall"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          style="@style/Widget.Material3.Button.TonalButton"
+          style="@style/SettingsTonalButton"
           android:text="@string/btn_llm_test_call" />
       </LinearLayout>
 
       <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        style="@style/SettingsDivider" />
 
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/label_llm_prompt_presets"
-        android:textStyle="bold" />
+        style="@style/SettingsSectionTitle"
+        android:text="@string/label_llm_prompt_presets" />
 
       <TextView
         android:id="@+id/tvPromptPresetsValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:textColor="?attr/colorOnSurfaceVariant"
+        style="@style/SettingsClickableValue"
         android:text="@string/untitled_preset" />
-      <Spinner
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+
+      <Spinner style="@style/SettingsHiddenSpinner" />
 
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/label_llm_prompt_title">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etLlmPromptTitle"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:inputType="text"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          style="@style/SettingsTextInput"
+          android:inputType="text" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/label_llm_prompt">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etLlmPrompt"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:inputType="textMultiLine"
-          android:minLines="2"
-          android:gravity="top|start"
+          style="@style/SettingsTextInput.MultiLine"
           android:overScrollMode="ifContentScrolls"
-          android:scrollbars="vertical"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          android:scrollbars="vertical" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <LinearLayout

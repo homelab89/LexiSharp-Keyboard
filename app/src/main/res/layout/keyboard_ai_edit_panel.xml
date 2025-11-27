@@ -31,31 +31,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_return_main"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/arrow_u_up_left_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/arrow_u_up_left_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelApplyPreset"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_apply_preset_prompt"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/magic_wand_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/magic_wand_toggle" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,31 +53,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelCursorLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_cursor_left"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/arrow_left_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/arrow_left_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelCursorRight"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_cursor_right"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/arrow_right_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/arrow_right_toggle" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,31 +74,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelNumpad"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_numpad"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/numpad_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/numpad_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelSelect"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_select_toggle"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/selection_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/selection_toggle" />
         </LinearLayout>
     </LinearLayout>
 
@@ -149,31 +107,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelSelectAll"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_select_all"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/selection_all_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/selection_all_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelUndo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_backspace"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/backspace_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/backspace_toggle" />
         </LinearLayout>
 
         <LinearLayout
@@ -185,31 +129,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelCopy"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_copy"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/copy_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/copy_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelPaste"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_paste"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/selection_background_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/selection_background_toggle" />
         </LinearLayout>
 
         <LinearLayout
@@ -220,31 +150,17 @@
 
             <ImageButton
                 android:id="@+id/btnAiPanelMoveStart"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginEnd="6dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_move_home"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/arrow_line_left_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/arrow_line_left_toggle" />
 
             <ImageButton
                 android:id="@+id/btnAiPanelMoveEnd"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                style="@style/KeyboardImageButton"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/bg_key_button"
-                android:clipToOutline="true"
                 android:contentDescription="@string/cd_move_end"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:padding="6dp"
-                android:src="@drawable/arrow_line_right_toggle"
-                android:stateListAnimator="@animator/key_button_state_list"
-                android:tint="?attr/colorOnSurfaceVariant" />
+                android:src="@drawable/arrow_line_right_toggle" />
         </LinearLayout>
     </LinearLayout>
 

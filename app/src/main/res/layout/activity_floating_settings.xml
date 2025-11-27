@@ -26,44 +26,32 @@
 
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchFloatingAsr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsSwitch"
         android:text="@string/label_floating_asr" />
 
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchFloatingOnlyWhenImeVisible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsSwitch"
         android:text="@string/label_floating_only_when_ime_visible" />
 
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsLabel"
         android:text="@string/label_floating_alpha" />
 
       <com.google.android.material.slider.Slider
         android:id="@+id/sliderFloatingAlpha"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        style="@style/SettingsSlider"
         android:valueFrom="30"
         android:valueTo="100"
         android:stepSize="5" />
 
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsLabel"
         android:text="@string/label_floating_size" />
 
       <com.google.android.material.slider.Slider
         android:id="@+id/sliderFloatingSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        style="@style/SettingsSlider"
         android:valueFrom="28"
         android:valueTo="96"
         android:stepSize="4" />
@@ -79,9 +67,7 @@
         app:iconGravity="textStart" />
 
       <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
+        style="@style/SettingsDivider" />
 
       <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchFloatingWriteCompat"
@@ -91,19 +77,14 @@
         android:text="@string/label_floating_write_compat" />
 
       <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsTextInputLayout.MarginTop"
         app:helperText="@string/hint_floating_write_compat_pkgs">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etFloatingWriteCompatPkgs"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsTextInput.MultiLine"
           android:hint="@string/label_floating_write_compat_pkgs"
           android:inputType="textNoSuggestions|textMultiLine"
-          android:minLines="2"
-          android:gravity="top|start"
           android:overScrollMode="ifContentScrolls"
           android:scrollbars="vertical" />
       </com.google.android.material.textfield.TextInputLayout>
@@ -117,19 +98,14 @@
         android:text="@string/label_floating_write_paste" />
 
       <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/SettingsTextInputLayout.MarginTop"
         app:helperText="@string/hint_floating_write_paste_pkgs">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etFloatingWritePastePkgs"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsTextInput.MultiLine"
           android:hint="@string/label_floating_write_paste_pkgs"
           android:inputType="textNoSuggestions|textMultiLine"
-          android:minLines="2"
-          android:gravity="top|start"
           android:overScrollMode="ifContentScrolls"
           android:scrollbars="vertical" />
       </com.google.android.material.textfield.TextInputLayout>

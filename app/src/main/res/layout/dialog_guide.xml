@@ -15,17 +15,12 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="?attr/colorPrimaryContainer">
+            style="@style/GuideCard.Highlight">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:padding="20dp"
-                android:gravity="center">
+                android:gravity="center"
+                style="@style/GuideCardContent">
 
                 <ImageView
                     android:layout_width="48dp"
@@ -61,41 +56,23 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            style="@style/GuideCard">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_main_keyboard_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center" />
+                    style="@style/GuideCardTitle" />
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
                     android:contentDescription="@string/guide_main_keyboard_desc"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/instruct" />
+                    android:src="@drawable/instruct"
+                    style="@style/GuideImage" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:text="@string/guide_main_keyboard_desc"
-                    android:textSize="12sp"
-                    android:alpha="0.7"
-                    android:gravity="center" />
+                    style="@style/GuideImageCaption" />
 
             </LinearLayout>
 
@@ -105,41 +82,23 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            style="@style/GuideCard">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_edit_panel_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center" />
+                    style="@style/GuideCardTitle" />
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
                     android:contentDescription="@string/guide_edit_panel_desc"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/edit_keyboard_view" />
+                    android:src="@drawable/edit_keyboard_view"
+                    style="@style/GuideImage" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:text="@string/guide_edit_panel_desc"
-                    android:textSize="12sp"
-                    android:alpha="0.7"
-                    android:gravity="center" />
+                    style="@style/GuideImageCaption" />
 
             </LinearLayout>
 
@@ -149,41 +108,23 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            style="@style/GuideCard">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_numpad_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center" />
+                    style="@style/GuideCardTitle" />
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
                     android:contentDescription="@string/guide_numpad_desc"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/numpad_keyboard_view" />
+                    android:src="@drawable/numpad_keyboard_view"
+                    style="@style/GuideImage" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:text="@string/guide_numpad_desc"
-                    android:textSize="12sp"
-                    android:alpha="0.7"
-                    android:gravity="center" />
+                    style="@style/GuideImageCaption" />
 
             </LinearLayout>
 
@@ -193,39 +134,23 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            style="@style/GuideCard">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_core_features_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center" />
+                    style="@style/GuideCardTitle" />
 
                 <!-- 长按录音 -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center_vertical">
+                    style="@style/GuideFeatureRow">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
                         android:src="@android:drawable/ic_btn_speak_now"
-                        android:contentDescription="@string/guide_mic_icon_desc" />
+                        android:contentDescription="@string/guide_mic_icon_desc"
+                        style="@style/GuideFeatureIcon" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -234,18 +159,12 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_long_press_title"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
+                            style="@style/GuideFeatureTitle" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_long_press_desc"
-                            android:textSize="12sp"
-                            android:alpha="0.8" />
+                            style="@style/GuideFeatureDesc" />
 
                     </LinearLayout>
 
@@ -253,18 +172,12 @@
 
                 <!-- AI后处理 -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center_vertical">
+                    style="@style/GuideFeatureRow">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
                         android:src="@android:drawable/ic_menu_edit"
-                        android:contentDescription="@string/guide_ai_icon_desc" />
+                        android:contentDescription="@string/guide_ai_icon_desc"
+                        style="@style/GuideFeatureIcon" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -273,18 +186,12 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_ai_processing_title"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
+                            style="@style/GuideFeatureTitle" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_ai_processing_desc"
-                            android:textSize="12sp"
-                            android:alpha="0.8" />
+                            style="@style/GuideFeatureDesc" />
 
                     </LinearLayout>
 
@@ -298,11 +205,9 @@
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
                         android:src="@android:drawable/ic_menu_compass"
-                        android:contentDescription="@string/guide_floating_icon_desc" />
+                        android:contentDescription="@string/guide_floating_icon_desc"
+                        style="@style/GuideFeatureIcon" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -311,18 +216,12 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_floating_title"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
+                            style="@style/GuideFeatureTitle" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:text="@string/guide_floating_desc"
-                            android:textSize="12sp"
-                            android:alpha="0.8" />
+                            style="@style/GuideFeatureDesc" />
 
                     </LinearLayout>
 
@@ -336,24 +235,14 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp">
+            style="@style/GuideCard">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_detailed_features_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center" />
+                    style="@style/GuideCardTitle" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -371,25 +260,15 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="?attr/colorSecondaryContainer">
+            style="@style/GuideCard.Secondary">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                style="@style/GuideCardContent">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:text="@string/guide_first_time_title"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"
-                    android:gravity="center"
-                    android:textColor="?attr/colorOnSecondaryContainer" />
+                    android:textColor="?attr/colorOnSecondaryContainer"
+                    style="@style/GuideCardTitle" />
 
                 <TextView
                     android:layout_width="match_parent"

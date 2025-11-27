@@ -29,81 +29,51 @@
         <!-- 左侧按钮组 -->
         <ImageButton
             android:id="@+id/btnExt1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/desc_extension_button_1"
-            android:clipToOutline="true"
-            android:padding="6dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btnExt2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/desc_extension_button_2"
-            android:clipToOutline="true"
-            android:padding="6dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnExt1"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 右侧按钮组 -->
         <ImageButton
             android:id="@+id/btnExt4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/desc_extension_button_4"
-            android:clipToOutline="true"
-            android:padding="6dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btnExt3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/desc_extension_button_3"
-            android:clipToOutline="true"
-            android:padding="6dp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnExt4"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 中央按钮 - 状态显示/波形动画区域 -->
         <FrameLayout
             android:id="@+id/btnExtCenter1"
+            style="@style/KeyboardRectContainer"
             android:layout_width="0dp"
-            android:layout_height="40dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_rect_button"
             android:contentDescription="@string/desc_extension_center_button_1"
             android:clickable="true"
             android:focusable="true"
-            android:stateListAnimator="@animator/key_button_state_list"
             android:clipChildren="true"
             android:clipToPadding="true"
             app:layout_constraintStart_toEndOf="@id/btnExt2"
@@ -142,75 +112,47 @@
 
         <ImageButton
             android:id="@+id/btnHide"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/ext_btn_clipboard"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/clipboard_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnBackspace"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/btnPostproc"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_postproc_toggle"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp"
             android:src="@drawable/magic_wand"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnPromptPicker"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/btnBackspace"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_backspace"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/backspace_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
             android:id="@+id/btnPromptPicker"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_ai_edit"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/pencil_simple_line"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -225,36 +167,21 @@
         <!-- 左侧占位按键（常规按钮类型，后续赋予功能） -->
         <ImageButton
             android:id="@+id/btnPunct1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_numpad"
-            android:clickable="true"
-            android:focusable="true"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
+            android:src="@drawable/numpad_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/numpad_toggle"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 合并标点键 A（点按=第1个，上滑=第2个） -->
         <com.brycewg.asrkb.ui.widgets.PunctKeyView
             android:id="@+id/btnPunct2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardPunctKey"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_punct_btn_2"
-            android:clickable="true"
-            android:focusable="true"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnPunct1"
             app:layout_constraintTop_toTopOf="parent" />
@@ -262,17 +189,10 @@
         <!-- 合并标点键 B（点按=第3个，上滑=第4个） -->
         <com.brycewg.asrkb.ui.widgets.PunctKeyView
             android:id="@+id/btnPunct3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardPunctKey"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_punct_btn_3"
-            android:clickable="true"
-            android:focusable="true"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnPunct4"
             app:layout_constraintTop_toTopOf="parent" />
@@ -280,37 +200,26 @@
         <!-- 右侧占位按键（常规按钮类型，后续赋予功能） -->
         <ImageButton
             android:id="@+id/btnPunct4"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_vendor_picker"
-            android:clickable="true"
-            android:focusable="true"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
+            android:src="@drawable/circles_four_toggle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/circles_four_toggle"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- 中央按钮 -->
         <Button
             android:id="@+id/btnExtCenter2"
+            style="@style/KeyboardRectContainer"
             android:layout_width="0dp"
-            android:layout_height="40dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_rect_button"
             android:contentDescription="@string/desc_extension_center_button_2"
             android:text="@string/cd_space"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
             android:gravity="center"
-            android:clipToOutline="true"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintStart_toEndOf="@id/btnPunct2"
             app:layout_constraintEnd_toStartOf="@id/btnPunct3"
             app:layout_constraintTop_toTopOf="parent"
@@ -331,73 +240,45 @@
 
         <ImageButton
             android:id="@+id/btnSettings"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_settings"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/gear_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btnImeSwitcher"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_prompt_picker"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/article_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnSettings"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btnEnter"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_enter"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/key_return_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/btnAiEdit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_switch_ime"
-            android:clipToOutline="true"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp"
             android:src="@drawable/keyboard_toggle"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnEnter"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/btnImeSwitcher"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -410,36 +291,16 @@
 
         <TextView
             android:id="@+id/btnGestureCancel"
-            android:layout_width="86dp"
-            android:layout_height="86dp"
-            android:background="@drawable/bg_key_rect_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
+            style="@style/KeyboardGestureButton"
             android:text="@string/label_recording_gesture_cancel"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="14sp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@null"
-            android:clipToOutline="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/btnGestureSend"
-            android:layout_width="86dp"
-            android:layout_height="86dp"
-            android:background="@drawable/bg_key_rect_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
+            style="@style/KeyboardGestureButton"
             android:text="@string/label_recording_gesture_send"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="14sp"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@null"
-            android:clipToOutline="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -12,48 +12,23 @@
     <!-- SiliconFlow Free Service Option Card (Recommended) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSiliconFlowFree"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:checkable="true"
-        android:checked="true"
-        app:cardCornerRadius="24dp"
-        app:strokeWidth="2dp"
-        app:checkedIcon="@null"
-        style="@style/Widget.Material3.CardView.Outlined">
+        style="@style/DialogSelectionCard"
+        android:checked="true">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            style="@style/DialogCardContent">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/model_guide_option_sf_free"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface" />
+                style="@style/DialogCardTitle"
+                android:text="@string/model_guide_option_sf_free" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/model_guide_option_sf_free_desc"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                style="@style/DialogCardDesc"
+                android:text="@string/model_guide_option_sf_free_desc" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/model_guide_option_sf_free_action"
-                android:textSize="12sp"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="italic" />
+                style="@style/DialogCardAction"
+                android:text="@string/model_guide_option_sf_free_action" />
 
         </LinearLayout>
 
@@ -62,48 +37,23 @@
     <!-- Local Model Option Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLocalModel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:checkable="true"
-        android:checked="false"
-        app:cardCornerRadius="24dp"
-        app:strokeWidth="2dp"
-        app:checkedIcon="@null"
-        style="@style/Widget.Material3.CardView.Outlined">
+        style="@style/DialogSelectionCard"
+        android:checked="false">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            style="@style/DialogCardContent">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/model_guide_option_local"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface" />
+                style="@style/DialogCardTitle"
+                android:text="@string/model_guide_option_local" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/model_guide_option_local_desc"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                style="@style/DialogCardDesc"
+                android:text="@string/model_guide_option_local_desc" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/model_guide_option_local_action"
-                android:textSize="12sp"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="italic" />
+                style="@style/DialogCardAction"
+                android:text="@string/model_guide_option_local_action" />
 
         </LinearLayout>
 
@@ -112,46 +62,22 @@
     <!-- Online Model Option Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardOnlineModel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:checkable="true"
-        app:cardCornerRadius="24dp"
-        app:strokeWidth="2dp"
-        app:checkedIcon="@null"
-        style="@style/Widget.Material3.CardView.Outlined">
+        style="@style/DialogSelectionCard">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            style="@style/DialogCardContent">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/model_guide_option_online"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface" />
+                style="@style/DialogCardTitle"
+                android:text="@string/model_guide_option_online" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/model_guide_option_online_desc"
-                android:textSize="14sp"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                style="@style/DialogCardDesc"
+                android:text="@string/model_guide_option_online_desc" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/model_guide_option_online_action"
-                android:textSize="12sp"
-                android:textColor="?attr/colorPrimary"
-                android:textStyle="italic" />
+                style="@style/DialogCardAction"
+                android:text="@string/model_guide_option_online_action" />
 
         </LinearLayout>
 

@@ -33,109 +33,74 @@
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchTrimTrailingPunct"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsSwitch.First"
           android:text="@string/label_trim_trailing_punct" />
 
-        
+
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchMicHaptic"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_mic_haptic" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchMicTapToggle"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_mic_tap_toggle" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchAutoStartRecordingOnShow"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_auto_start_recording_on_show" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchFcitx5ReturnOnSwitcher"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_fcitx5_return_on_switcher" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchReturnPrevImeOnHide"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_return_prev_ime_on_hide" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchHideRecentTasks"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_hide_recent_task_card" />
 
-        
+
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchDuckMediaOnRecord"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_audio_ducking_on_record" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchHeadsetMicPriority"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_headset_mic_priority" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchExternalImeAidl"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          style="@style/SettingsSwitch"
           android:text="@string/label_external_ime_link_aidl" />
 
         <!-- 键盘高度 -->
         <TextView
-            android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold"
+          style="@style/SettingsSectionTitle"
           android:text="@string/label_keyboard_height" />
 
         <TextView
           android:id="@+id/tvKeyboardHeightValue"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:foreground="?attr/selectableItemBackground"
-          android:textColor="?attr/colorOnSurfaceVariant"
+          style="@style/SettingsClickableValue"
           android:text="@string/keyboard_height_medium" />
+
         <Spinner
-            android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone" />
+          style="@style/SettingsHiddenSpinner" />
 
         <!-- 底部间距调节 -->
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold"
+          style="@style/SettingsSectionTitle"
           android:text="@string/label_keyboard_bottom_padding" />
 
         <LinearLayout
@@ -169,11 +134,7 @@
 
         <!-- 波形灵敏度 -->
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold"
+          style="@style/SettingsSectionTitle"
           android:text="@string/label_waveform_sensitivity" />
 
         <LinearLayout
@@ -207,48 +168,25 @@
 
         <!-- App language selection -->
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold"
+          style="@style/SettingsSectionTitle"
           android:text="@string/label_language" />
 
         <TextView
           android:id="@+id/tvLanguageValue"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:foreground="?attr/selectableItemBackground"
-          android:textColor="?attr/colorOnSurfaceVariant"
+          style="@style/SettingsClickableValue"
           android:text="@string/lang_follow_system" />
+
         <Spinner
-            android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone" />
+          style="@style/SettingsHiddenSpinner" />
 
         <!-- 扩展按钮配置 -->
         <TextView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:textColor="?attr/colorOnSurface"
-          android:textStyle="bold"
+          style="@style/SettingsSectionTitle"
           android:text="@string/label_extension_buttons" />
 
         <TextView
           android:id="@+id/tvExtensionButtonsValue"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:clickable="true"
-          android:focusable="true"
-          android:foreground="?attr/selectableItemBackground"
-          android:textColor="?attr/colorOnSurfaceVariant"
+          style="@style/SettingsClickableValue"
           android:text="@string/ext_btn_default_summary" />
 
       </LinearLayout>

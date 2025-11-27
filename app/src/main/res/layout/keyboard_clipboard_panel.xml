@@ -15,19 +15,12 @@
 
         <ImageButton
             android:id="@+id/clip_btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_key_button"
+            style="@style/KeyboardImageButton"
             android:contentDescription="@string/cd_clipboard_back"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/arrow_left_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/clip_txtCount"
@@ -43,20 +36,13 @@
 
         <ImageButton
             android:id="@+id/clip_btnDelete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            style="@style/KeyboardImageButton"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_key_button"
             android:contentDescription="@string/cd_clipboard_delete"
-            android:clipToOutline="true"
-            android:padding="6dp"
             android:src="@drawable/backspace_toggle"
-            android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:stateListAnimator="@animator/key_button_state_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:tint="?attr/colorOnSurfaceVariant" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

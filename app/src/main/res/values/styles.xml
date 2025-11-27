@@ -1,25 +1,414 @@
 <resources>
 
-    <!-- 胶囊圆角（适用于 MaterialButton 的 shapeAppearanceOverlay） -->
-  <style name="AsrkbShapeOverlayCapsule">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">50%</item>
-  </style>
+    <!-- ==================== 通用形状样式 ==================== -->
 
-  <!-- 数字/符号键：圆角矩形背景、40dp 高度、文字居中 -->
-  <style name="NpKeyRect">
-    <item name="android:layout_height">40dp</item>
-    <item name="android:background">@drawable/bg_key_rect_button</item>
-    <item name="android:gravity">center</item>
-    <item name="android:clickable">true</item>
-    <item name="android:focusable">true</item>
-    <!-- Ripple 已内置于背景，前景不再需要叠加 -->
-    <item name="android:foreground">@null</item>
-    <item name="android:clipToOutline">true</item>
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-    <item name="android:textSize">18sp</item>
-    <item name="android:includeFontPadding">false</item>
-    <item name="android:padding">4dp</item>
-    <item name="android:layout_marginEnd">4dp</item>
-  </style>
+    <!-- 胶囊圆角（适用于 MaterialButton 的 shapeAppearanceOverlay） -->
+    <style name="AsrkbShapeOverlayCapsule">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- ==================== 设置页面样式 ==================== -->
+
+    <!-- Section 标题：粗体、主色、上边距 16dp -->
+    <style name="SettingsSectionTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Section 标题（首个，无上边距） -->
+    <style name="SettingsSectionTitle.First" parent="SettingsSectionTitle">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <!-- 普通标签文字 -->
+    <style name="SettingsLabel">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- 可点击选择项：带点击效果、次要文字色 -->
+    <style name="SettingsClickableValue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- MaterialSwitch 开关 -->
+    <style name="SettingsSwitch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <!-- MaterialSwitch（首个，无上边距） -->
+    <style name="SettingsSwitch.First" parent="SettingsSwitch">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <!-- TextInputEditText 输入框文字样式 -->
+    <style name="SettingsTextInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- TextInputEditText 多行输入 -->
+    <style name="SettingsTextInput.MultiLine" parent="SettingsTextInput">
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:minLines">2</item>
+        <item name="android:gravity">top|start</item>
+    </style>
+
+    <!-- TextInputLayout 外框样式 -->
+    <style name="SettingsTextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxBackgroundMode">outline</item>
+    </style>
+
+    <!-- TextInputLayout（带上边距） -->
+    <style name="SettingsTextInputLayout.MarginTop" parent="SettingsTextInputLayout">
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <!-- 分隔线 -->
+    <style name="SettingsDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+    <!-- 带图标的 OutlinedButton -->
+    <style name="SettingsOutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- TonalButton（获取 API Key 等） -->
+    <style name="SettingsTonalButton" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+    </style>
+
+    <!-- Slider 滑块 -->
+    <style name="SettingsSlider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+
+    <!-- 提示/说明文字（小字号、次要色） -->
+    <style name="SettingsHint">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!-- 隐藏的 Spinner（用于实现自定义下拉选择） -->
+    <style name="SettingsHiddenSpinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- 状态/下载状态文字 -->
+    <style name="SettingsStatusText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- ==================== 关于页面样式 ==================== -->
+
+    <!-- 关于页面大标题 -->
+    <style name="AboutSectionTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 致谢项标题 -->
+    <style name="AboutAckTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 致谢项描述 -->
+    <style name="AboutAckDesc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- 关于页面正文 -->
+    <style name="AboutBodyText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- ==================== 键盘样式 ==================== -->
+
+    <!-- 键盘 ImageButton -->
+    <style name="KeyboardImageButton">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_key_button</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:stateListAnimator">@animator/key_button_state_list</item>
+        <item name="android:tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 键盘矩形按钮容器（中央状态显示区域） -->
+    <style name="KeyboardRectContainer">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_key_rect_button</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:stateListAnimator">@animator/key_button_state_list</item>
+    </style>
+
+    <!-- 数字/符号键：圆角矩形背景、40dp 高度、文字居中 -->
+    <style name="NpKeyRect">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_key_rect_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <!-- Ripple 已内置于背景，前景不再需要叠加 -->
+        <item name="android:foreground">@null</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+    </style>
+
+    <!-- 录音手势按钮 -->
+    <style name="KeyboardGestureButton">
+        <item name="android:layout_width">86dp</item>
+        <item name="android:layout_height">86dp</item>
+        <item name="android:background">@drawable/bg_key_rect_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:clipToOutline">true</item>
+    </style>
+
+    <!-- 标点键视图 -->
+    <style name="KeyboardPunctKey">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_key_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:stateListAnimator">@animator/key_button_state_list</item>
+    </style>
+
+    <!-- 数字键盘 ImageButton（用于底部功能按钮，无 ripple 前景） -->
+    <style name="NpKeyImageButton">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_key_rect_button</item>
+        <item name="android:clipToOutline">true</item>
+        <item name="android:foreground">@null</item>
+        <item name="android:padding">6dp</item>
+        <item name="android:stateListAnimator">@animator/key_button_state_list</item>
+        <item name="android:tint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- ==================== 对话框样式 ==================== -->
+
+    <!-- 模型选择卡片 -->
+    <style name="DialogSelectionCard" parent="Widget.Material3.CardView.Outlined">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:checkable">true</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="checkedIcon">@null</item>
+    </style>
+
+    <!-- 选择卡片内容容器 -->
+    <style name="DialogCardContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- 选择卡片标题 -->
+    <style name="DialogCardTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- 选择卡片描述 -->
+    <style name="DialogCardDesc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- 选择卡片操作提示 -->
+    <style name="DialogCardAction">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- ==================== 引导页样式 ==================== -->
+
+    <!-- 引导页卡片 -->
+    <style name="GuideCard" parent="Widget.Material3.CardView.Elevated">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <!-- 引导页卡片（强调色） -->
+    <style name="GuideCard.Highlight" parent="GuideCard">
+        <item name="cardBackgroundColor">?attr/colorPrimaryContainer</item>
+        <item name="cardElevation">4dp</item>
+    </style>
+
+    <!-- 引导页卡片（次要色） -->
+    <style name="GuideCard.Secondary" parent="GuideCard">
+        <item name="cardBackgroundColor">?attr/colorSecondaryContainer</item>
+    </style>
+
+    <!-- 引导页卡片内容 -->
+    <style name="GuideCardContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- 引导页卡片标题 -->
+    <style name="GuideCardTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- 引导页图片 -->
+    <style name="GuideImage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
+    <!-- 引导页图片说明 -->
+    <style name="GuideImageCaption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:alpha">0.7</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- 引导页功能行 -->
+    <style name="GuideFeatureRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- 引导页功能图标 -->
+    <style name="GuideFeatureIcon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+    </style>
+
+    <!-- 引导页功能标题 -->
+    <style name="GuideFeatureTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- 引导页功能描述 -->
+    <style name="GuideFeatureDesc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:alpha">0.8</item>
+    </style>
+
+    <!-- ==================== 悬浮球样式 ==================== -->
+
+    <!-- 悬浮球 ripple 动画视图 -->
+    <style name="FloatingBallRipple">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">invisible</item>
+        <item name="android:alpha">0</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
 </resources>

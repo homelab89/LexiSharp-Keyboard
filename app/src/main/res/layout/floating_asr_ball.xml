@@ -12,36 +12,15 @@
 
         <View
             android:id="@+id/ripple1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            android:alpha="0"
-            android:clickable="false"
-            android:focusable="false"
-            android:importantForAccessibility="no" />
+            style="@style/FloatingBallRipple" />
 
         <View
             android:id="@+id/ripple2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            android:alpha="0"
-            android:clickable="false"
-            android:focusable="false"
-            android:importantForAccessibility="no" />
+            style="@style/FloatingBallRipple" />
 
         <View
             android:id="@+id/ripple3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            android:alpha="0"
-            android:clickable="false"
-            android:focusable="false"
-            android:importantForAccessibility="no" />
+            style="@style/FloatingBallRipple" />
 
         <!-- 图标置于最上层，保证点击与可见性 -->
         <ImageView

@@ -35,20 +35,14 @@
 
       <TextView
         android:id="@+id/tvVersion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AboutBodyText"
         android:layout_marginTop="8dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
         android:text="@string/about_version" />
 
       <TextView
         android:id="@+id/tvPackage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AboutBodyText"
         android:layout_marginTop="4dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
         android:text="@string/about_package" />
 
       <com.google.android.material.button.MaterialButton
@@ -60,67 +54,40 @@
         android:text="@string/about_open_github" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AboutBodyText"
         android:layout_marginTop="16dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
         android:text="@string/about_desc" />
 
       <!-- 使用统计 -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold"
-        android:textSize="16sp"
+        style="@style/AboutSectionTitle"
         android:text="@string/about_stats_title" />
 
       <TextView
         android:id="@+id/tvDaysWithYou"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
+        style="@style/AboutBodyText"
         android:text="" />
 
       <TextView
         android:id="@+id/tvSummaryLine1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AboutBodyText"
         android:layout_marginTop="4dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
         android:text="" />
 
       <TextView
         android:id="@+id/tvSummaryLine2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/AboutBodyText"
         android:layout_marginTop="2dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
         android:text="" />
 
       <TextView
         android:id="@+id/tvDailyWeeklyAvg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
+        style="@style/AboutBodyText"
         android:text="" />
 
       <!-- 按供应商条形图容器 -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_by_vendor" />
 
       <LinearLayout
@@ -132,12 +99,7 @@
 
       <!-- 最近 7 天 / 最近 30 天（字数）条形图容器 -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_last_7_days" />
 
       <LinearLayout
@@ -149,118 +111,61 @@
 
       <!-- 开源致谢 -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold"
-        android:textSize="16sp"
+        style="@style/AboutSectionTitle"
         android:text="@string/about_acknowledgements_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
+        style="@style/AboutBodyText"
         android:text="@string/about_acknowledgements_desc" />
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnViewLicenses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        style="@style/Widget.Material3.Button.TonalButton"
+        style="@style/SettingsTonalButton"
         android:text="@string/about_view_full_licenses" />
 
       <!-- sherpa-onnx -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_sherpa_onnx_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="13sp"
+        style="@style/AboutAckDesc"
         android:text="@string/about_sherpa_onnx_desc" />
 
       <!-- SyncClipboard -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_syncclipboard_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="13sp"
+        style="@style/AboutAckDesc"
         android:text="@string/about_syncclipboard_desc" />
 
       <!-- Phosphor Icons -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_phosphor_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="13sp"
+        style="@style/AboutAckDesc"
         android:text="@string/about_phosphor_desc" />
-      
+
       <!-- WaveLineView -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textSize="14sp"
-        android:textStyle="bold"
+        style="@style/AboutAckTitle"
         android:text="@string/about_wavelineview_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="13sp"
+        style="@style/AboutAckDesc"
         android:text="@string/about_wavelineview_desc" />
-        
+
       <!-- 调试日志 -->
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold"
-        android:textSize="16sp"
+        style="@style/AboutSectionTitle"
         android:text="@string/about_debug_title" />
 
       <TextView
-          android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="14sp"
+        style="@style/AboutBodyText"
         android:text="@string/about_debug_desc" />
 
       <com.google.android.material.button.MaterialButton
@@ -273,10 +178,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnExportDebugLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        style="@style/Widget.Material3.Button.TonalButton"
+        style="@style/SettingsTonalButton"
         android:text="@string/btn_debug_export" />
 
     </LinearLayout>

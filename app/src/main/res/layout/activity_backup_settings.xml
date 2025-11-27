@@ -26,10 +26,7 @@
 
       <!-- 文件备份 -->
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold"
+        style="@style/SettingsSectionTitle.First"
         android:text="@string/section_file_backup" />
 
       <LinearLayout
@@ -58,61 +55,41 @@
       </LinearLayout>
 
       <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/SettingsDivider"
         android:layout_marginTop="24dp" />
 
       <!-- WebDAV 同步 -->
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColor="?attr/colorOnSurface"
-        android:textStyle="bold"
+        style="@style/SettingsSectionTitle"
         android:text="@string/section_webdav_sync" />
 
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/hint_webdav_url">
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etWebdavUrl"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:inputType="textUri"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          style="@style/SettingsTextInput"
+          android:inputType="textUri" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/hint_webdav_username">
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etWebdavUsername"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsTextInput"
           android:inputType="text"
-          android:autofillHints="username"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          android:autofillHints="username" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
+        style="@style/SettingsTextInputLayout"
         android:hint="@string/hint_webdav_password">
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/etWebdavPassword"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          style="@style/SettingsTextInput"
           android:inputType="textPassword"
-          android:autofillHints="password"
-          android:textColor="?attr/colorOnSurface"
-          android:textColorHint="?attr/colorOnSurfaceVariant" />
+          android:autofillHints="password" />
       </com.google.android.material.textfield.TextInputLayout>
 
       <LinearLayout
@@ -141,12 +118,8 @@
       </LinearLayout>
 
       <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:textColor="?attr/colorOnSurfaceVariant"
+        style="@style/SettingsStatusText"
         android:text="@string/tip_backup_contains_secrets" />
-
 
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
