@@ -58,7 +58,17 @@
     <string name="llm_vendor_gemini">Google Gemini</string>
     <string name="llm_vendor_deepseek">DeepSeek（深度求索）</string>
     <string name="llm_vendor_moonshot">月之暗面 (Kimi)</string>
+    <string name="llm_vendor_zhipu">智譜 GLM</string>
+    <string name="llm_vendor_volcengine">火山引擎</string>
+    <string name="llm_vendor_groq">Groq</string>
+    <string name="llm_vendor_cerebras">Cerebras</string>
+    <string name="llm_vendor_ohmygpt">OhMyGPT</string>
     <string name="llm_vendor_custom">自訂</string>
+
+    <!-- 推理模式 -->
+    <string name="label_reasoning_mode">啟用深度思考</string>
+    <string name="hint_reasoning_mode">開啟後模型會進行推理分析，處理較慢但對複雜任務效果更好。</string>
+    <string name="hint_reasoning_not_supported">目前模型不支援推理模式</string>
 
     <!-- 矽基流動免費/付費切換 -->
     <string name="label_sf_use_free_service">使用免費服務</string>

@@ -59,7 +59,10 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
     val apiKey: String,
     val endpoint: String,
     val model: String,
-    val temperature: Double
+    val temperature: Double,
+    val vendor: LlmVendor,
+    val enableReasoning: Boolean,
+    val supportsReasoningControl: Boolean
   )
 
   companion object {
@@ -73,6 +76,26 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
     private const val USER_INPUT_PREFIX = "待处理文本:\n"
   }
 
+  private fun buildRequestConfig(
+    apiKey: String,
+    endpoint: String,
+    model: String,
+    temperature: Double,
+    vendor: LlmVendor,
+    enableReasoning: Boolean
+  ): LlmRequestConfig {
+    val supportsReasoning = vendor.supportsReasoningControl(model)
+    return LlmRequestConfig(
+      apiKey = apiKey,
+      endpoint = endpoint,
+      model = model,
+      temperature = temperature,
+      vendor = vendor,
+      enableReasoning = enableReasoning,
+      supportsReasoningControl = supportsReasoning
+    )
+  }
+
   /**
    * 从 Prefs 获取活动的 LLM 配置（使用新的供应商架构）
    */
@@ -81,33 +104,40 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
 
     // SiliconFlow 免费服务特殊处理
     if (vendor == LlmVendor.SF_FREE && !prefs.sfFreeLlmUsePaidKey) {
-      return LlmRequestConfig(
+      val model = prefs.sfFreeLlmModel
+      return buildRequestConfig(
         apiKey = BuildConfig.SF_FREE_API_KEY,
         endpoint = Prefs.SF_CHAT_COMPLETIONS_ENDPOINT,
-        model = prefs.sfFreeLlmModel,
-        temperature = Prefs.DEFAULT_LLM_TEMPERATURE.toDouble()
+        model = model,
+        temperature = Prefs.DEFAULT_LLM_TEMPERATURE.toDouble(),
+        vendor = vendor,
+        enableReasoning = prefs.getLlmVendorReasoningEnabled(vendor)
       )
     }
 
     // 使用统一的 getEffectiveLlmConfig
     val config = prefs.getEffectiveLlmConfig()
     if (config != null) {
-      return LlmRequestConfig(
+      return buildRequestConfig(
         apiKey = config.apiKey,
         endpoint = config.endpoint,
         model = config.model,
-        temperature = config.temperature.toDouble()
+        temperature = config.temperature.toDouble(),
+        vendor = config.vendor,
+        enableReasoning = config.enableReasoning
       )
     }
 
     // 回退到旧的逻辑（兼容性）
     val active = prefs.getActiveLlmProvider()
     val fallbackEndpoint = if (vendor.hasBuiltinEndpoint) vendor.endpoint else (active?.endpoint ?: prefs.llmEndpoint)
-    return LlmRequestConfig(
+    return buildRequestConfig(
       apiKey = active?.apiKey ?: prefs.llmApiKey,
       endpoint = fallbackEndpoint,
       model = active?.model ?: prefs.llmModel,
-      temperature = (active?.temperature ?: prefs.llmTemperature).toDouble()
+      temperature = (active?.temperature ?: prefs.llmTemperature).toDouble(),
+      vendor = vendor,
+      enableReasoning = prefs.getLlmVendorReasoningEnabled(vendor)
     )
   }
 
@@ -130,6 +160,81 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
   }
 
   /**
+   * 根据供应商添加推理控制参数到请求体
+   *
+   * @param body 请求 JSON 对象
+   * @param config LLM 配置
+   */
+  private fun addReasoningParams(body: JSONObject, config: LlmRequestConfig) {
+    val vendor = config.vendor
+    if (!config.supportsReasoningControl) return
+
+    when (vendor) {
+      LlmVendor.SF_FREE -> {
+        // SiliconFlow: enable_thinking 支持显式开关
+        body.put("enable_thinking", config.enableReasoning)
+        return
+      }
+      LlmVendor.VOLCENGINE, LlmVendor.ZHIPU -> {
+        // 火山/智谱：通过 thinking.type 控制开关
+        val type = if (config.enableReasoning) "enabled" else "disabled"
+        body.put("thinking", JSONObject().put("type", type))
+        return
+      }
+      LlmVendor.GEMINI -> {
+        // Gemini Pro 只能将预算调低；flash 系列可关闭
+        if (config.enableReasoning) return
+        val modelLower = config.model.lowercase()
+        val effort = if (modelLower.contains("pro") || modelLower.startsWith("gemini-3")) "low" else "none"
+        body.put("reasoning_effort", effort)
+        return
+      }
+      LlmVendor.GROQ -> {
+        // Groq：仅对支持思考的模型下发对应最小值
+        if (config.enableReasoning) return
+        val modelLower = config.model.lowercase()
+        val effort = when {
+          modelLower.contains("qwen3") || modelLower.contains("qwen/") -> "none"
+          modelLower.contains("gpt-oss") -> "low"
+          else -> return
+        }
+        body.put("reasoning_effort", effort)
+        return
+      }
+      LlmVendor.CEREBRAS -> {
+        // Cerebras 仅 gpt-oss-120b 支持 reasoning_effort，且最小为 low
+        val isGptOss120b = config.model.equals("gpt-oss-120b", ignoreCase = true)
+        if (!isGptOss120b) return
+        if (!config.enableReasoning) {
+          body.put("reasoning_effort", "low")
+        }
+        return
+      }
+      else -> {
+        // fall through to generic handling
+      }
+    }
+
+    when (vendor.reasoningMode) {
+      ReasoningMode.ENABLE_THINKING -> {
+        body.put("enable_thinking", config.enableReasoning)
+      }
+      ReasoningMode.REASONING_EFFORT -> {
+        if (!config.enableReasoning) {
+          body.put("reasoning_effort", "none")
+        }
+      }
+      ReasoningMode.THINKING_TYPE -> {
+        val type = if (config.enableReasoning) "enabled" else "disabled"
+        body.put("thinking", JSONObject().put("type", type))
+      }
+      ReasoningMode.MODEL_SELECTION, ReasoningMode.NONE -> {
+        // No parameter needed - controlled via model selection or not supported
+      }
+    }
+  }
+
+  /**
    * 构建标准的 OpenAI Chat Completions 请求
    *
    * @param config LLM 配置
@@ -144,8 +249,11 @@ class LlmPostProcessor(private val client: OkHttpClient? = null) {
 
     val reqJson = JSONObject().apply {
       put("model", config.model)
-      put("temperature", config.temperature)
+      put("temperature", kotlin.math.round(config.temperature * 100) / 100)
       put("messages", messages)
+
+      // Add reasoning control parameters based on vendor
+      addReasoningParams(this, config)
     }.toString()
 
     val body = reqJson.toRequestBody(jsonMedia)

@@ -3,6 +3,7 @@ package com.brycewg.asrkb.ui.settings.ai
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.brycewg.asrkb.asr.LlmVendor
+import com.brycewg.asrkb.asr.ReasoningMode
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.store.PromptPreset
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +28,8 @@ class AiPostSettingsViewModel : ViewModel() {
     data class BuiltinVendorConfig(
         val apiKey: String = "",
         val model: String = "",
-        val temperature: Float = Prefs.DEFAULT_LLM_TEMPERATURE
+        val temperature: Float = Prefs.DEFAULT_LLM_TEMPERATURE,
+        val reasoningEnabled: Boolean = false
     )
 
     private val _builtinVendorConfig = MutableStateFlow(BuiltinVendorConfig())
@@ -85,7 +87,8 @@ class AiPostSettingsViewModel : ViewModel() {
         _builtinVendorConfig.value = BuiltinVendorConfig(
             apiKey = prefs.getLlmVendorApiKey(vendor),
             model = prefs.getLlmVendorModel(vendor),
-            temperature = prefs.getLlmVendorTemperature(vendor)
+            temperature = prefs.getLlmVendorTemperature(vendor),
+            reasoningEnabled = prefs.getLlmVendorReasoningEnabled(vendor)
         )
     }
 
@@ -143,6 +146,37 @@ class AiPostSettingsViewModel : ViewModel() {
             _builtinVendorConfig.value = _builtinVendorConfig.value.copy(temperature = coerced)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update builtin temperature", e)
+        }
+    }
+
+    /**
+     * Updates builtin vendor reasoning enabled state
+     */
+    fun updateBuiltinReasoningEnabled(prefs: Prefs, enabled: Boolean) {
+        val vendor = _selectedVendor.value
+        if (vendor == LlmVendor.CUSTOM || vendor == LlmVendor.SF_FREE) return
+        try {
+            prefs.setLlmVendorReasoningEnabled(vendor, enabled)
+            _builtinVendorConfig.value = _builtinVendorConfig.value.copy(reasoningEnabled = enabled)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to update builtin reasoning enabled", e)
+        }
+    }
+
+    /**
+     * Checks if the current vendor/model supports reasoning mode switch
+     * Returns true only for vendors with switch-controlled reasoning (not MODEL_SELECTION)
+     */
+    fun supportsReasoningSwitch(vendor: LlmVendor, model: String): Boolean {
+        return when (vendor.reasoningMode) {
+            ReasoningMode.ENABLE_THINKING,
+            ReasoningMode.REASONING_EFFORT,
+            ReasoningMode.THINKING_TYPE -> {
+                // Only show switch if the model supports reasoning
+                vendor.reasoningModels.isEmpty() || vendor.reasoningModels.contains(model)
+            }
+            ReasoningMode.MODEL_SELECTION,
+            ReasoningMode.NONE -> false
         }
     }
 

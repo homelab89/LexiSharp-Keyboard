@@ -49,6 +49,9 @@ class AiPostSettingsActivity : AppCompatActivity() {
     private lateinit var tvSfFreeLlmModel: TextView
     private lateinit var tilSfCustomModelId: View
     private lateinit var etSfCustomModelId: EditText
+    private lateinit var layoutSfReasoningMode: View
+    private lateinit var switchSfReasoningMode: MaterialSwitch
+    private lateinit var tvSfReasoningModeHint: TextView
     private lateinit var tilSfTemperature: View
     private lateinit var etSfTemperature: EditText
 
@@ -58,6 +61,9 @@ class AiPostSettingsActivity : AppCompatActivity() {
     private lateinit var tvBuiltinModel: TextView
     private lateinit var tilBuiltinCustomModelId: View
     private lateinit var etBuiltinCustomModelId: EditText
+    private lateinit var layoutBuiltinReasoningMode: View
+    private lateinit var switchBuiltinReasoningMode: MaterialSwitch
+    private lateinit var tvBuiltinReasoningModeHint: TextView
     private lateinit var etBuiltinTemperature: EditText
     private lateinit var btnBuiltinRegister: Button
     private lateinit var btnBuiltinTestCall: Button
@@ -152,6 +158,9 @@ class AiPostSettingsActivity : AppCompatActivity() {
         tvSfFreeLlmModel = findViewById(R.id.tvSfFreeLlmModel)
         tilSfCustomModelId = findViewById(R.id.tilSfCustomModelId)
         etSfCustomModelId = findViewById(R.id.etSfCustomModelId)
+        layoutSfReasoningMode = findViewById(R.id.layoutSfReasoningMode)
+        switchSfReasoningMode = findViewById(R.id.switchSfReasoningMode)
+        tvSfReasoningModeHint = findViewById(R.id.tvSfReasoningModeHint)
         tilSfTemperature = findViewById(R.id.tilSfTemperature)
         etSfTemperature = findViewById(R.id.etSfTemperature)
 
@@ -221,6 +230,9 @@ class AiPostSettingsActivity : AppCompatActivity() {
         tvBuiltinModel = findViewById(R.id.tvBuiltinModel)
         tilBuiltinCustomModelId = findViewById(R.id.tilBuiltinCustomModelId)
         etBuiltinCustomModelId = findViewById(R.id.etBuiltinCustomModelId)
+        layoutBuiltinReasoningMode = findViewById(R.id.layoutBuiltinReasoningMode)
+        switchBuiltinReasoningMode = findViewById(R.id.switchBuiltinReasoningMode)
+        tvBuiltinReasoningModeHint = findViewById(R.id.tvBuiltinReasoningModeHint)
         etBuiltinTemperature = findViewById(R.id.etBuiltinTemperature)
         btnBuiltinRegister = findViewById(R.id.btnBuiltinRegister)
         btnBuiltinTestCall = findViewById(R.id.btnBuiltinTestCall)
@@ -268,6 +280,16 @@ class AiPostSettingsActivity : AppCompatActivity() {
             if (text.isNotBlank()) {
                 viewModel.updateBuiltinModel(prefs, text)
             }
+        }
+
+        // Builtin reasoning mode switch
+        switchBuiltinReasoningMode.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.updateBuiltinReasoningEnabled(prefs, isChecked)
+        }
+
+        // SF reasoning mode switch
+        switchSfReasoningMode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.setLlmVendorReasoningEnabled(LlmVendor.SF_FREE, isChecked)
         }
 
         // Builtin register button
@@ -353,6 +375,7 @@ class AiPostSettingsActivity : AppCompatActivity() {
     private fun loadInitialData() {
         viewModel.loadData(prefs)
         updateSfFreeLlmModelDisplay()
+        updateSfReasoningModeUI()
     }
 
     // ======== UI Update Methods ========
@@ -378,6 +401,13 @@ class AiPostSettingsActivity : AppCompatActivity() {
             etBuiltinCustomModelId.setTextIfDifferent(displayModel)
         }
         etBuiltinTemperature.setTextIfDifferent(config.temperature.toString())
+
+        // Update reasoning mode switch visibility and state
+        val supportsReasoning = viewModel.supportsReasoningSwitch(vendor, displayModel)
+        layoutBuiltinReasoningMode.visibility = if (supportsReasoning) View.VISIBLE else View.GONE
+        if (supportsReasoning) {
+            switchBuiltinReasoningMode.isChecked = config.reasoningEnabled
+        }
         isUpdatingProgrammatically = false
     }
 
@@ -387,8 +417,17 @@ class AiPostSettingsActivity : AppCompatActivity() {
         tilSfTemperature.visibility = if (isFreeMode) View.GONE else View.VISIBLE
         // Update model display based on mode
         updateSfFreeLlmModelDisplay()
+        updateSfReasoningModeUI()
         if (!isFreeMode) {
             updateSfTemperatureDisplay()
+        }
+    }
+
+    private fun getSfPresetModels(): List<String> {
+        return if (prefs.sfFreeLlmUsePaidKey) {
+            LlmVendor.SF_FREE.models
+        } else {
+            Prefs.SF_FREE_LLM_MODELS
         }
     }
 
@@ -400,7 +439,8 @@ class AiPostSettingsActivity : AppCompatActivity() {
             prefs.sfFreeLlmModel
         }
         // Check if it's a custom model (not in preset list)
-        val isCustom = !Prefs.SF_FREE_LLM_MODELS.contains(model) && model.isNotBlank()
+        val presetModels = getSfPresetModels()
+        val isCustom = !presetModels.contains(model) && model.isNotBlank()
         tvSfFreeLlmModel.text = if (isCustom) model else model
         tilSfCustomModelId.visibility = if (isCustom) View.VISIBLE else View.GONE
         if (isCustom) {
@@ -413,6 +453,21 @@ class AiPostSettingsActivity : AppCompatActivity() {
         isUpdatingProgrammatically = true
         val temperature = prefs.getLlmVendorTemperature(LlmVendor.SF_FREE)
         etSfTemperature.setTextIfDifferent(temperature.toString())
+        isUpdatingProgrammatically = false
+    }
+
+    private fun updateSfReasoningModeUI() {
+        isUpdatingProgrammatically = true
+        val model = if (prefs.sfFreeLlmUsePaidKey) {
+            prefs.getLlmVendorModel(LlmVendor.SF_FREE).ifBlank { prefs.sfFreeLlmModel }
+        } else {
+            prefs.sfFreeLlmModel
+        }
+        val supportsReasoning = viewModel.supportsReasoningSwitch(LlmVendor.SF_FREE, model)
+        layoutSfReasoningMode.visibility = if (supportsReasoning) View.VISIBLE else View.GONE
+        if (supportsReasoning) {
+            switchSfReasoningMode.isChecked = prefs.getLlmVendorReasoningEnabled(LlmVendor.SF_FREE)
+        }
         isUpdatingProgrammatically = false
     }
 
@@ -457,7 +512,7 @@ class AiPostSettingsActivity : AppCompatActivity() {
 
     private fun showSfFreeLlmModelSelectionDialog() {
         val customOption = getString(R.string.option_custom_model)
-        val presetModels = Prefs.SF_FREE_LLM_MODELS
+        val presetModels = getSfPresetModels()
         val models = (presetModels + customOption).toTypedArray()
 
         val currentModel = if (prefs.sfFreeLlmUsePaidKey) {
@@ -490,6 +545,8 @@ class AiPostSettingsActivity : AppCompatActivity() {
                     tilSfCustomModelId.visibility = View.GONE
                     updateSfFreeLlmModelDisplay()
                 }
+                // Update reasoning mode UI based on new model
+                updateSfReasoningModeUI()
                 dialog.dismiss()
             }
             .setNegativeButton(R.string.btn_cancel, null)

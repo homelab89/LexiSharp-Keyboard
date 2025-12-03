@@ -547,16 +547,32 @@ class Prefs(context: Context) {
 
     fun setLlmVendorTemperature(vendor: LlmVendor, temperature: Float) {
         val key = "llm_vendor_${vendor.id}_temperature"
-        sp.edit { putFloat(key, temperature.coerceIn(0f, 2f)) }
+        sp.edit { putFloat(key, temperature.coerceIn(vendor.temperatureMin, vendor.temperatureMax)) }
+    }
+
+    // 内置供应商推理模式开关（按供应商 ID 分别存储，默认关闭）
+    fun getLlmVendorReasoningEnabled(vendor: LlmVendor): Boolean {
+        val key = "llm_vendor_${vendor.id}_reasoning_enabled"
+        return sp.getBoolean(key, false)
+    }
+
+    fun setLlmVendorReasoningEnabled(vendor: LlmVendor, enabled: Boolean) {
+        val key = "llm_vendor_${vendor.id}_reasoning_enabled"
+        sp.edit { putBoolean(key, enabled) }
     }
 
     /**
      * 获取当前有效的 LLM 配置（根据选择的供应商）
-     * @return Triple<endpoint, apiKey, model> 或 null（如果配置无效）
+     * @return EffectiveLlmConfig 或 null（如果配置无效）
      */
     fun getEffectiveLlmConfig(): EffectiveLlmConfig? {
         return when (val vendor = llmVendor) {
             LlmVendor.SF_FREE -> {
+                val model = if (sfFreeLlmUsePaidKey) {
+                    getLlmVendorModel(LlmVendor.SF_FREE).ifBlank { sfFreeLlmModel }
+                } else {
+                    sfFreeLlmModel
+                }
                 if (sfFreeLlmUsePaidKey) {
                     // 使用用户自己的付费 API Key
                     val apiKey = getLlmVendorApiKey(LlmVendor.SF_FREE)
@@ -566,8 +582,10 @@ class Prefs(context: Context) {
                         EffectiveLlmConfig(
                             endpoint = vendor.endpoint,
                             apiKey = apiKey,
-                            model = getLlmVendorModel(LlmVendor.SF_FREE).ifBlank { sfFreeLlmModel },
-                            temperature = getLlmVendorTemperature(LlmVendor.SF_FREE)
+                            model = model,
+                            temperature = getLlmVendorTemperature(LlmVendor.SF_FREE),
+                            vendor = vendor,
+                            enableReasoning = getLlmVendorReasoningEnabled(vendor)
                         )
                     }
                 } else {
@@ -576,8 +594,10 @@ class Prefs(context: Context) {
                     EffectiveLlmConfig(
                         endpoint = vendor.endpoint,
                         apiKey = "", // 免费服务在调用层注入内置 Key
-                        model = sfFreeLlmModel,
-                        temperature = DEFAULT_LLM_TEMPERATURE
+                        model = model,
+                        temperature = DEFAULT_LLM_TEMPERATURE,
+                        vendor = vendor,
+                        enableReasoning = getLlmVendorReasoningEnabled(vendor)
                     )
                 }
             }
@@ -589,22 +609,26 @@ class Prefs(context: Context) {
                         endpoint = provider.endpoint,
                         apiKey = provider.apiKey,
                         model = provider.model,
-                        temperature = provider.temperature
+                        temperature = provider.temperature,
+                        vendor = vendor,
+                        enableReasoning = false  // Custom vendor doesn't support reasoning control
                     )
                 } else null
             }
             else -> {
                 // 内置供应商：使用预设端点 + 用户 API Key + 用户选择的模型
                 val apiKey = getLlmVendorApiKey(vendor)
-                val model = getLlmVendorModel(vendor)
+                val model = getLlmVendorModel(vendor).ifBlank { vendor.defaultModel }
                 if (vendor.requiresApiKey && apiKey.isBlank()) {
                     null // 需要 API Key 但未配置
                 } else {
                     EffectiveLlmConfig(
                         endpoint = vendor.endpoint,
                         apiKey = apiKey,
-                        model = model.ifBlank { vendor.defaultModel },
-                        temperature = getLlmVendorTemperature(vendor)
+                        model = model,
+                        temperature = getLlmVendorTemperature(vendor),
+                        vendor = vendor,
+                        enableReasoning = getLlmVendorReasoningEnabled(vendor)
                     )
                 }
             }
@@ -616,7 +640,9 @@ class Prefs(context: Context) {
         val endpoint: String,
         val apiKey: String,
         val model: String,
-        val temperature: Float
+        val temperature: Float,
+        val vendor: LlmVendor,
+        val enableReasoning: Boolean
     )
 
     // 阿里云百炼（DashScope）凭证

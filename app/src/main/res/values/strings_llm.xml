@@ -58,7 +58,17 @@
     <string name="llm_vendor_gemini">Google Gemini</string>
     <string name="llm_vendor_deepseek">DeepSeek</string>
     <string name="llm_vendor_moonshot">Moonshot (Kimi)</string>
+    <string name="llm_vendor_zhipu">Zhipu GLM</string>
+    <string name="llm_vendor_volcengine">Volcengine</string>
+    <string name="llm_vendor_groq">Groq</string>
+    <string name="llm_vendor_cerebras">Cerebras</string>
+    <string name="llm_vendor_ohmygpt">OhMyGPT</string>
     <string name="llm_vendor_custom">Custom</string>
+
+    <!-- Reasoning mode -->
+    <string name="label_reasoning_mode">Enable Deep Thinking</string>
+    <string name="hint_reasoning_mode">When enabled, the model performs reasoning analysis. Slower but better results for complex tasks.</string>
+    <string name="hint_reasoning_not_supported">Current model doesn\'t support reasoning mode</string>
 
     <!-- SiliconFlow free/paid toggle -->
     <string name="label_sf_use_free_service">Use free service</string>

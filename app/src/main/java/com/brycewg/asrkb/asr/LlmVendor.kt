@@ -3,6 +3,22 @@ package com.brycewg.asrkb.asr
 import com.brycewg.asrkb.R
 
 /**
+ * Reasoning mode control methods for different LLM vendors.
+ */
+enum class ReasoningMode {
+    /** No reasoning control support */
+    NONE,
+    /** Control via model selection (DeepSeek, Moonshot) */
+    MODEL_SELECTION,
+    /** SiliconFlow: enable_thinking parameter */
+    ENABLE_THINKING,
+    /** Gemini/Groq/Cerebras/OhMyGPT: reasoning_effort parameter */
+    REASONING_EFFORT,
+    /** Volcengine/Zhipu: thinking.type parameter */
+    THINKING_TYPE
+}
+
+/**
  * LLM (Large Language Model) vendor enumeration for AI post-processing.
  * Defines built-in providers with their endpoints, models, and configuration URLs.
  */
@@ -13,17 +29,45 @@ enum class LlmVendor(
     val defaultModel: String,
     val models: List<String>,
     val registerUrl: String,
-    val guideUrl: String
+    val guideUrl: String,
+    /** Minimum temperature value supported by this vendor */
+    val temperatureMin: Float = 0f,
+    /** Maximum temperature value supported by this vendor */
+    val temperatureMax: Float = 2f,
+    /** How this vendor controls reasoning/thinking mode */
+    val reasoningMode: ReasoningMode = ReasoningMode.NONE,
+    /** Models that support reasoning control (empty = all models) */
+    val reasoningModels: Set<String> = emptySet()
 ) {
-    /** SiliconFlow free tier - no API key required */
+    /** SiliconFlow - supports free tier and paid API */
     SF_FREE(
         id = "sf_free",
         displayNameResId = R.string.llm_vendor_sf_free,
         endpoint = "https://api.siliconflow.cn/v1",
         defaultModel = "Qwen/Qwen3-8B",
-        models = listOf("Qwen/Qwen3-8B", "THUDM/GLM-4-9B-0414"),
+        models = listOf(
+            "Qwen/Qwen3-8B",
+            "Qwen/Qwen3-14B",
+            "Qwen/Qwen3-32B",
+            "Qwen/Qwen3-30B-A3B",
+            "Qwen/Qwen3-235B-A22B",
+            "deepseek-ai/DeepSeek-V3.1-Terminus",
+            "zai-org/GLM-4.6"
+        ),
         registerUrl = "https://cloud.siliconflow.cn/i/g8thUcWa",
-        guideUrl = "https://brycewg.notion.site/lexisharp-keyboard-providers-guide"
+        guideUrl = "https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.ENABLE_THINKING,
+        reasoningModels = setOf(
+            "Qwen/Qwen3-8B",
+            "Qwen/Qwen3-14B",
+            "Qwen/Qwen3-32B",
+            "Qwen/Qwen3-30B-A3B",
+            "Qwen/Qwen3-235B-A22B",
+            "deepseek-ai/DeepSeek-V3.1-Terminus",
+            "zai-org/GLM-4.6"
+        )
     ),
 
     /** OpenAI - GPT models */
@@ -34,7 +78,10 @@ enum class LlmVendor(
         defaultModel = "gpt-4o-mini",
         models = listOf("gpt-4o-mini", "gpt-4o", "gpt-4.1-mini", "gpt-4.1"),
         registerUrl = "https://platform.openai.com/signup",
-        guideUrl = "https://platform.openai.com/docs/quickstart"
+        guideUrl = "https://platform.openai.com/docs/quickstart",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.NONE
     ),
 
     /** Google Gemini */
@@ -43,12 +90,27 @@ enum class LlmVendor(
         displayNameResId = R.string.llm_vendor_gemini,
         endpoint = "https://generativelanguage.googleapis.com/v1beta/openai",
         defaultModel = "gemini-2.0-flash",
-        models = listOf("gemini-2.0-flash", "gemini-2.5-flash", "gemini-2.5-pro"),
+        models = listOf(
+            "gemini-2.0-flash",
+            "gemini-2.5-flash-lite",
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
+            "gemini-3-pro-preview"
+        ),
         registerUrl = "https://aistudio.google.com/apikey",
-        guideUrl = "https://ai.google.dev/gemini-api/docs/openai"
+        guideUrl = "https://ai.google.dev/gemini-api/docs/openai?hl=zh-cn",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.REASONING_EFFORT,
+        reasoningModels = setOf(
+            "gemini-2.5-flash-lite",
+            "gemini-2.5-flash",
+            "gemini-2.5-pro",
+            "gemini-3-pro-preview"
+        )
     ),
 
-    /** DeepSeek */
+    /** DeepSeek - V3.2 models */
     DEEPSEEK(
         id = "deepseek",
         displayNameResId = R.string.llm_vendor_deepseek,
@@ -56,7 +118,11 @@ enum class LlmVendor(
         defaultModel = "deepseek-chat",
         models = listOf("deepseek-chat", "deepseek-reasoner"),
         registerUrl = "https://platform.deepseek.com/",
-        guideUrl = "https://api-docs.deepseek.com/"
+        guideUrl = "https://api-docs.deepseek.com/",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.MODEL_SELECTION,  // chat=non-thinking, reasoner=thinking
+        reasoningModels = setOf("deepseek-reasoner")
     ),
 
     /** Moonshot (Kimi) */
@@ -64,10 +130,144 @@ enum class LlmVendor(
         id = "moonshot",
         displayNameResId = R.string.llm_vendor_moonshot,
         endpoint = "https://api.moonshot.cn/v1",
-        defaultModel = "moonshot-v1-8k",
-        models = listOf("moonshot-v1-8k", "moonshot-v1-32k", "moonshot-v1-128k"),
-        registerUrl = "https://platform.moonshot.cn/",
-        guideUrl = "https://platform.moonshot.cn/docs/"
+        defaultModel = "kimi-k2-0905-preview",
+        models = listOf(
+            "kimi-k2-0905-preview",
+            "kimi-k2-thinking"
+        ),
+        registerUrl = "https://platform.moonshot.cn/console/api-keys",
+        guideUrl = "https://platform.moonshot.cn/docs/api/chat",
+        temperatureMin = 0f,
+        temperatureMax = 1f,
+        reasoningMode = ReasoningMode.MODEL_SELECTION,
+        reasoningModels = setOf("kimi-k2-thinking")
+    ),
+
+    /** Zhipu GLM */
+    ZHIPU(
+        id = "zhipu",
+        displayNameResId = R.string.llm_vendor_zhipu,
+        endpoint = "https://open.bigmodel.cn/api/paas/v4",
+        defaultModel = "glm-4.6",
+        models = listOf(
+            "glm-4.6",
+            "glm-4.5",
+            "glm-4.5-air",
+            "glm-4.5-flash",
+            "glm-4-plus",
+            "glm-4-flashx"
+        ),
+        registerUrl = "https://bigmodel.cn/usercenter/proj-mgmt/apikeys",
+        guideUrl = "https://docs.bigmodel.cn/api-reference",
+        temperatureMin = 0f,
+        temperatureMax = 1f,
+        reasoningMode = ReasoningMode.THINKING_TYPE,
+        reasoningModels = setOf("glm-4.6", "glm-4.5", "glm-4.5-air", "glm-4.5-flash")
+    ),
+
+    /** Volcengine (火山引擎) */
+    VOLCENGINE(
+        id = "volcengine",
+        displayNameResId = R.string.llm_vendor_volcengine,
+        endpoint = "https://ark.cn-beijing.volces.com/api/v3",
+        defaultModel = "doubao-seed-1-6-flash-250828",
+        models = listOf(
+            "doubao-seed-1-6-lite-251015",
+            "doubao-seed-1-6-251015",
+            "doubao-seed-1-6-flash-250828",
+            "deepseek-v3-1-terminus"
+        ),
+        registerUrl = "https://console.volcengine.com/ark",
+        guideUrl = "https://www.volcengine.com/docs/82379/1399328",
+        temperatureMin = 0f,
+        temperatureMax = 1f,
+        reasoningMode = ReasoningMode.THINKING_TYPE,
+        reasoningModels = setOf(
+            "doubao-seed-1-6-lite-251015",
+            "doubao-seed-1-6-251015",
+            "doubao-seed-1-6-flash-250828",
+            "deepseek-v3-1-terminus"
+        )
+    ),
+
+    /** Groq - fast inference */
+    GROQ(
+        id = "groq",
+        displayNameResId = R.string.llm_vendor_groq,
+        endpoint = "https://api.groq.com/openai/v1",
+        defaultModel = "llama-3.3-70b-versatile",
+        models = listOf(
+            "moonshotai/kimi-k2-instruct-0905",
+            "qwen/qwen3-32b",
+            "openai/gpt-oss-120b",
+            "openai/gpt-oss-20b",
+            "llama-3.3-70b-versatile",
+            "meta-llama/llama-4-maverick-17b-128e-instruct"
+        ),
+        registerUrl = "https://console.groq.com/keys",
+        guideUrl = "https://console.groq.com/docs/api-reference#chat-create",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.REASONING_EFFORT,
+        reasoningModels = setOf(
+            "qwen/qwen3-32b",
+            "openai/gpt-oss-120b",
+            "openai/gpt-oss-20b"
+        )
+    ),
+
+    /** Cerebras - fast inference */
+    CEREBRAS(
+        id = "cerebras",
+        displayNameResId = R.string.llm_vendor_cerebras,
+        endpoint = "https://api.cerebras.ai/v1",
+        defaultModel = "llama-3.3-70b",
+        models = listOf(
+            "llama3.1-8b",
+            "llama-3.3-70b",
+            "qwen-3-32b",
+            "qwen-3-235b-a22b-instruct-2507",
+            "gpt-oss-120b",
+            "zai-glm-4.6"
+        ),
+        registerUrl = "https://cloud.cerebras.ai/platform",
+        guideUrl = "https://inference-docs.cerebras.ai/api-reference/chat-completions",
+        temperatureMin = 0f,
+        temperatureMax = 1.5f,
+        reasoningMode = ReasoningMode.REASONING_EFFORT,
+        reasoningModels = setOf("gpt-oss-120b")
+    ),
+
+    /** OhMyGPT - multi-provider relay */
+    OHMYGPT(
+        id = "ohmygpt",
+        displayNameResId = R.string.llm_vendor_ohmygpt,
+        endpoint = "https://cn2us02.opapi.win/v1",
+        defaultModel = "gpt-4o-mini",
+        models = listOf(
+            "gpt-4o-mini",
+            "gpt-4o",
+            "gpt-4.1-mini",
+            "gpt-4.1-nano",
+            "gpt-4.1",
+            "gpt-5-mini",
+            "gpt-5-nano",
+            "gemini-2.0-flash",
+            "gemini-2.5-flash-lite",
+            "gemini-2.5-flash",
+            "claude-haiku-4-5",
+            "claude-sonnet-4-5"
+        ),
+        registerUrl = "https://x.dogenet.win/i/CXuHm49s",
+        guideUrl = "https://docs.ohmygpt.com/zh",
+        temperatureMin = 0f,
+        temperatureMax = 2f,
+        reasoningMode = ReasoningMode.REASONING_EFFORT,
+        reasoningModels = setOf(
+            "gemini-2.5-flash-lite", "gemini-2.5-flash",
+            "claude-haiku-4-5", "claude-sonnet-4-5",
+            "gpt-5-mini", "gpt-5-nano"
+        )
     ),
 
     /** Custom - user-defined OpenAI-compatible API */
@@ -89,6 +289,15 @@ enum class LlmVendor(
     val hasBuiltinEndpoint: Boolean
         get() = this != CUSTOM && endpoint.isNotBlank()
 
+    /** Check if the current model supports reasoning control */
+    fun supportsReasoningControl(model: String): Boolean {
+        return when (reasoningMode) {
+            ReasoningMode.NONE -> false
+            ReasoningMode.MODEL_SELECTION -> false  // Controlled via model selection, no switch needed
+            else -> reasoningModels.isEmpty() || reasoningModels.contains(model)
+        }
+    }
+
     companion object {
         /** Get vendor by ID, defaulting to SF_FREE if not found */
         fun fromId(id: String?): LlmVendor = when (id?.lowercase()) {
@@ -96,14 +305,34 @@ enum class LlmVendor(
             GEMINI.id -> GEMINI
             DEEPSEEK.id -> DEEPSEEK
             MOONSHOT.id -> MOONSHOT
+            ZHIPU.id -> ZHIPU
+            VOLCENGINE.id -> VOLCENGINE
+            GROQ.id -> GROQ
+            CEREBRAS.id -> CEREBRAS
+            OHMYGPT.id -> OHMYGPT
             CUSTOM.id -> CUSTOM
             else -> SF_FREE
         }
 
-        /** Get all vendors for UI selection */
-        fun allVendors(): List<LlmVendor> = entries.toList()
+        /**
+         * Get all vendors for UI selection.
+         * Ordered by: Free tier -> Domestic (China) -> International -> Custom
+         */
+        fun allVendors(): List<LlmVendor> = listOf(
+            SF_FREE,      // 1. Free service
+            DEEPSEEK,     // 2. Domestic - popular
+            ZHIPU,        // 3. Domestic
+            MOONSHOT,     // 4. Domestic
+            VOLCENGINE,   // 5. Domestic
+            OPENAI,       // 6. International
+            GEMINI,       // 7. International
+            GROQ,         // 8. International - free tier
+            CEREBRAS,     // 9. International - free tier
+            OHMYGPT,      // 10. Relay platform
+            CUSTOM        // 11. Custom
+        )
 
         /** Get built-in vendors (excluding custom) */
-        fun builtinVendors(): List<LlmVendor> = entries.filter { it != CUSTOM }
+        fun builtinVendors(): List<LlmVendor> = allVendors().filter { it != CUSTOM }
     }
 }

@@ -131,6 +131,26 @@
               android:inputType="text" />
           </com.google.android.material.textfield.TextInputLayout>
 
+          <!-- 推理模式开关 (仅支持的模型显示) -->
+          <LinearLayout
+            android:id="@+id/layoutSfReasoningMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+              android:id="@+id/switchSfReasoningMode"
+              style="@style/SettingsSwitch"
+              android:layout_marginTop="0dp"
+              android:text="@string/label_reasoning_mode" />
+
+            <TextView
+              android:id="@+id/tvSfReasoningModeHint"
+              style="@style/SettingsHint"
+              android:text="@string/hint_reasoning_mode" />
+          </LinearLayout>
+
           <!-- Temperature 输入（付费模式可见） -->
           <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilSfTemperature"
@@ -217,6 +237,26 @@
               style="@style/SettingsTextInput"
               android:inputType="text" />
           </com.google.android.material.textfield.TextInputLayout>
+
+          <!-- 推理模式开关 (仅支持的模型显示) -->
+          <LinearLayout
+            android:id="@+id/layoutBuiltinReasoningMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+              android:id="@+id/switchBuiltinReasoningMode"
+              style="@style/SettingsSwitch"
+              android:layout_marginTop="0dp"
+              android:text="@string/label_reasoning_mode" />
+
+            <TextView
+              android:id="@+id/tvBuiltinReasoningModeHint"
+              style="@style/SettingsHint"
+              android:text="@string/hint_reasoning_mode" />
+          </LinearLayout>
 
           <!-- Temperature 输入 -->
           <com.google.android.material.textfield.TextInputLayout
