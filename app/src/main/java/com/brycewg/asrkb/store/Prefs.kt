@@ -1709,6 +1709,11 @@ class Prefs(context: Context) {
         o.put(KEY_SF_FREE_LLM_ENABLED, sfFreeLlmEnabled)
         o.put(KEY_SF_FREE_LLM_MODEL, sfFreeLlmModel)
         o.put(KEY_SF_FREE_LLM_USE_PAID_KEY, sfFreeLlmUsePaidKey)
+        // SiliconFlow ASR 配置
+        o.put(KEY_SF_FREE_ASR_ENABLED, sfFreeAsrEnabled)
+        o.put(KEY_SF_FREE_ASR_MODEL, sfFreeAsrModel)
+        o.put(KEY_SF_USE_OMNI, sfUseOmni)
+        o.put(KEY_SF_OMNI_PROMPT, sfOmniPrompt)
         // OpenAI ASR：Prompt 开关（布尔）
         o.put(KEY_OA_ASR_USE_PROMPT, oaAsrUsePrompt)
         // Volcano streaming toggle
@@ -1716,6 +1721,7 @@ class Prefs(context: Context) {
         o.put(KEY_VOLC_BIDI_STREAMING_ENABLED, volcBidiStreamingEnabled)
         // DashScope streaming toggle
         o.put(KEY_DASH_STREAMING_ENABLED, dashStreamingEnabled)
+        o.put(KEY_DASH_REGION, dashRegion)
         // Volcano extras
         o.put(KEY_VOLC_DDC_ENABLED, volcDdcEnabled)
         o.put(KEY_VOLC_VAD_ENABLED, volcVadEnabled)
@@ -1724,6 +1730,11 @@ class Prefs(context: Context) {
         // Soniox（同时导出单值与数组，便于兼容）
         o.put(KEY_SONIOX_LANGUAGE, sonioxLanguage)
         o.put(KEY_SONIOX_LANGUAGES, sonioxLanguagesJson)
+        o.put(KEY_SONIOX_STREAMING_ENABLED, sonioxStreamingEnabled)
+        // Gemini 设置
+        o.put(KEY_GEMINI_DISABLE_THINKING, geminiDisableThinking)
+        // ElevenLabs streaming toggle
+        o.put(KEY_ELEVEN_STREAMING_ENABLED, elevenStreamingEnabled)
         o.put(KEY_VOLC_FIRST_CHAR_ACCEL_ENABLED, volcFirstCharAccelEnabled)
         // 多 LLM 配置
         o.put(KEY_LLM_PROVIDERS, llmProvidersJson)
@@ -1732,6 +1743,9 @@ class Prefs(context: Context) {
         o.put(KEY_LLM_PROMPT, llmPrompt)
         o.put(KEY_LLM_PROMPT_PRESETS, promptPresetsJson)
         o.put(KEY_LLM_PROMPT_ACTIVE_ID, activePromptId)
+        // 语音预设
+        o.put(KEY_SPEECH_PRESETS, speechPresetsJson)
+        o.put(KEY_SPEECH_PRESET_ACTIVE_ID, activeSpeechPresetId)
         // 供应商设置（通用导出）
         o.put(KEY_ASR_VENDOR, asrVendor.id)
         // 遍历所有供应商字段，统一导出，避免逐个硬编码
@@ -1864,6 +1878,11 @@ class Prefs(context: Context) {
             optBool(KEY_SF_FREE_LLM_ENABLED)?.let { sfFreeLlmEnabled = it }
             optString(KEY_SF_FREE_LLM_MODEL)?.let { sfFreeLlmModel = it }
             optBool(KEY_SF_FREE_LLM_USE_PAID_KEY)?.let { sfFreeLlmUsePaidKey = it }
+            // SiliconFlow ASR 配置
+            optBool(KEY_SF_FREE_ASR_ENABLED)?.let { sfFreeAsrEnabled = it }
+            optString(KEY_SF_FREE_ASR_MODEL)?.let { sfFreeAsrModel = it }
+            optBool(KEY_SF_USE_OMNI)?.let { sfUseOmni = it }
+            optString(KEY_SF_OMNI_PROMPT)?.let { sfOmniPrompt = it }
             // 外部输入法联动（AIDL）
             optBool(KEY_EXTERNAL_AIDL_ENABLED)?.let { externalAidlEnabled = it }
             optBool(KEY_FLOATING_SWITCHER_ENABLED)?.let { floatingSwitcherEnabled = it }
@@ -1890,6 +1909,7 @@ class Prefs(context: Context) {
             optBool(KEY_VOLC_STREAMING_ENABLED)?.let { volcStreamingEnabled = it }
             optBool(KEY_VOLC_BIDI_STREAMING_ENABLED)?.let { volcBidiStreamingEnabled = it }
             optBool(KEY_DASH_STREAMING_ENABLED)?.let { dashStreamingEnabled = it }
+            optString(KEY_DASH_REGION)?.let { dashRegion = it }
             optBool(KEY_VOLC_DDC_ENABLED)?.let { volcDdcEnabled = it }
             optBool(KEY_VOLC_VAD_ENABLED)?.let { volcVadEnabled = it }
             optBool(KEY_VOLC_NONSTREAM_ENABLED)?.let { volcNonstreamEnabled = it }
@@ -1902,6 +1922,11 @@ class Prefs(context: Context) {
             } else {
                 optString(KEY_SONIOX_LANGUAGE)?.let { sonioxLanguage = it }
             }
+            optBool(KEY_SONIOX_STREAMING_ENABLED)?.let { sonioxStreamingEnabled = it }
+            // ElevenLabs streaming toggle
+            optBool(KEY_ELEVEN_STREAMING_ENABLED)?.let { elevenStreamingEnabled = it }
+            // Gemini 设置
+            optBool(KEY_GEMINI_DISABLE_THINKING)?.let { geminiDisableThinking = it }
             // 多 LLM 配置（优先于旧字段，仅当存在时覆盖）
             optString(KEY_LLM_PROVIDERS)?.let { llmProvidersJson = it }
             optString(KEY_LLM_ACTIVE_ID)?.let { activeLlmId = it }
@@ -1914,6 +1939,9 @@ class Prefs(context: Context) {
             if (importedPresets.isNullOrBlank()) {
                 optString(KEY_LLM_PROMPT)?.let { llmPrompt = it }
             }
+            // 语音预设
+            optString(KEY_SPEECH_PRESETS)?.let { speechPresetsJson = it }
+            optString(KEY_SPEECH_PRESET_ACTIVE_ID)?.let { activeSpeechPresetId = it }
 
             optString(KEY_ASR_VENDOR)?.let { asrVendor = AsrVendor.fromId(it) }
             // 供应商设置（通用导入）
