@@ -252,6 +252,20 @@ class AsrSettingsActivity : AppCompatActivity() {
             )
         }
 
+        findViewById<MaterialSwitch>(R.id.switchVolcFileStandard).apply {
+            isChecked = prefs.volcFileStandardEnabled
+            installExplainedSwitch(
+                context = this@AsrSettingsActivity,
+                titleRes = R.string.label_volc_file_standard,
+                offDescRes = R.string.feature_volc_file_standard_off_desc,
+                onDescRes = R.string.feature_volc_file_standard_on_desc,
+                preferenceKey = "volc_file_standard_explained",
+                readPref = { prefs.volcFileStandardEnabled },
+                writePref = { v -> viewModel.updateVolcFileStandard(v) },
+                hapticFeedback = { hapticTapIfEnabled(it) }
+            )
+        }
+
         findViewById<MaterialSwitch>(R.id.switchVolcBidiStreaming).apply {
             isChecked = prefs.volcBidiStreamingEnabled
             installExplainedSwitch(
@@ -1857,6 +1871,12 @@ class AsrSettingsActivity : AppCompatActivity() {
                 updateSilenceOptionsVisibility(state.autoStopSilenceEnabled)
                 updateSfOmniVisibility(state.sfUseOmni)
                 updateOpenAiPromptVisibility(state.oaAsrUsePrompt)
+                updateVolcFileModeVisibility(state.volcStreamingEnabled)
+                findViewById<MaterialSwitch>(R.id.switchVolcFileStandard).let { sw ->
+                    if (sw.isChecked != state.volcFileStandardEnabled) {
+                        sw.isChecked = state.volcFileStandardEnabled
+                    }
+                }
                 updateVolcStreamOptionsVisibility(state.volcStreamingEnabled)
                 updateVolcTwoPassVisibility(state.volcStreamingEnabled, state.volcBidiStreamingEnabled)
             }
@@ -1908,6 +1928,12 @@ class AsrSettingsActivity : AppCompatActivity() {
         val til = findViewById<View>(R.id.tilOpenAiPrompt)
         val vis = if (enabled) View.VISIBLE else View.GONE
         if (til.visibility != vis) til.visibility = vis
+    }
+
+    private fun updateVolcFileModeVisibility(streamingEnabled: Boolean) {
+        val switch = findViewById<MaterialSwitch>(R.id.switchVolcFileStandard)
+        val vis = if (streamingEnabled) View.GONE else View.VISIBLE
+        if (switch.visibility != vis) switch.visibility = vis
     }
 
     private fun updateVolcStreamOptionsVisibility(enabled: Boolean) {

@@ -48,6 +48,7 @@ class AsrSettingsViewModel : ViewModel() {
             volcVadEnabled = prefs.volcVadEnabled,
             volcNonstreamEnabled = prefs.volcNonstreamEnabled,
             volcFirstCharAccelEnabled = prefs.volcFirstCharAccelEnabled,
+            volcFileStandardEnabled = prefs.volcFileStandardEnabled,
             volcLanguage = prefs.volcLanguage,
             // DashScope settings
             dashStreamingEnabled = prefs.dashStreamingEnabled,
@@ -215,6 +216,11 @@ class AsrSettingsViewModel : ViewModel() {
     fun updateVolcFirstCharAccel(enabled: Boolean) {
         prefs.volcFirstCharAccelEnabled = enabled
         _uiState.value = _uiState.value.copy(volcFirstCharAccelEnabled = enabled)
+    }
+
+    fun updateVolcFileStandard(enabled: Boolean) {
+        prefs.volcFileStandardEnabled = enabled
+        _uiState.value = _uiState.value.copy(volcFileStandardEnabled = enabled)
     }
 
     fun updateVolcLanguage(language: String) {
@@ -610,6 +616,7 @@ data class AsrSettingsUiState(
     val volcVadEnabled: Boolean = false,
     val volcNonstreamEnabled: Boolean = false,
     val volcFirstCharAccelEnabled: Boolean = false,
+    val volcFileStandardEnabled: Boolean = true,
     val volcLanguage: String = "",
     // DashScope settings
     val dashStreamingEnabled: Boolean = false,

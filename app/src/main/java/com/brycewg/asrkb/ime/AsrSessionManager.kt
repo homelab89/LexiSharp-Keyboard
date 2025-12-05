@@ -134,7 +134,11 @@ class AsrSessionManager(
                 if (prefs.volcStreamingEnabled) {
                     VolcStreamAsrEngine(context, scope, prefs, this)
                 } else {
-                    VolcFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
+                    if (prefs.volcFileStandardEnabled) {
+                        VolcStandardFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
+                    } else {
+                        VolcFileAsrEngine(context, scope, prefs, this, ::onRequestDuration)
+                    }
                 }
             } else null
 

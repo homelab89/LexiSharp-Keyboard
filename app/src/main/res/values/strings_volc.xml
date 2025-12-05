@@ -5,6 +5,7 @@
 
     <!-- Volc configuration -->
     <string name="label_volc_streaming">Use streaming recognition (WebSocket)</string>
+    <string name="label_volc_file_standard">Use file recognition (standard, submit/query)</string>
     <string name="label_volc_bidi_streaming">Enable bidirectional streaming</string>
     <string name="label_volc_ddc">Enable semantic smoothing (experimental)</string>
     <string name="label_volc_vad">Enable VAD segmentation (experimental)</string>
@@ -14,9 +15,10 @@
 
     <!-- Volc modes hint -->
     <string name="volc_modes_hint">Modes:\n
-1. File recognition (Fast): upload after recording; stable, but higher first-token latency; more robust on poor networks.\n
-2. Streaming (default): upload while recording; returns the final result quickly after stop; no incremental preview.\n
-3. Bidirectional streaming (best experience): upload while recording with real-time incremental preview; lower first/last token latency; requires a stable network.</string>
+1. File recognition (standard, submit/query): upload after recording complete; slower than flash mode but supports Doubao ASR 2.0; recommended when streaming is disabled.\n
+2. File recognition (flash): upload after recording complete; faster speed but does not support Doubao ASR 2.0.\n
+3. Streaming (default): upload while recording; returns the final result quickly after stop; no incremental preview. Now supports Doubao ASR 2.0.\n
+4. Bidirectional streaming (best experience): upload while recording with real-time incremental preview; lower first/last token latency; requires a stable network. Now supports Doubao ASR 2.0.</string>
 
     <!-- Volc language options -->
     <string name="volc_lang_auto">Auto (Chinese/English + dialects)</string>
@@ -60,4 +62,8 @@
     <!-- Volcengine - First character acceleration -->
     <string name="feature_volc_first_char_accel_off_desc">Waits for stable recognition results before displaying text.</string>
     <string name="feature_volc_first_char_accel_on_desc">Prioritizes displaying the first character quickly to reduce perceived latency.</string>
+
+    <!-- Volcengine - File recognition (standard mode) -->
+    <string name="feature_volc_file_standard_off_desc">Uses file recognition (flash mode) after recording completion. Faster speed but does not support Doubao ASR 2.0.</string>
+    <string name="feature_volc_file_standard_on_desc">Uses file recognition (standard, submit/query) after recording completion. Slower than flash mode but supports Doubao ASR 2.0 for better accuracy.</string>
 </resources>

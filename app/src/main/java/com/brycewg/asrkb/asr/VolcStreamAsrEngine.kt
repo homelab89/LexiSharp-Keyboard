@@ -49,7 +49,7 @@ class VolcStreamAsrEngine(
         private const val TAG = "VolcStreamAsrEngine"
         private const val WS_ENDPOINT_BIDI_ASYNC = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async"
         private const val WS_ENDPOINT_NOSTREAM = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
-        private const val DEFAULT_STREAM_RESOURCE = "volc.bigasr.sauc.duration"
+        private const val DEFAULT_STREAM_RESOURCE = "volc.seedasr.sauc.duration"
 
         private const val PROTOCOL_VERSION = 0x1
         private const val HEADER_SIZE_UNITS = 0x1 // 4 bytes

@@ -5,6 +5,7 @@
 
     <!-- Volc configuration -->
     <string name="label_volc_streaming">ストリーミング認識を使用（WebSocket）</string>
+    <string name="label_volc_file_standard">ファイル認識（標準版・submit/query）を使用</string>
     <string name="label_volc_bidi_streaming">双方向ストリーミングを有効化</string>
     <string name="label_volc_ddc">セマンティックスムージングを有効化（実験的）</string>
     <string name="label_volc_vad">VADセグメンテーションを有効化（実験的）</string>
@@ -14,9 +15,10 @@
 
     <!-- Volc modes hint -->
     <string name="volc_modes_hint">モード説明：\n
-1. ファイル認識（高速版）：録音後にアップロード。安定だが先頭トークンの遅延は大きめ。通信状態が悪い環境でも比較的安定。\n
-2. ストリーミング（既定）：録音しながら送信。停止後すぐに最終結果を返す。増分プレビューは表示しない。\n
-3. 双方向ストリーミング（最も快適）：録音しながら送信し、リアルタイムで増分プレビューを返す。先頭/末尾の遅延が小さい。安定したネットワークが必要。</string>
+1. ファイル認識（標準版・submit/query）：録音完了後にアップロード。高速版より遅いがDoubao ASR 2.0をサポート。ストリーミング無効時推奨。\n
+2. ファイル認識（高速版）：録音完了後にアップロード。速度は速いがDoubao ASR 2.0をサポートしない。\n
+3. ストリーミング（既定）：録音しながら送信。停止後すぐに最終結果を返す。増分プレビューは表示しない。Doubao ASR 2.0をサポート済み。\n
+4. 双方向ストリーミング（最も快適）：録音しながら送信し、リアルタイムで増分プレビューを返す。先頭/末尾の遅延が小さい。安定したネットワークが必要。Doubao ASR 2.0をサポート済み。</string>
 
     <!-- Volc language options -->
     <string name="volc_lang_auto">自動（中国語/英語+方言）</string>
@@ -60,4 +62,8 @@
     <!-- 火山引擎 - 最初の文字の高速化 -->
     <string name="feature_volc_first_char_accel_off_desc">テキストを表示する前に、安定した認識結果を待ちます。</string>
     <string name="feature_volc_first_char_accel_on_desc">最初の文字を素早く表示することを優先し、知覚される遅延を減らします。</string>
+
+    <!-- 火山引擎 - ファイル認識（標準版） -->
+    <string name="feature_volc_file_standard_off_desc">録音完了後にファイル認識（高速版）を使用します。速度は速いですが、Doubao ASR 2.0をサポートしません。</string>
+    <string name="feature_volc_file_standard_on_desc">録音完了後にファイル認識（標準版、submit/query）を使用します。高速版より遅いですが、Doubao ASR 2.0をサポートし、精度が向上します。</string>
 </resources>

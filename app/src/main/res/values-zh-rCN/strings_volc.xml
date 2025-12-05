@@ -5,6 +5,7 @@
 
     <!-- Volc configuration -->
     <string name="label_volc_streaming">使用流式识别（WebSocket）</string>
+    <string name="label_volc_file_standard">使用文件识别普通版（提交/查询）</string>
     <string name="label_volc_bidi_streaming">启用双向流式</string>
     <string name="label_volc_ddc">启用语义顺滑（实验性）</string>
     <string name="label_volc_vad">启用 VAD 分句（实验性）</string>
@@ -14,9 +15,10 @@
 
     <!-- Volc modes hint -->
     <string name="volc_modes_hint">模式说明：\n
-1. 文件识别（极速版）：录完再上传，稳定，首字延迟较高；网络差时更稳。\n
-2. 流式识别（默认）：边录边传，停止后很快返回最终结果，不显示增量预览。\n
-3. 双向流式（体验最好）：边录边传并实时返回增量预览，首字与尾字时延更低，需要稳定网络。</string>
+1. 文件识别（普通版，提交/查询）：录完再上传，比极速版更慢，但支持豆包语音识别2.0版本，在流式关闭时建议使用。\n
+2. 文件识别（极速版）：录完再上传，速度更快但不支持豆包语音识别2.0版本。\n
+3. 流式识别（默认）：边录边传，停止后很快返回最终结果，不显示增量预览。已支持豆包语音识别2.0。\n
+4. 双向流式（体验最好）：边录边传并实时返回增量预览，首字与尾字时延更低，需要稳定网络。已支持豆包语音识别2.0。</string>
 
     <!-- Volc language options -->
     <string name="volc_lang_auto">自动（中英文与方言）</string>
@@ -61,4 +63,8 @@
     <!-- 首字快速显示 - First character acceleration -->
     <string name="feature_volc_first_char_accel_off_desc">等待识别结果稳定后再显示文本。</string>
     <string name="feature_volc_first_char_accel_on_desc">优先快速显示首个字符，降低延迟感。</string>
+
+  <!-- 文件识别普通版 - File recognition (standard mode) -->
+    <string name="feature_volc_file_standard_off_desc">录音完成后使用文件识别（极速版）。速度更快，但不支持豆包语音识别2.0版本。</string>
+    <string name="feature_volc_file_standard_on_desc">录音完成后使用文件识别（普通版，提交/查询）。相比极速版更慢，但支持豆包语音识别2.0版本，准确度更好。</string>
 </resources>

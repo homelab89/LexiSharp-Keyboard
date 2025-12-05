@@ -325,15 +325,27 @@ class ExternalSpeechService : Service() {
                 AsrVendor.Volc -> if (streamingPreferred) {
                     VolcStreamAsrEngine(context, scope, prefs, this, externalPcmMode = true)
                 } else {
-                    com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
-                        context, scope, prefs, this,
-                        com.brycewg.asrkb.asr.VolcFileAsrEngine(
+                    if (prefs.volcFileStandardEnabled) {
+                        com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
                             context, scope, prefs, this,
-                            onRequestDuration = { ms: Long ->
-                                try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
-                            }
+                            com.brycewg.asrkb.asr.VolcStandardFileAsrEngine(
+                                context, scope, prefs, this,
+                                onRequestDuration = { ms: Long ->
+                                    try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                                }
+                            )
                         )
-                    )
+                    } else {
+                        com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
+                            context, scope, prefs, this,
+                            com.brycewg.asrkb.asr.VolcFileAsrEngine(
+                                context, scope, prefs, this,
+                                onRequestDuration = { ms: Long ->
+                                    try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                                }
+                            )
+                        )
+                    }
                 }
                 // 阿里 DashScope：依据设置走流式或非流式
                 AsrVendor.DashScope -> if (streamingPreferred) {
