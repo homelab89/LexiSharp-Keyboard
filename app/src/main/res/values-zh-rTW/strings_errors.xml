@@ -18,6 +18,7 @@
     <string name="error_dash_missing_upload_host">getPolicy 回應缺少 upload_host</string>
     <string name="error_oss_upload_failed_http">OSS 上傳失敗：%1$d%2$s</string>
     <string name="error_asr_empty_result">識別回傳為空</string>
+    <string name="error_asr_timeout">識別逾時，請稍後重試</string>
     <string name="error_recognize_failed_with_reason">識別失敗：%1$s</string>
 
     <!-- User-facing ASR error toasts (floating + keyboard) -->

@@ -434,7 +434,11 @@ class AsrSessionManager(
                 if (prefs.volcStreamingEnabled) {
                     VolcStreamAsrEngine(context, serviceScope, prefs, this)
                 } else {
-                    VolcFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
+                    if (prefs.volcFileStandardEnabled) {
+                        VolcStandardFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
+                    } else {
+                        VolcFileAsrEngine(context, serviceScope, prefs, this, onRequestDuration = ::onRequestDuration)
+                    }
                 }
             } else null
             AsrVendor.SiliconFlow -> if (prefs.hasSfKeys()) {

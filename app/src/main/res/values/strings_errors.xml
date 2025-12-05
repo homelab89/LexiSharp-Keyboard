@@ -18,6 +18,7 @@
     <string name="error_dash_missing_upload_host">getPolicy response missing upload_host</string>
     <string name="error_oss_upload_failed_http">OSS upload failed: %1$d%2$s</string>
     <string name="error_asr_empty_result">Empty ASR result</string>
+    <string name="error_asr_timeout">Recognition timed out. Please try again.</string>
     <string name="error_recognize_failed_with_reason">Recognition failed: %1$s</string>
 
     <!-- User-facing ASR error toasts (floating + keyboard) -->

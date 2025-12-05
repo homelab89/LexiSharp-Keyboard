@@ -44,6 +44,13 @@ class VolcStandardFileAsrEngine(
         .callTimeout(60, TimeUnit.SECONDS)
         .build()
 
+    private sealed interface QueryResult {
+        data class Success(val text: String) : QueryResult
+        data class Failed(val message: String) : QueryResult
+        object Empty : QueryResult
+        object Timeout : QueryResult
+    }
+
     override suspend fun recognize(pcm: ByteArray) {
         val requestId = UUID.randomUUID().toString()
         val t0 = System.nanoTime()
@@ -80,18 +87,26 @@ class VolcStandardFileAsrEngine(
                 }
             }
 
-            val text = pollResult(requestId)
-            if (text.isNullOrBlank()) {
-                listener.onError(context.getString(R.string.error_asr_empty_result))
-                return
+            when (val result = pollResult(requestId)) {
+                is QueryResult.Success -> {
+                    val dt = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - t0)
+                    try {
+                        onRequestDuration?.invoke(dt)
+                    } catch (t: Throwable) {
+                        Log.w(TAG, "Failed to report request duration", t)
+                    }
+                    listener.onFinal(result.text)
+                }
+                is QueryResult.Empty -> {
+                    listener.onError(context.getString(R.string.error_asr_empty_result))
+                }
+                is QueryResult.Failed -> {
+                    listener.onError(result.message)
+                }
+                QueryResult.Timeout -> {
+                    listener.onError(context.getString(R.string.error_asr_timeout))
+                }
             }
-            val dt = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - t0)
-            try {
-                onRequestDuration?.invoke(dt)
-            } catch (t: Throwable) {
-                Log.w(TAG, "Failed to report request duration", t)
-            }
-            listener.onFinal(text)
         } catch (t: Throwable) {
             Log.e(TAG, "Failed to recognize with Volc standard file API", t)
             listener.onError(
@@ -128,7 +143,7 @@ class VolcStandardFileAsrEngine(
         }.toString()
     }
 
-    private suspend fun pollResult(requestId: String): String? {
+    private suspend fun pollResult(requestId: String): QueryResult {
         repeat(MAX_POLL_ATTEMPTS) {
             val queryReq = Request.Builder()
                 .url(QUERY_URL)
@@ -144,37 +159,37 @@ class VolcStandardFileAsrEngine(
                 if (!resp.isSuccessful) {
                     val msg = resp.header("X-Api-Message") ?: resp.message
                     val detail = formatHttpDetail(msg, "status=${status ?: "unknown"}")
-                    listener.onError(
+                    return QueryResult.Failed(
                         context.getString(R.string.error_request_failed_http, resp.code, detail)
                     )
-                    return null
                 }
                 val message = resp.header("X-Api-Message") ?: resp.message
                 val bodyStr = resp.body?.string().orEmpty()
                 when (status) {
                     20000000L -> {
                         val text = extractText(bodyStr)
-                        if (text.isNotBlank()) return text
-                        // 成功但未返回文本，按空结果处理
-                        return null
+                        return if (text.isNotBlank()) {
+                            QueryResult.Success(text)
+                        } else {
+                            QueryResult.Empty
+                        }
                     }
                     20000001L, 20000002L -> { /* 正在处理或排队，继续轮询 */ }
                     20000003L -> {
-                        listener.onError(context.getString(R.string.error_asr_empty_result))
-                        return null
+                        return QueryResult.Empty
                     }
                     else -> {
                         val detail = formatHttpDetail(message, "status=${status ?: "unknown"}")
-                        listener.onError(
+                        return QueryResult.Failed(
                             context.getString(R.string.error_request_failed_http, resp.code, detail)
                         )
-                        return null
                     }
                 }
             }
             delay(POLL_INTERVAL_MS)
         }
-        return null
+        Log.w(TAG, "Polling timeout after $MAX_POLL_ATTEMPTS attempts for requestId=$requestId")
+        return QueryResult.Timeout
     }
 
     private fun parseStatusCode(resp: okhttp3.Response): Long? {
