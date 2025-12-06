@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.8.5 (2025-12-06)
+
+### New Features
+
+- **Volcengine Standard File Recognition**: Added Volcengine standard file recognition support with timeout mechanism and detailed error handling
+- **Doubao Speech Recognition Model 2.0**: Added Doubao speech recognition model 2.0 support for Volcengine(), improving recognition accuracy
+
+### Improvements
+
+- **Release Process Enhancement**: Improved release process to support both Chinese and English changelogs, enhancing multilingual release efficiency
+
+---
+
 ## v3.8.4 (2025-12-04)
 
 ### New Features

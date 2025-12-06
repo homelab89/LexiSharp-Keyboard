@@ -9,7 +9,8 @@
       "mcp__auggie-mcp__codebase-retrieval",
       "Bash(git add:*)",
       "Bash(git cherry-pick:*)",
-      "WebSearch"
+      "WebSearch",
+      "mcp__web-reader__webReader"
     ],
     "deny": [],
     "ask": []
