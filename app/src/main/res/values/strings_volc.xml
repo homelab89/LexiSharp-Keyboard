@@ -6,6 +6,7 @@
     <!-- Volc configuration -->
     <string name="label_volc_streaming">Use streaming recognition (WebSocket)</string>
     <string name="label_volc_file_standard">Use file recognition (standard, submit/query)</string>
+    <string name="label_volc_model_v2">Use Doubao ASR 2.0 model</string>
     <string name="label_volc_bidi_streaming">Enable bidirectional streaming</string>
     <string name="label_volc_ddc">Enable semantic smoothing (experimental)</string>
     <string name="label_volc_vad">Enable VAD segmentation (experimental)</string>
@@ -66,4 +67,8 @@
     <!-- Volcengine - File recognition (standard mode) -->
     <string name="feature_volc_file_standard_off_desc">Uses file recognition (flash mode) after recording completion. Faster speed but does not support Doubao ASR 2.0.</string>
     <string name="feature_volc_file_standard_on_desc">Uses file recognition (standard, submit/query) after recording completion. Slower than flash mode but supports Doubao ASR 2.0 for better accuracy.</string>
+
+    <!-- Volcengine - Model version -->
+    <string name="feature_volc_model_v2_off_desc">Uses Doubao ASR 1.0 model. Compatible with earlier API versions.</string>
+    <string name="feature_volc_model_v2_on_desc">Uses Doubao ASR 2.0 model (default). Better recognition accuracy and more language support.</string>
 </resources>

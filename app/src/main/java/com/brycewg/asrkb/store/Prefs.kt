@@ -806,6 +806,11 @@ class Prefs(context: Context) {
         get() = sp.getBoolean(KEY_VOLC_FILE_STANDARD_ENABLED, true)
         set(value) = sp.edit { putBoolean(KEY_VOLC_FILE_STANDARD_ENABLED, value) }
 
+    // 火山引擎：使用 2.0 模型（默认 true）
+    var volcModelV2Enabled: Boolean
+        get() = sp.getBoolean(KEY_VOLC_MODEL_V2_ENABLED, true)
+        set(value) = sp.edit { putBoolean(KEY_VOLC_MODEL_V2_ENABLED, value) }
+
     // 选中的ASR供应商（默认使用 SiliconFlow 免费服务）
     var asrVendor: AsrVendor
         get() = AsrVendor.fromId(sp.getString(KEY_ASR_VENDOR, AsrVendor.SiliconFlow.id))
@@ -1388,6 +1393,7 @@ class Prefs(context: Context) {
         private const val KEY_VOLC_LANGUAGE = "volc_language"
         private const val KEY_VOLC_FIRST_CHAR_ACCEL_ENABLED = "volc_first_char_accel_enabled"
         private const val KEY_VOLC_FILE_STANDARD_ENABLED = "volc_file_standard_enabled"
+        private const val KEY_VOLC_MODEL_V2_ENABLED = "volc_model_v2_enabled"
         private const val KEY_DASH_API_KEY = "dash_api_key"
         private const val KEY_DASH_PROMPT = "dash_prompt"
         private const val KEY_DASH_LANGUAGE = "dash_language"
@@ -1752,6 +1758,7 @@ class Prefs(context: Context) {
         o.put(KEY_VOLC_NONSTREAM_ENABLED, volcNonstreamEnabled)
         o.put(KEY_VOLC_LANGUAGE, volcLanguage)
         o.put(KEY_VOLC_FILE_STANDARD_ENABLED, volcFileStandardEnabled)
+        o.put(KEY_VOLC_MODEL_V2_ENABLED, volcModelV2Enabled)
         // Soniox（同时导出单值与数组，便于兼容）
         o.put(KEY_SONIOX_LANGUAGE, sonioxLanguage)
         o.put(KEY_SONIOX_LANGUAGES, sonioxLanguagesJson)
@@ -1942,6 +1949,7 @@ class Prefs(context: Context) {
             optBool(KEY_RETURN_PREV_IME_ON_HIDE)?.let { returnPrevImeOnHide = it }
             optBool(KEY_VOLC_FIRST_CHAR_ACCEL_ENABLED)?.let { volcFirstCharAccelEnabled = it }
             optBool(KEY_VOLC_FILE_STANDARD_ENABLED)?.let { volcFileStandardEnabled = it }
+            optBool(KEY_VOLC_MODEL_V2_ENABLED)?.let { volcModelV2Enabled = it }
             // Soniox（若提供数组则优先；否则回退单值）
             if (o.has(KEY_SONIOX_LANGUAGES)) {
                 optString(KEY_SONIOX_LANGUAGES)?.let { sonioxLanguagesJson = it }

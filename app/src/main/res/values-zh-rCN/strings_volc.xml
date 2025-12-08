@@ -6,6 +6,7 @@
     <!-- Volc configuration -->
     <string name="label_volc_streaming">使用流式识别（WebSocket）</string>
     <string name="label_volc_file_standard">使用文件识别普通版（提交/查询）</string>
+    <string name="label_volc_model_v2">使用豆包语音识别 2.0 模型</string>
     <string name="label_volc_bidi_streaming">启用双向流式</string>
     <string name="label_volc_ddc">启用语义顺滑（实验性）</string>
     <string name="label_volc_vad">启用 VAD 分句（实验性）</string>
@@ -67,4 +68,8 @@
   <!-- 文件识别普通版 - File recognition (standard mode) -->
     <string name="feature_volc_file_standard_off_desc">录音完成后使用文件识别（极速版）。速度更快，但不支持豆包语音识别2.0版本。</string>
     <string name="feature_volc_file_standard_on_desc">录音完成后使用文件识别（普通版，提交/查询）。相比极速版更慢，但支持豆包语音识别2.0版本，准确度更好。</string>
+
+    <!-- 模型版本 - Model version -->
+    <string name="feature_volc_model_v2_off_desc">使用豆包语音识别 1.0 模型。兼容早期 API 版本。</string>
+    <string name="feature_volc_model_v2_on_desc">使用豆包语音识别 2.0 模型（默认）。识别准确度更好，支持更多语言。</string>
 </resources>

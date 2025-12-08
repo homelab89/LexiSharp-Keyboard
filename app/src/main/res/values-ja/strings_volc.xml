@@ -6,6 +6,7 @@
     <!-- Volc configuration -->
     <string name="label_volc_streaming">ストリーミング認識を使用（WebSocket）</string>
     <string name="label_volc_file_standard">ファイル認識（標準版・submit/query）を使用</string>
+    <string name="label_volc_model_v2">Doubao ASR 2.0モデルを使用</string>
     <string name="label_volc_bidi_streaming">双方向ストリーミングを有効化</string>
     <string name="label_volc_ddc">セマンティックスムージングを有効化（実験的）</string>
     <string name="label_volc_vad">VADセグメンテーションを有効化（実験的）</string>
@@ -66,4 +67,8 @@
     <!-- 火山引擎 - ファイル認識（標準版） -->
     <string name="feature_volc_file_standard_off_desc">録音完了後にファイル認識（高速版）を使用します。速度は速いですが、Doubao ASR 2.0をサポートしません。</string>
     <string name="feature_volc_file_standard_on_desc">録音完了後にファイル認識（標準版、submit/query）を使用します。高速版より遅いですが、Doubao ASR 2.0をサポートし、精度が向上します。</string>
+
+    <!-- 火山引擎 - モデルバージョン -->
+    <string name="feature_volc_model_v2_off_desc">Doubao ASR 1.0モデルを使用します。以前のAPIバージョンとの互換性があります。</string>
+    <string name="feature_volc_model_v2_on_desc">Doubao ASR 2.0モデルを使用します（既定）。認識精度が向上し、より多くの言語をサポートします。</string>
 </resources>

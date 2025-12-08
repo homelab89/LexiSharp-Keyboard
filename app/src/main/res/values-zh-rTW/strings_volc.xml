@@ -6,6 +6,7 @@
     <!-- Volc configuration -->
     <string name="label_volc_streaming">使用串流識別（WebSocket）</string>
     <string name="label_volc_file_standard">使用檔案識別普通版（提交/查詢）</string>
+    <string name="label_volc_model_v2">使用豆包語音識別 2.0 模型</string>
     <string name="label_volc_bidi_streaming">啟用雙向串流</string>
     <string name="label_volc_ddc">啟用語義順滑（實驗性）</string>
     <string name="label_volc_vad">啟用 VAD 分句（實驗性）</string>
@@ -66,4 +67,8 @@
     <!-- 火山引擎 - 檔案識別普通版 -->
     <string name="feature_volc_file_standard_off_desc">錄音完成後使用檔案識別（極速版）。速度更快，但不支援豆包語音識別2.0版本。</string>
     <string name="feature_volc_file_standard_on_desc">錄音完成後使用檔案識別（普通版，提交/查詢）。相比極速版更慢，但支援豆包語音識別2.0版本，準確度更好。</string>
+
+    <!-- 火山引擎 - 模型版本 -->
+    <string name="feature_volc_model_v2_off_desc">使用豆包語音識別 1.0 模型。相容早期 API 版本。</string>
+    <string name="feature_volc_model_v2_on_desc">使用豆包語音識別 2.0 模型（預設）。識別準確度更好，支援更多語言。</string>
 </resources>

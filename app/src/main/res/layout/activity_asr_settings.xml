@@ -117,6 +117,11 @@
             android:text="@string/label_volc_file_standard" />
 
           <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchVolcModelV2"
+            style="@style/SettingsSwitch"
+            android:text="@string/label_volc_model_v2" />
+
+          <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switchVolcBidiStreaming"
             style="@style/SettingsSwitch"
             android:text="@string/label_volc_bidi_streaming" />

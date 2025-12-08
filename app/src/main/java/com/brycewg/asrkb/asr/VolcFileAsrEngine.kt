@@ -28,9 +28,14 @@ class VolcFileAsrEngine(
 ) : BaseFileAsrEngine(context, scope, prefs, listener, onRequestDuration), PcmBatchRecognizer {
 
     companion object {
-        private const val DEFAULT_FILE_RESOURCE = "volc.bigasr.auc_turbo"
+        // 文件识别模型 1.0 / 2.0
+        private const val FILE_RESOURCE_V1 = "volc.bigasr.auc"
+        private const val FILE_RESOURCE_V2 = "volc.seedasr.auc"
         private const val TAG = "VolcFileAsrEngine"
     }
+
+    private val fileResource: String
+        get() = if (prefs.volcModelV2Enabled) FILE_RESOURCE_V2 else FILE_RESOURCE_V1
 
     // 火山引擎非流式：服务端上限 2h，本地稳妥限制为 1h
     override val maxRecordDurationMillis: Int = 60 * 60 * 1000
@@ -49,7 +54,7 @@ class VolcFileAsrEngine(
                 .url(Prefs.DEFAULT_ENDPOINT)
                 .addHeader("X-Api-App-Key", prefs.appKey)
                 .addHeader("X-Api-Access-Key", prefs.accessKey)
-                .addHeader("X-Api-Resource-Id", DEFAULT_FILE_RESOURCE)
+                .addHeader("X-Api-Resource-Id", fileResource)
                 .addHeader("X-Api-Request-Id", UUID.randomUUID().toString())
                 .addHeader("X-Api-Sequence", "-1")
                 .post(reqBody)

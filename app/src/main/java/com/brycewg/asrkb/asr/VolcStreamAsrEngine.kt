@@ -49,7 +49,9 @@ class VolcStreamAsrEngine(
         private const val TAG = "VolcStreamAsrEngine"
         private const val WS_ENDPOINT_BIDI_ASYNC = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_async"
         private const val WS_ENDPOINT_NOSTREAM = "wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream"
-        private const val DEFAULT_STREAM_RESOURCE = "volc.seedasr.sauc.duration"
+        // 流式识别模型 1.0 / 2.0
+        private const val STREAM_RESOURCE_V1 = "volc.bigasr.sauc.duration"
+        private const val STREAM_RESOURCE_V2 = "volc.seedasr.sauc.duration"
 
         private const val PROTOCOL_VERSION = 0x1
         private const val HEADER_SIZE_UNITS = 0x1 // 4 bytes
@@ -73,6 +75,9 @@ class VolcStreamAsrEngine(
         private const val FLAG_AUDIO_LAST = 0x2 // 客户端音频最后一包
         private const val FLAG_SERVER_FINAL_MASK = 0x3 // 服务端最终结果标志
     }
+
+    private val streamResource: String
+        get() = if (prefs.volcModelV2Enabled) STREAM_RESOURCE_V2 else STREAM_RESOURCE_V1
 
     private val http: OkHttpClient = OkHttpClient.Builder()
         .pingInterval(15, TimeUnit.SECONDS)
@@ -178,7 +183,7 @@ class VolcStreamAsrEngine(
                     "X-Api-App-Key", prefs.appKey,
                     "X-Api-Access-Key", prefs.accessKey,
                     // 使用小时版资源（可根据需要切换并发版）
-                    "X-Api-Resource-Id", DEFAULT_STREAM_RESOURCE,
+                    "X-Api-Resource-Id", streamResource,
                     "X-Api-Connect-Id", connectId
                 )
             )

@@ -269,6 +269,20 @@ class AsrSettingsActivity : AppCompatActivity() {
             )
         }
 
+        findViewById<MaterialSwitch>(R.id.switchVolcModelV2).apply {
+            isChecked = prefs.volcModelV2Enabled
+            installExplainedSwitch(
+                context = this@AsrSettingsActivity,
+                titleRes = R.string.label_volc_model_v2,
+                offDescRes = R.string.feature_volc_model_v2_off_desc,
+                onDescRes = R.string.feature_volc_model_v2_on_desc,
+                preferenceKey = "volc_model_v2_explained",
+                readPref = { prefs.volcModelV2Enabled },
+                writePref = { v -> viewModel.updateVolcModelV2(v) },
+                hapticFeedback = { hapticTapIfEnabled(it) }
+            )
+        }
+
         findViewById<MaterialSwitch>(R.id.switchVolcBidiStreaming).apply {
             isChecked = prefs.volcBidiStreamingEnabled
             installExplainedSwitch(
@@ -1900,6 +1914,11 @@ class AsrSettingsActivity : AppCompatActivity() {
                 findViewById<MaterialSwitch>(R.id.switchVolcFileStandard).let { sw ->
                     if (sw.isChecked != state.volcFileStandardEnabled) {
                         sw.isChecked = state.volcFileStandardEnabled
+                    }
+                }
+                findViewById<MaterialSwitch>(R.id.switchVolcModelV2).let { sw ->
+                    if (sw.isChecked != state.volcModelV2Enabled) {
+                        sw.isChecked = state.volcModelV2Enabled
                     }
                 }
                 updateVolcStreamOptionsVisibility(state.volcStreamingEnabled)
