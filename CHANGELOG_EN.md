@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.8.6 (2025-12-09)
+
+### New Features
+
+- **Zhipu GLM ASR Support**: Added Zhipu GLM speech recognition engine support, ready for next version of GLM-ASR
+- **Volcengine Model Version Selection**: Added model version selection for Volcengine Doubao ASR, allowing switching between different model versions
+- **Pro Version Promotion Dialog**: Added Pro version feature introduction dialog to help users learn about professional edition features
+
+---
+
 ## v3.8.5 (2025-12-06)
 
 ### New Features

@@ -10,7 +10,10 @@
       "Bash(git add:*)",
       "Bash(git cherry-pick:*)",
       "WebSearch",
-      "mcp__web-reader__webReader"
+      "mcp__web-reader__webReader",
+      "Bash(git show:*)",
+      "Bash(node -c:*)",
+      "Bash(node -e:*)"
     ],
     "deny": [],
     "ask": []
