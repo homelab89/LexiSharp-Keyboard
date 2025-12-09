@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🎙️ Lexi Keyboard
+# 🎙️ BiBi Keyboard
 
 **AI-powered Smart Voice Input Method | Make Voice Input More Natural and Efficient**
 
-### 🌐 [Official Website](https://lexikeyboard.brycewg.com)
+### 🌐 [Official Website](https://bibi.brycewg.com)
 
 English | [简体中文](README.md)
 
@@ -12,9 +12,9 @@ English | [简体中文](README.md)
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
 [![Language](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org/)
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/+UGFobXqi2bYzMDFl)
-[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/BryceWG/LexiSharp-Keyboard)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/BryceWG/LexiSharp-Keyboard)
-![GitHub all releases](https://img.shields.io/github/downloads/BryceWG/LexiSharp-Keyboard/total)
+[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/BryceWG/BiBi-Keyboard)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/BryceWG/BiBi-Keyboard)
+![GitHub all releases](https://img.shields.io/github/downloads/BryceWG/BiBi-Keyboard/total)
 
 [Features](#-features) • [Quick Start](#-quick-start) • [User Guide](#-user-guide) • [Configuration](#-configuration)
 
@@ -116,7 +116,7 @@ English | [简体中文](README.md)
 
 ## 🚀 Quick Start
 
-[Provider Configuration Guide](https://brycewg.notion.site/lexisharp-keyboard-providers-guide)
+[Provider Configuration Guide](https://brycewg.notion.site/bibi-keyboard-providers-guide)
 
 ### 📋 System Requirements
 
@@ -135,18 +135,18 @@ English | [简体中文](README.md)
 2. **Enable Input Method**
 
    ```
-   Settings → System → Language & Input → Virtual Keyboard → Manage Keyboards → Enable "LexiSharp Keyboard"
+   Settings → System → Language & Input → Virtual Keyboard → Manage Keyboards → Enable "BiBi Keyboard"
    ```
 
 3. **Configure ASR Service**
 
-   - Open LexiSharp Keyboard settings
+   - Open BiBi Keyboard settings
    - Select ASR vendor (recommended: Volcengine)
    - Enter your API key
 
 4. **Start Using**
 
-   - Switch to LexiSharp Keyboard in any input field
+   - Switch to BiBi Keyboard in any input field
    - Long press the microphone button to start voice input
 
 > 💡 **Tip**: First-time users are recommended to configure Volcengine for 20 hours of free quota!
@@ -316,10 +316,10 @@ In some apps, input fields expose background placeholder text to Accessibility, 
 <details>
 <summary><b>Difference from IME Switching Floating Ball</b></summary>
 
-| Type                      | Purpose                          | Applicable Scenarios                              |
-| ------------------------- | -------------------------------- | ------------------------------------------------- |
-| 🔄 IME Switch Ball        | Quickly switch back to LexiSharp | When you need to use this app's keyboard features |
-| 🎤 Voice Recognition Ball | Voice input with any IME         | Daily mixed usage scenarios                       |
+| Type                      | Purpose                              | Applicable Scenarios                              |
+| ------------------------- | ------------------------------------ | ------------------------------------------------- |
+| 🔄 IME Switch Ball        | Quickly switch back to BiBi Keyboard | When you need to use this app's keyboard features |
+| 🎤 Voice Recognition Ball | Voice input with any IME             | Daily mixed usage scenarios                       |
 
 > ⚠️ **Note**: The two modes are mutually exclusive. When the voice recognition floating ball is enabled, the IME switching floating ball will be automatically hidden
 
@@ -330,15 +330,15 @@ In some apps, input fields expose background placeholder text to Accessibility, 
 
 ```
 ✅ Set your frequently used third-party IME as default (Sogou, Baidu, etc.)
-✅ Enable LexiSharp Keyboard's floating ball voice recognition
+✅ Enable BiBi Keyboard's floating ball voice recognition
 ✅ Multiple streaming engines supported: Volc, Soniox, DashScope, ElevenLabs (cloud) and Paraformer, Zipformer (local)
 ✅ Use third-party IME for daily typing, click floating ball when voice input is needed
 ✅ Enjoy the best of both worlds: familiar typing experience + high-quality voice recognition
-✅ Switch to LexiSharp Keyboard when needed for more smart ASR features
+✅ Switch to BiBi Keyboard when needed for more smart ASR features
 ```
 
-If you use Fcitx5, you can call up LexiSharp Keyboard through the voice recognition button and return to Fcitx5 through the LexiSharp Keyboard switch button.
-(Requires enabling Fcitx5 linkage in LexiSharp Keyboard settings and ensuring Google voice input service is disabled)
+If you use Fcitx5, you can call up BiBi Keyboard through the voice recognition button and return to Fcitx5 through the BiBi Keyboard switch button.
+(Requires enabling Fcitx5 linkage in BiBi Keyboard settings and ensuring Google voice input service is disabled)
 
 </details>
 
@@ -348,7 +348,7 @@ If you use Fcitx5, you can call up LexiSharp Keyboard through the voice recognit
 
 ### 🎤 Voice Recognition Configuration
 
-[Provider Configuration Guide](https://brycewg.notion.site/lexisharp-keyboard-providers-guide)
+[Provider Configuration Guide](https://brycewg.notion.site/bibi-keyboard-providers-guide)
 
 ### 🧠 LLM Post-Processing Configuration
 
@@ -435,7 +435,7 @@ Apache 2.0 License - Free to use, modify, distribute, must retain copyright noti
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=BryceWG/LexiSharp-Keyboard&type=date&legend=top-left)](https://www.star-history.com/#BryceWG/LexiSharp-Keyboard&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=BryceWG/BiBi-Keyboard&type=date&legend=top-left)](https://www.star-history.com/#BryceWG/BiBi-Keyboard&type=date&legend=top-left)
 
 ## 👥 Contributors
 

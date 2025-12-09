@@ -23,7 +23,7 @@
     <!-- Floating ASR status messages -->
     <string name="floating_asr_error">识别失败: %1$s</string>
     <string name="floating_asr_copied">已复制到剪贴板</string>
-    <string name="accessibility_service_description">允许言犀键盘悬浮球将语音识别结果自动插入到当前输入框中。不会收集或上传任何数据。</string>
+    <string name="accessibility_service_description">允许说点啥悬浮球将语音识别结果自动插入到当前输入框中。不会收集或上传任何数据。</string>
 
     <!-- Floating radial menu -->
     <string name="label_radial_switch_asr">切换 ASR 供应商</string>

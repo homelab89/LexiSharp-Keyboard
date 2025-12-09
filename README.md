@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🎙️ 言犀键盘 (Lexi Keyboard)
+# 🎙️ 说点啥 (BiBi Keyboard)
 
 **基于 AI 的智能语音输入法 | 让语音输入更自然、更高效**
 
-### 🌐 [官方网站](https://lexikeyboard.brycewg.com)
+### 🌐 [官方网站](https://bibi.brycewg.com)
 
 简体中文 | [English](README_EN.md)
 
@@ -12,9 +12,9 @@
 [![Platform](https://img.shields.io/badge/Platform-Android-green.svg)](https://www.android.com/)
 [![Language](https://img.shields.io/badge/Language-Kotlin-blue.svg)](https://kotlinlang.org/)
 [![Telegram](https://img.shields.io/badge/Telegram-Join%20Chat-blue?logo=telegram)](https://t.me/+UGFobXqi2bYzMDFl)
-[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/BryceWG/LexiSharp-Keyboard)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/BryceWG/LexiSharp-Keyboard)
-![GitHub all releases](https://img.shields.io/github/downloads/BryceWG/LexiSharp-Keyboard/total)
+[![zread](https://img.shields.io/badge/Ask_Zread-_.svg?style=flat&color=00b0aa&labelColor=000000&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQuOTYxNTYgMS42MDAxSDIuMjQxNTZDMS44ODgxIDEuNjAwMSAxLjYwMTU2IDEuODg2NjQgMS42MDE1NiAyLjI0MDFWNC45NjAxQzEuNjAxNTYgNS4zMTM1NiAxLjg4ODEgNS42MDAxIDIuMjQxNTYgNS42MDAxSDQuOTYxNTZDNS4zMTUwMiA1LjYwMDEgNS42MDE1NiA1LjMxMzU2IDUuNjAxNTYgNC45NjAxVjIuMjQwMUM1LjYwMTU2IDEuODg2NjQgNS4zMTUwMiAxLjYwMDEgNC45NjE1NiAxLjYwMDFaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00Ljk2MTU2IDEwLjM5OTlIMi4yNDE1NkMxLjg4ODEgMTAuMzk5OSAxLjYwMTU2IDEwLjY4NjQgMS42MDE1NiAxMS4wMzk5VjEzLjc1OTlDMS42MDE1NiAxNC4xMTM0IDEuODg4MSAxNC4zOTk5IDIuMjQxNTYgMTQuMzk5OUg0Ljk2MTU2QzUuMzE1MDIgMTQuMzk5OSA1LjYwMTU2IDE0LjExMzQgNS42MDE1NiAxMy43NTk5VjExLjAzOTlDNS42MDE1NiAxMC42ODY0IDUuMzE1MDIgMTAuMzk5OSA0Ljk2MTU2IDEwLjM5OTlaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik0xMy43NTg0IDEuNjAwMUgxMS4wMzg0QzEwLjY4NSAxLjYwMDEgMTAuMzk4NCAxLjg4NjY0IDEwLjM5ODQgMi4yNDAxVjQuOTYwMUMxMC4zOTg0IDUuMzEzNTYgMTAuNjg1IDUuNjAwMSAxMS4wMzg0IDUuNjAwMUgxMy43NTg0QzE0LjExMTkgNS42MDAxIDE0LjM5ODQgNS4zMTM1NiAxNC4zOTg0IDQuOTYwMVYyLjI0MDFDMTQuMzk4NCAxLjg4NjY0IDE0LjExMTkgMS42MDAxIDEzLjc1ODQgMS42MDAxWiIgZmlsbD0iI2ZmZiIvPgo8cGF0aCBkPSJNNCAxMkwxMiA0TDQgMTJaIiBmaWxsPSIjZmZmIi8%2BCjxwYXRoIGQ9Ik00IDEyTDEyIDQiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K&logoColor=ffffff)](https://zread.ai/BryceWG/BiBi-Keyboard)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/BryceWG/BiBi-Keyboard)
+![GitHub all releases](https://img.shields.io/github/downloads/BryceWG/BiBi-Keyboard/total)
 
 [功能特性](#-功能特性) • [快速开始](#-快速开始) • [使用指南](#-使用指南) • [配置说明](#-配置说明)
 
@@ -24,7 +24,7 @@
 
 ## 🌟 Pro 版已上架
 
-> 💎 **言犀键盘 Pro 版**现已正式上架！
+> 💎 **说点啥 Pro 版**现已正式上架！
 
 Pro 版提供更多高级功能和更优质的使用体验。目前提供的功能:
 
@@ -142,7 +142,7 @@ Pro 版提供更多高级功能和更优质的使用体验。目前提供的功�
 
 ## 🚀 快速开始
 
-[供应商配置文档](https://brycewg.notion.site/lexisharp-keyboard-providers-guide)
+[供应商配置文档](https://brycewg.notion.site/bibi-keyboard-providers-guide)
 
 ### 📋 系统要求
 
@@ -161,17 +161,17 @@ Pro 版提供更多高级功能和更优质的使用体验。目前提供的功�
 2. **启用输入法**
 
    ```
-   设置 → 系统 → 语言和输入法 → 虚拟键盘 → 管理键盘 → 启用"言犀键盘"
+   设置 → 系统 → 语言和输入法 → 虚拟键盘 → 管理键盘 → 启用"说点啥"
    ```
 
 3. **配置 ASR 服务**
 
-   - 打开言犀键盘设置
+   - 打开说点啥设置
    - 选择 ASR 供应商（推荐：火山引擎）
    - 填入 API 密钥
 
 4. **开始使用**
-   - 在任意输入框切换到言犀键盘
+   - 在任意输入框切换到说点啥
    - 长按麦克风按钮开始语音输入
 
 > 💡 **提示**: 首次使用建议先配置火山引擎，可获得 20 小时免费额度！
@@ -340,7 +340,7 @@ AI 编辑支持多种目标选择方式：
 
 | 类型                | 用途                       | 适用场景                 |
 | ------------------- | -------------------------- | ------------------------ |
-| 🔄 输入法切换悬浮球 | 快速切换回言犀键盘         | 需要使用本应用键盘功能时 |
+| 🔄 输入法切换悬浮球 | 快速切换回说点啥           | 需要使用本应用键盘功能时 |
 | 🎤 语音识别悬浮球   | 在任何输入法下进行语音输入 | 日常混合使用场景         |
 
 > ⚠️ **注意**：两种模式互斥，开启语音识别悬浮球后，输入法切换悬浮球会自动隐藏
@@ -352,15 +352,15 @@ AI 编辑支持多种目标选择方式：
 
 ```
 ✅ 将常用的第三方输入法设为默认输入法（如搜狗、百度等）
-✅ 开启言犀键盘的悬浮球语音识别功能
+✅ 开启说点啥的悬浮球语音识别功能
 ✅ 支持多种流式引擎：Volc、Soniox、DashScope、ElevenLabs（云端）及 Paraformer、Zipformer（本地）
 ✅ 日常使用第三方输入法打字，需要语音输入时点击悬浮球
 ✅ 享受两全其美的输入体验：熟悉的打字手感 + 高质量的语音识别
-✅ 需要时切换到言犀键盘，享受更多智能 ASR 功能
+✅ 需要时切换到说点啥，享受更多智能 ASR 功能
 ```
 
-如果你使用 Fctix5,可以通过语音识别按钮唤出言犀键盘,并可以通过言犀键盘切换按钮返回到 Fcitx5
-(需要在言犀键盘设置中开启 Fcitx5 联动,并且保证 Google 语音输入服务被禁用)
+如果你使用 Fctix5,可以通过语音识别按钮唤出说点啥,并可以通过说点啥切换按钮返回到 Fcitx5
+(需要在说点啥设置中开启 Fcitx5 联动,并且保证 Google 语音输入服务被禁用)
 
 </details>
 
@@ -370,7 +370,7 @@ AI 编辑支持多种目标选择方式：
 
 ### 🎤 语音识别配置
 
-[Notion 文档](https://brycewg.notion.site/lexisharp-keyboard-providers-guide)
+[Notion 文档](https://brycewg.notion.site/bibi-keyboard-providers-guide)
 
 ### 🧠 LLM 后处理配置
 
@@ -455,7 +455,7 @@ Apache 2.0 License - 自由使用、修改、分发，需保留版权声明
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=BryceWG/LexiSharp-Keyboard&type=date&legend=top-left)](https://www.star-history.com/#BryceWG/LexiSharp-Keyboard&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=BryceWG/BiBi-Keyboard&type=date&legend=top-left)](https://www.star-history.com/#BryceWG/BiBi-Keyboard&type=date&legend=top-left)
 
 ## 👥 贡献者
 

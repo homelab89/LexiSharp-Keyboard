@@ -1,10 +1,10 @@
 {
   "version": "3.8.6",
   "version_code": 130,
-  "download_url": "https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/v3.8.6",
+  "download_url": "https://github.com/BryceWG/BiBi-Keyboard/releases/tag/v3.8.6",
   "release_notes": "### 新增功能\n\n- **智谱 GLM ASR 支持**: 新增智谱 GLM 语音识别引擎支持，为下一个版本的 GLM-ASR 做准备\n- **火山引擎模型版本选择**: 为火山引擎豆包 ASR 添加模型版本选择功能，支持在不同模型版本间切换\n- **Pro 版本宣传弹窗**: 添加 Pro 版本功能介绍弹窗，帮助用户了解专业版特性",
   "release_notes_en": "### New Features\n\n- **Zhipu GLM ASR Support**: Added Zhipu GLM speech recognition engine support, ready for next version of GLM-ASR\n- **Volcengine Model Version Selection**: Added model version selection for Volcengine Doubao ASR, allowing switching between different model versions\n- **Pro Version Promotion Dialog**: Added Pro version feature introduction dialog to help users learn about professional edition features",
-  "important_notice": "Pro版本已上架，欢迎在3.8.6后版本-关于页面中了解详情。\n注意:3.8.5更新升级了火山引擎(豆包语音识别模型)到了2.0版本,请到控制台开通对应模型(https://console.volcengine.com/speech/service),或者可以在3.8.6版本中通过开关选择回退到1.0版本。",
+  "important_notice": "为规避风险，3.9.0已将应用名称更改“说点啥”（BiBi Keyboard）\nBiBi Keyboard Pro版本已上架，欢迎在3.8.6后版本-关于页面中了解详情。\n注意:3.8.5更新升级了火山引擎(豆包语音识别模型)到了2.0版本,请到控制台开通对应模型(https://console.volcengine.com/speech/service),或者可以在3.8.6版本中通过开关选择回退到1.0版本。",
   "notice_level": "info",
   "min_supported_version": "2.6.5",
   "update_time": "2025-12-09T02:54:05Z"

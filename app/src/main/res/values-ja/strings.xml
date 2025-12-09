@@ -3,7 +3,7 @@
   <!-- ============================================== -->
   <!-- 基础信息 -->
   <!-- ============================================== -->
-  <string name="app_name">LexiSharp キーボード</string>
+  <string name="app_name">BiBi Keyboard</string>
 
   <!-- ============================================== -->
   <!-- 键盘状态信息 -->
@@ -43,10 +43,10 @@
   <!-- ============================================== -->
   <!-- 设置相关 -->
   <!-- ============================================== -->
-  <string name="settings_instructions">初回セットアップ:\n1.「キーボードを有効化」をタップし、システム設定でLexiSharpキーボードを有効にします\n2.「キーボードを選択」をタップし、LexiSharpキーボードに切り替えます\n3.マイク権限を許可し、キーボードのマイクボタンを長押しして音声入力をお試しください\n\nより安定したバックグラウンドサービスを利用するため、システム設定で以下の権限を許可することを推奨します：\n• バックグラウンドでの自動起動\n• バックグラウンド実行（常駐）\n• バックグラウンドでのポップアップ表示\n\n本ソフトウェアはオープンソースであり、いかなるプライバシーデータもアップロードしないことを保証します。</string>
+  <string name="settings_instructions">初回セットアップ:\n1.「キーボードを有効化」をタップし、システム設定でBiBi Keyboardを有効にします\n2.「キーボードを選択」をタップし、BiBi Keyboardに切り替えます\n3.マイク権限を許可し、キーボードのマイクボタンを長押しして音声入力をお試しください\n\nより安定したバックグラウンドサービスを利用するため、システム設定で以下の権限を許可することを推奨します：\n• バックグラウンドでの自動起動\n• バックグラウンド実行（常駐）\n• バックグラウンドでのポップアップ表示\n\n本ソフトウェアはオープンソースであり、いかなるプライバシーデータもアップロードしないことを保証します。</string>
   <string name="btn_one_click_setup">ワンクリック設定</string>
 
-  <string name="settings_title">LexiSharpキーボード設定</string>
+  <string name="settings_title">BiBi Keyboard 設定</string>
   <string name="title_input_settings">入力設定</string>
   <string name="title_asr_settings">音声認識設定</string>
   <string name="title_ai_settings">AI後処理設定</string>
@@ -143,7 +143,7 @@
   <!-- ============================================== -->
   <string name="toast_setup_all_done">すべて設定完了</string>
   <string name="toast_setup_enable_keyboard_first">システム設定でキーボードを有効にしてから戻ってください</string>
-  <string name="toast_setup_choose_keyboard">現在の入力メソッドとして「LexiSharpキーボード」を選択してください</string>
+  <string name="toast_setup_choose_keyboard">現在の入力メソッドとして「BiBi Keyboard」を選択してください</string>
   <string name="btn_get_api_key_guide">設定ガイドを表示</string>
   <string name="btn_local_model_guide">設定ガイドを表示</string>
 
@@ -163,7 +163,7 @@
   <!-- 外部IME連携（AIDL） -->
   <string name="label_external_ime_link_aidl">外部IME連携（AIDL）を許可</string>
   <string name="external_aidl_guide_title">連携機能の使用方法</string>
-  <string name="external_aidl_guide_message">Fcitx（小企鹅）入力法からLexiSharpの音声認識機能を呼び出すことができます。使用方法：\n\n1. 改造版Fcitxをダウンロード：https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases（元のFcitxをアンインストールし、データをバックアップしてください）\n\n2. Fcitx設定 - 仮想キーボード - スペースキー長押し動作 - 音声入力（AIDL）を選択\n\n3. LexiSharpを3.6.2以上に更新し、設定 - 入力設定 - 外部IME連携（AIDL）を許可を有効化。フローティングボールやアクセシビリティサービスは不要です\n\n4. Fcitx入力法パネルでスペースキーを長押しすると音声入力が起動します。</string>
+  <string name="external_aidl_guide_message">Fcitx（小企鹅）入力法からBiBi Keyboardの音声認識機能を呼び出すことができます。使用方法：\n\n1. 改造版Fcitxをダウンロード：https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases（元のFcitxをアンインストールし、データをバックアップしてください）\n\n2. Fcitx設定 - 仮想キーボード - スペースキー長押し動作 - 音声入力（AIDL）を選択\n\n3. BiBi Keyboardを3.6.2以上に更新し、設定 - 入力設定 - 外部IME連携（AIDL）を許可を有効化。フローティングボールやアクセシビリティサービスは不要です\n\n4. Fcitx入力法パネルでスペースキーを長押しすると音声入力が起動します。</string>
   <string name="external_aidl_guide_btn_close">閉じる</string>
   <string name="external_aidl_guide_btn_no_remind">再表示しない</string>
   <string name="external_aidl_guide_btn_open_release">リリースページを開く</string>
@@ -171,7 +171,7 @@
 
   <!-- モデル選択ガイド -->
   <string name="model_guide_title">音声認識モデルを選択</string>
-  <string name="model_guide_message">LexiSharp キーボードを使用する前に、音声認識モデルのタイプを選択してください：</string>
+  <string name="model_guide_message">BiBi Keyboard を使用する前に、音声認識モデルのタイプを選択してください：</string>
   <string name="model_guide_option_sf_free">⭐ 無料クラウドサービス（推奨）</string>
   <string name="model_guide_option_sf_free_desc">設定不要、SiliconFlow がサポート。無料の音声認識と AI テキスト強化を含みます。</string>
   <string name="model_guide_option_sf_free_action">すぐに使用可能、無料使用量に制限あり</string>
@@ -185,7 +185,7 @@
   <string name="model_guide_online_dialog_message">オンライン音声認識は複数のプロバイダーをサポート（Volcengine、SiliconFlow、OpenAI、Gemini、DashScope、Soniox、ElevenLabs など）。詳細な手順は設定ガイドをご参照ください。</string>
   <string name="model_guide_downloading">モデルをダウンロード中、お待ちください…</string>
   <string name="model_guide_download_complete">モデルのダウンロード完了</string>
-  <string name="model_guide_config_doc_url">https://brycewg.notion.site/lexisharp-keyboard-providers-guide</string>
+  <string name="model_guide_config_doc_url">https://brycewg.notion.site/bibi-keyboard-providers-guide</string>
   <string name="label_return_prev_ime_on_hide">非表示時に前のIMEに切り替える</string>
   <string name="toast_bt_connect_permission_required">ヘッドセットマイクを使用するにはBluetooth接続権限が必要です</string>
   <string name="toast_bt_connect_permission_denied">Bluetooth接続権限が拒否されました。ヘッドセット優先が無効になりました。</string>
@@ -245,7 +245,7 @@
   <string name="feature_fcitx5_return_on_switcher_on_desc">入力法切替キーは前の入力法に直接戻ります。素早い切り替えに便利です。</string>
 
   <!-- 非表示時に前のIMEに戻る -->
-  <string name="feature_return_prev_ime_on_hide_off_desc">非表示後も現在の入力法はLexiSharpキーボードのままです。</string>
+  <string name="feature_return_prev_ime_on_hide_off_desc">非表示後も現在の入力法はBiBi Keyboardのままです。</string>
   <string name="feature_return_prev_ime_on_hide_on_desc">キーボードが非表示になったときに自動的に前の入力法に切り替わります。一時的な音声入力に便利です。</string>
 
   <!-- 最近のタスクを非表示 -->
@@ -275,7 +275,7 @@
   <!-- ============================================== -->
   <!-- Pro版プロモーション -->
   <!-- ============================================== -->
-  <string name="pro_promo_title">言犀キーボード Pro 版が Play ストアで公開中！</string>
+  <string name="pro_promo_title">说点啥 Pro 版が Play ストアで公開中！</string>
   <string name="pro_promo_price">4.49ドルの買い切り。ライセンスはアカウントに紐づき、デバイス数制限なし。</string>
   <string name="pro_promo_features_title">Pro 限定機能：</string>
   <string name="pro_promo_features">1. 複数ベンダー統一ホットワード管理（オフラインモデルと ElevenLabs を除く）\n2. WebDAV 自動バックアップ\n3. カスタム UI カラー\n4. 全方向カーソルスライド\n5. オフライン繁体字変換\n6. 正規表現ポストプロセス</string>

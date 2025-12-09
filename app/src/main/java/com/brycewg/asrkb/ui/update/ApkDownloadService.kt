@@ -203,7 +203,7 @@ class ApkDownloadService : Service() {
         Log.d(TAG, "Starting APK download from: $url")
 
         val apkDir = getApkDirectory(this@ApkDownloadService)
-        val apkFile = File(apkDir, "lexisharp-keyboard-$version.apk")
+        val apkFile = File(apkDir, "bibi-keyboard-$version.apk")
 
         // 如果文件已存在，先删除
         if (apkFile.exists()) {
@@ -217,7 +217,7 @@ class ApkDownloadService : Service() {
 
         val request = Request.Builder()
             .url(url)
-            .addHeader("User-Agent", "LexiSharp-Android")
+            .addHeader("User-Agent", "BiBiKeyboard-Android")
             .build()
 
         client.newCall(request).execute().use { response ->

@@ -23,7 +23,7 @@
     <!-- Floating ASR status messages -->
     <string name="floating_asr_error">識別失敗：%1$s</string>
     <string name="floating_asr_copied">已複製到剪貼簿</string>
-    <string name="accessibility_service_description">允許言犀鍵盤懸浮球將語音識別結果自動插入到目前輸入欄位中。不會收集或上傳任何資料。</string>
+    <string name="accessibility_service_description">允許說點啥懸浮球將語音識別結果自動插入到目前輸入欄位中。不會收集或上傳任何資料。</string>
 
     <!-- Floating radial menu -->
     <string name="label_radial_switch_asr">切換 ASR 供應商</string>

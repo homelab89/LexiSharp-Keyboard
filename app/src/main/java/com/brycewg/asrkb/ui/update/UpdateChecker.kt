@@ -24,12 +24,12 @@ class UpdateChecker(private val context: Context) {
         // 多个镜像源 URL（优先级从高到低）
         private val MIRROR_SOURCES = listOf(
             // 优先使用可用镜像代理 raw 内容（更新更及时）
-            "https://hub.gitmirror.com/https://raw.githubusercontent.com/BryceWG/LexiSharp-Keyboard/main/version.json",
-            "https://ghproxy.net/https://raw.githubusercontent.com/BryceWG/LexiSharp-Keyboard/main/version.json",
+            "https://hub.gitmirror.com/https://raw.githubusercontent.com/BryceWG/BiBi-Keyboard/main/version.json",
+            "https://ghproxy.net/https://raw.githubusercontent.com/BryceWG/BiBi-Keyboard/main/version.json",
             // 直接读取 GitHub 原始内容
-            "https://raw.githubusercontent.com/BryceWG/LexiSharp-Keyboard/main/version.json",
+            "https://raw.githubusercontent.com/BryceWG/BiBi-Keyboard/main/version.json",
             // jsDelivr 主域 (作为兜底）
-            "https://cdn.jsdelivr.net/gh/BryceWG/LexiSharp-Keyboard@main/version.json"
+            "https://cdn.jsdelivr.net/gh/BryceWG/BiBi-Keyboard@main/version.json"
         )
     }
 
@@ -176,7 +176,7 @@ class UpdateChecker(private val context: Context) {
 
         val request = Request.Builder()
             .url(url)
-            .addHeader("User-Agent", "LexiSharp-Android")
+            .addHeader("User-Agent", "BiBiKeyboard-Android")
             .build()
 
         client.newCall(request).execute().use { response ->
@@ -199,7 +199,7 @@ class UpdateChecker(private val context: Context) {
 
             val downloadUrl = json.optString(
                 "download_url",
-                "https://github.com/BryceWG/LexiSharp-Keyboard/releases"
+                "https://github.com/BryceWG/BiBi-Keyboard/releases"
             )
 
             val updateTime = json.optString("update_time", "").ifBlank { null }

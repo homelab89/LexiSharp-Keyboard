@@ -8,27 +8,27 @@ import java.io.InputStream
 
 /**
  * 剪贴板文件管理器
- * 负责管理从服务器下载的文件，存储在 Download/Lexi 目录
+ * 负责管理从服务器下载的文件，存储在 Download/BiBi 目录
  */
 class ClipboardFileManager(private val context: Context) {
 
     companion object {
         private const val TAG = "ClipboardFileManager"
-        private const val LEXI_FOLDER = "Lexi"
+        private const val BIBI_FOLDER = "BiBi"
         private const val MAX_CACHE_SIZE_MB = 500  // 最大缓存 500MB
         private const val MAX_FILE_AGE_DAYS = 30   // 文件最长保留 30 天
     }
 
     /**
-     * 获取 Lexi 文件夹路径 (Download/Lexi)
+     * 获取 BiBi 文件夹路径 (Download/BiBi)
      */
-    private fun getLexiFolder(): File {
+    private fun getBiBiFolder(): File {
         val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val lexiDir = File(downloadDir, LEXI_FOLDER)
-        if (!lexiDir.exists()) {
-            lexiDir.mkdirs()
+        val bibiDir = File(downloadDir, BIBI_FOLDER)
+        if (!bibiDir.exists()) {
+            bibiDir.mkdirs()
         }
-        return lexiDir
+        return bibiDir
     }
 
     /**
@@ -37,7 +37,7 @@ class ClipboardFileManager(private val context: Context) {
      * @return 文件对象
      */
     fun getFile(fileName: String): File {
-        return File(getLexiFolder(), fileName)
+        return File(getBiBiFolder(), fileName)
     }
 
     /**
@@ -142,8 +142,8 @@ class ClipboardFileManager(private val context: Context) {
         var count = 0
 
         try {
-            val lexiDir = getLexiFolder()
-            lexiDir.listFiles()?.forEach { file ->
+            val bibiDir = getBiBiFolder()
+            bibiDir.listFiles()?.forEach { file ->
                 if (file.isFile && file.lastModified() < cutoffTime) {
                     if (file.delete()) {
                         count++
@@ -166,8 +166,8 @@ class ClipboardFileManager(private val context: Context) {
         var count = 0
 
         try {
-            val lexiDir = getLexiFolder()
-            val files = lexiDir.listFiles()?.filter { it.isFile }?.sortedBy { it.lastModified() } ?: return 0
+            val bibiDir = getBiBiFolder()
+            val files = bibiDir.listFiles()?.filter { it.isFile }?.sortedBy { it.lastModified() } ?: return 0
 
             var totalSize = files.sumOf { it.length() }
             val maxSize = MAX_CACHE_SIZE_MB * 1024 * 1024L
@@ -194,8 +194,8 @@ class ClipboardFileManager(private val context: Context) {
      */
     fun getCacheSize(): Long {
         return try {
-            val lexiDir = getLexiFolder()
-            lexiDir.listFiles()?.filter { it.isFile }?.sumOf { it.length() } ?: 0L
+            val bibiDir = getBiBiFolder()
+            bibiDir.listFiles()?.filter { it.isFile }?.sumOf { it.length() } ?: 0L
         } catch (e: Exception) {
             Log.e(TAG, "Failed to get cache size", e)
             0L

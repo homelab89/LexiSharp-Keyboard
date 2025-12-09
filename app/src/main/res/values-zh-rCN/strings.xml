@@ -2,7 +2,7 @@
   <!-- ============================================== -->
   <!-- 基础信息 -->
   <!-- ============================================== -->
-  <string name="app_name">言犀键盘</string>
+  <string name="app_name">说点啥</string>
 
   <!-- ============================================== -->
   <!-- 键盘状态信息 -->
@@ -42,10 +42,10 @@
   <!-- ============================================== -->
   <!-- 设置相关 -->
   <!-- ============================================== -->
-  <string name="settings_instructions">首次使用步骤：\n1. 点击"启用键盘"，在系统设置中启用 言犀键盘\n2. 点击"选择键盘"，切换到 言犀键盘\n3. 授予麦克风权限后，回到任意输入框，长按键盘上的麦克风按钮即可体验\n\n为获得更稳定的后台服务体验，建议在系统设置中为本应用授予以下权限：\n• 后台自启动\n• 后台运行（保活）\n• 后台弹出界面\n\n本软件是开源项目，保证不会上传任何隐私数据。</string>
+  <string name="settings_instructions">首次使用步骤：\n1. 点击"启用键盘"，在系统设置中启用 说点啥\n2. 点击"选择键盘"，切换到 说点啥\n3. 授予麦克风权限后，回到任意输入框，长按键盘上的麦克风按钮即可体验\n\n为获得更稳定的后台服务体验，建议在系统设置中为本应用授予以下权限：\n• 后台自启动\n• 后台运行（保活）\n• 后台弹出界面\n\n本软件是开源项目，保证不会上传任何隐私数据。</string>
   <string name="btn_one_click_setup">一键设置</string>
 
-  <string name="settings_title">言犀键盘设置</string>
+  <string name="settings_title">说点啥设置</string>
   <string name="title_input_settings">输入设置</string>
   <string name="title_asr_settings">语音识别设置</string>
   <string name="title_ai_settings">AI 后处理设置</string>
@@ -142,7 +142,7 @@
   <!-- ============================================== -->
   <string name="toast_setup_all_done">已完成所有设置</string>
   <string name="toast_setup_enable_keyboard_first">请在系统设置中启用键盘后返回</string>
-  <string name="toast_setup_choose_keyboard">请选择"言犀键盘"为当前输入法</string>
+  <string name="toast_setup_choose_keyboard">请选择"说点啥"为当前输入法</string>
   <string name="btn_get_api_key_guide">去查看配置教程</string>
   <string name="btn_local_model_guide">去查看配置教程</string>
 
@@ -162,7 +162,7 @@
   <!-- 外部输入法联动（AIDL） -->
   <string name="label_external_ime_link_aidl">允许外部输入法联动（AIDL）</string>
   <string name="external_aidl_guide_title">如何使用联动功能</string>
-  <string name="external_aidl_guide_message">支持了从小企鹅输入法调用言犀的语音识别能力。使用方式：\n\n1. 下载修改版的 Fcitx：https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases，需要卸载之前的 Fcitx，注意数据备份\n\n2. 打开 Fcitx 设置 - 虚拟键盘 - 空格键长按行为 - 语音输入(AIDL)\n\n3. 更新言犀到 3.6.2 以上，在言犀设置 - 输入设置 - 允许外部输入法联动(AIDL)，无需启用悬浮球和无障碍功能\n\n4. 在小企鹅输入法面板，长按空格键即可语音输入。</string>
+  <string name="external_aidl_guide_message">支持了从小企鹅输入法调用说点啥的语音识别能力。使用方式：\n\n1. 下载修改版的 Fcitx：https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases，需要卸载之前的 Fcitx，注意数据备份\n\n2. 打开 Fcitx 设置 - 虚拟键盘 - 空格键长按行为 - 语音输入(AIDL)\n\n3. 更新说点啥到 3.6.2 以上，在说点啥设置 - 输入设置 - 允许外部输入法联动(AIDL)，无需启用悬浮球和无障碍功能\n\n4. 在小企鹅输入法面板，长按空格键即可语音输入。</string>
   <string name="external_aidl_guide_btn_close">关闭</string>
   <string name="external_aidl_guide_btn_no_remind">不再提醒</string>
   <string name="external_aidl_guide_btn_open_release">打开Release页</string>
@@ -170,7 +170,7 @@
 
   <!-- 模型选择引导 -->
   <string name="model_guide_title">选择语音识别模型</string>
-  <string name="model_guide_message">使用言犀键盘前，请先选择语音识别模型类型：</string>
+  <string name="model_guide_message">使用说点啥前，请先选择语音识别模型类型：</string>
   <string name="model_guide_option_sf_free">⭐ 免费云服务（推荐）</string>
   <string name="model_guide_option_sf_free_desc">无需任何配置，由硅基流动提供支持。包含免费的语音识别和 AI 文本优化。</string>
   <string name="model_guide_option_sf_free_action">开箱即用，有免费用量限制</string>
@@ -184,7 +184,7 @@
   <string name="model_guide_online_dialog_message">在线语音识别支持多种供应商（火山引擎、硅基流动、OpenAI、Gemini、阿里云百炼、Soniox、ElevenLabs 等），请参阅配置指南了解详细步骤。</string>
   <string name="model_guide_downloading">正在下载模型，请稍候…</string>
   <string name="model_guide_download_complete">模型下载完成</string>
-  <string name="model_guide_config_doc_url">https://brycewg.notion.site/lexisharp-keyboard-providers-guide</string>
+  <string name="model_guide_config_doc_url">https://brycewg.notion.site/bibi-keyboard-providers-guide</string>
   <string name="label_return_prev_ime_on_hide">键盘收起后切回上一个输入法</string>
   <string name="toast_bt_connect_permission_required">需要蓝牙连接权限以使用耳机麦克风</string>
   <string name="toast_bt_connect_permission_denied">已拒绝蓝牙连接权限，将停用耳机麦克风优先</string>
@@ -244,7 +244,7 @@
   <string name="feature_fcitx5_return_on_switcher_on_desc">输入法切换键直接返回上一个输入法，方便快速切换。</string>
 
   <!-- 收起后切回上一个输入法 -->
-  <string name="feature_return_prev_ime_on_hide_off_desc">键盘收起后，当前输入法仍为言犀键盘。</string>
+  <string name="feature_return_prev_ime_on_hide_off_desc">键盘收起后，当前输入法仍为说点啥。</string>
   <string name="feature_return_prev_ime_on_hide_on_desc">键盘收起时自动切回上一个输入法，方便临时语音输入。</string>
 
   <!-- 隐藏任务卡片 -->
@@ -274,7 +274,7 @@
   <!-- ============================================== -->
   <!-- Pro 版宣传 -->
   <!-- ============================================== -->
-  <string name="pro_promo_title">言犀键盘 Pro 版已上线 Play 商店！</string>
+  <string name="pro_promo_title">说点啥 Pro 版已上线 Play 商店！</string>
   <string name="pro_promo_price">4.49 美元买断制。也可以加入 TG 群联系作者，以 32 元购入激活码。权限跟随账户，不限制使用设备数量。</string>
   <string name="pro_promo_features_title">Pro 专属功能：</string>
   <string name="pro_promo_features">1. 多供应商统一热词管理（暂不支持离线模型和 ElevenLabs）\n2. WebDAV 自动备份\n3. 个性化 UI 取色\n4. 全向光标滑动\n5. 离线繁体结果转换\n6. 正则后处理</string>

@@ -21,7 +21,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 object WebDavBackupHelper {
   private const val TAG = "WebDavBackupHelper"
   private val JSON_MEDIA = "application/json; charset=utf-8".toMediaType()
-  private const val WEBDAV_DIRECTORY = "LexiSharp"
+  private const val WEBDAV_DIRECTORY = "BiBiKeyboard"
   private const val WEBDAV_FILENAME = "asr_keyboard_settings.json"
   private val legacyHttpClient by lazy { OkHttpClient.Builder().build() }
 

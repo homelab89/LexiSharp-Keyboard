@@ -371,7 +371,7 @@ jobs:
           # 更新版本信息
           data['version'] = version
           data['version_code'] = int(version_code) if version_code.isdigit() else 0
-          data['download_url'] = f"https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/{tag}"
+          data['download_url'] = f"https://github.com/BryceWG/BiBi-Keyboard/releases/tag/{tag}"
           data['release_notes'] = release_notes
           data['release_notes_en'] = release_notes_en
           data['min_supported_version'] = data.get('min_supported_version', '2.6.5')
@@ -454,7 +454,7 @@ jobs:
 
           data['version'] = version
           data['version_code'] = int(version_code) if version_code.isdigit() else 0
-          data['download_url'] = f"https://github.com/BryceWG/LexiSharp-Keyboard/releases/tag/{tag}"
+          data['download_url'] = f"https://github.com/BryceWG/BiBi-Keyboard/releases/tag/{tag}"
           data['release_notes'] = release_notes
           data['release_notes_en'] = release_notes_en
           data['min_supported_version'] = data.get('min_supported_version', '2.6.5')

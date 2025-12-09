@@ -21,7 +21,7 @@
     <string name="toast_webdav_download_failed">ダウンロード/インポート失敗：%1$s</string>
     <string name="toast_webdav_backup_not_found">WebDAVサーバー上にバックアップファイルが見つかりません</string>
     <string name="toast_webdav_url_required">WebDAVベースURLを入力してください</string>
-    <string name="toast_webdav_directory_created">LexiSharpディレクトリが作成されました</string>
+    <string name="toast_webdav_directory_created">BiBi Keyboard ディレクトリが作成されました</string>
 
     <string name="toast_export_success">エクスポート：%1$s</string>
     <string name="toast_export_failed">エクスポート失敗</string>

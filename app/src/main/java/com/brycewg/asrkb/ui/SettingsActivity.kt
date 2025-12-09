@@ -729,7 +729,7 @@ class SettingsActivity : BaseActivity() {
                 try {
                     val intent = Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/BryceWG/LexiSharp-Keyboard/releases")
+                        Uri.parse("https://github.com/BryceWG/BiBi-Keyboard/releases")
                     )
                     startActivity(intent)
                 } catch (e: Exception) {
@@ -815,14 +815,14 @@ class SettingsActivity : BaseActivity() {
      * 构造 APK 直链
      *
      * 输入: https://github.com/{owner}/{repo}/releases/tag/{tag}
-     * 输出: https://github.com/{owner}/{repo}/releases/download/v{version}/lexisharp-keyboard-{version}-release.apk
+     * 输出: https://github.com/BryceWG/BiBi-Keyboard/releases/download/v{version}/lexisharp-keyboard-{version}-release.apk
      */
     private fun buildDirectApkUrl(originalUrl: String, version: String): String {
         val baseEnd = originalUrl.indexOf("/releases/tag/")
         val base = if (baseEnd > 0) {
             originalUrl.substring(0, baseEnd)
         } else {
-            "https://github.com/BryceWG/LexiSharp-Keyboard"
+            "https://github.com/BryceWG/BiBi-Keyboard"
         }
         val tag = "v$version"
         val apkName = "lexisharp-keyboard-$version-release.apk"
@@ -1153,7 +1153,7 @@ class SettingsActivity : BaseActivity() {
         )
 
         val variant = "small-full"
-        val urlOfficial = "https://github.com/BryceWG/Lexi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.zip"
+        val urlOfficial = "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.zip"
 
         val downloadUrls = arrayOf(
             urlOfficial,

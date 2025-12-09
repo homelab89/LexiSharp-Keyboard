@@ -20,7 +20,7 @@
     <string name="toast_webdav_download_failed">下载/导入失败：%1$s</string>
     <string name="toast_webdav_backup_not_found">服务器上未找到 WebDAV 备份文件</string>
     <string name="toast_webdav_url_required">请先填写 WebDAV 服务器基础URL</string>
-    <string name="toast_webdav_directory_created">已创建 LexiSharp 目录</string>
+    <string name="toast_webdav_directory_created">已创建 BiBi Keyboard 目录</string>
 
     <string name="toast_export_success">已导出：%1$s</string>
     <string name="toast_export_failed">导出失败</string>

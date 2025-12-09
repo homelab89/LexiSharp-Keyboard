@@ -237,7 +237,7 @@ object ProPromoDialog {
         val contentValues = ContentValues().apply {
             put(MediaStore.Images.Media.DISPLAY_NAME, "${fileName}_${System.currentTimeMillis()}.jpg")
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/LexiSharp")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/BiBi")
         }
 
         val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
@@ -260,7 +260,7 @@ object ProPromoDialog {
     @Suppress("DEPRECATION")
     private fun saveImageToExternalStorage(context: Context, bitmap: Bitmap, fileName: String): Boolean {
         val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        val appDir = File(picturesDir, "LexiSharp")
+        val appDir = File(picturesDir, "BiBi")
         if (!appDir.exists() && !appDir.mkdirs()) {
             return false
         }

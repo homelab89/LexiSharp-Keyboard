@@ -2,7 +2,7 @@
   <!-- ============================================== -->
   <!-- Basic Information -->
   <!-- ============================================== -->
-  <string name="app_name">LexiSharp Keyboard</string>
+  <string name="app_name">BiBi Keyboard</string>
 
   <!-- ============================================== -->
   <!-- Keyboard Status Information -->
@@ -42,10 +42,10 @@
   <!-- ============================================== -->
   <!-- Settings Related -->
   <!-- ============================================== -->
-  <string name="settings_instructions">First-time setup:\n1. Tap \"Enable Keyboard\" and enable LexiSharp Keyboard in system settings\n2. Tap \"Choose Keyboard\" to switch to LexiSharp Keyboard\n3. Grant microphone permission, then long‑press the mic button on the keyboard to try\n\nFor better background service stability, it\'s recommended to grant the following permissions in system settings:\n• Auto-start in background\n• Background running (keep alive)\n• Show pop-up windows while running in the background\n\nThis is an open-source app that guarantees no privacy data will be uploaded.</string>
+  <string name="settings_instructions">First-time setup:\n1. Tap \"Enable Keyboard\" and enable BiBi Keyboard in system settings\n2. Tap \"Choose Keyboard\" to switch to BiBi Keyboard\n3. Grant microphone permission, then long‑press the mic button on the keyboard to try\n\nFor better background service stability, it\'s recommended to grant the following permissions in system settings:\n• Auto-start in background\n• Background running (keep alive)\n• Show pop-up windows while running in the background\n\nThis is an open-source app that guarantees no privacy data will be uploaded.</string>
   <string name="btn_one_click_setup">One-click Setup</string>
 
-  <string name="settings_title">LexiSharp Keyboard Settings</string>
+  <string name="settings_title">BiBi Keyboard Settings</string>
   <string name="title_input_settings">Input Settings</string>
   <string name="title_asr_settings">Speech Recognition Settings</string>
   <string name="title_ai_settings">AI Post-processing Settings</string>
@@ -142,7 +142,7 @@
   <!-- ============================================== -->
   <string name="toast_setup_all_done">All set</string>
   <string name="toast_setup_enable_keyboard_first">Enable the keyboard in system settings, then come back</string>
-  <string name="toast_setup_choose_keyboard">Please select "LexiSharp Keyboard" as the current input method</string>
+  <string name="toast_setup_choose_keyboard">Please select "BiBi Keyboard" as the current input method</string>
   <string name="btn_get_api_key_guide">View Configuration Guide</string>
   <string name="btn_local_model_guide">View Configuration Guide</string>
 
@@ -162,7 +162,7 @@
   <!-- External IME linking (AIDL) -->
   <string name="label_external_ime_link_aidl">Allow external IME linking (AIDL)</string>
   <string name="external_aidl_guide_title">How to Use the Linking Feature</string>
-  <string name="external_aidl_guide_message">This feature enables voice recognition from Fcitx (Little Penguin) input method. Usage:\n\n1. Download the modified Fcitx: https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases (uninstall the original Fcitx first and backup your data)\n\n2. Open Fcitx Settings - Virtual Keyboard - Long-press Space Bar Behavior - Voice Input (AIDL)\n\n3. Update LexiSharp to 3.6.2 or later, enable Settings - Input Settings - Allow external IME linking (AIDL), no need to enable floating ball or accessibility service\n\n4. In Fcitx keyboard panel, long-press the space bar to activate voice input.</string>
+  <string name="external_aidl_guide_message">This feature enables voice recognition from Fcitx (Little Penguin) input method. Usage:\n\n1. Download the modified Fcitx: https://github.com/BryceWG/fcitx5-android-lexi-keyboard/releases (uninstall the original Fcitx first and backup your data)\n\n2. Open Fcitx Settings - Virtual Keyboard - Long-press Space Bar Behavior - Voice Input (AIDL)\n\n3. Update BiBi Keyboard to 3.6.2 or later, enable Settings - Input Settings - Allow external IME linking (AIDL), no need to enable floating ball or accessibility service\n\n4. In Fcitx keyboard panel, long-press the space bar to activate voice input.</string>
   <string name="external_aidl_guide_btn_close">Close</string>
   <string name="external_aidl_guide_btn_no_remind">Don\'t remind again</string>
   <string name="external_aidl_guide_btn_open_release">Open Release Page</string>
@@ -170,7 +170,7 @@
 
   <!-- Model Selection Guide -->
   <string name="model_guide_title">Choose Speech Recognition Model</string>
-  <string name="model_guide_message">To use LexiSharp Keyboard, please choose a speech recognition model type:</string>
+  <string name="model_guide_message">To use BiBi Keyboard, please choose a speech recognition model type:</string>
   <string name="model_guide_option_sf_free">⭐ Free Cloud Service (Recommended)</string>
   <string name="model_guide_option_sf_free_desc">No configuration needed, powered by SiliconFlow. Includes free ASR and AI text enhancement.</string>
   <string name="model_guide_option_sf_free_action">Ready to use immediately, limited free quota</string>
@@ -184,7 +184,7 @@
   <string name="model_guide_online_dialog_message">Online speech recognition supports multiple providers (Volcengine, SiliconFlow, OpenAI, Gemini, DashScope, Soniox, ElevenLabs, etc.). Please refer to the configuration guide for detailed instructions.</string>
   <string name="model_guide_downloading">Downloading model, please wait…</string>
   <string name="model_guide_download_complete">Model download complete</string>
-  <string name="model_guide_config_doc_url">https://brycewg.notion.site/lexisharp-keyboard-providers-guide</string>
+  <string name="model_guide_config_doc_url">https://brycewg.notion.site/bibi-keyboard-providers-guide</string>
   <string name="label_return_prev_ime_on_hide">Switch back to previous IME when hidden</string>
   <string name="toast_bt_connect_permission_required">Bluetooth connect permission is required to use headset mic</string>
   <string name="toast_bt_connect_permission_denied">Bluetooth connect permission denied; headset priority disabled</string>
@@ -244,7 +244,7 @@
   <string name="feature_fcitx5_return_on_switcher_on_desc">The IME switcher key directly returns to the previous input method, convenient for quick switching.</string>
 
   <!-- Return prev IME on hide -->
-  <string name="feature_return_prev_ime_on_hide_off_desc">The current input method remains as LexiSharp Keyboard after hiding.</string>
+  <string name="feature_return_prev_ime_on_hide_off_desc">The current input method remains as BiBi Keyboard after hiding.</string>
   <string name="feature_return_prev_ime_on_hide_on_desc">Automatically switches back to the previous input method when the keyboard is hidden, convenient for temporary voice input.</string>
 
   <!-- Hide recent tasks -->
@@ -274,7 +274,7 @@
   <!-- ============================================== -->
   <!-- Pro Version Promo -->
   <!-- ============================================== -->
-  <string name="pro_promo_title">LexiSharp Keyboard Pro is Now on Play Store!</string>
+  <string name="pro_promo_title">BiBi Keyboard Pro is Now on Play Store!</string>
   <string name="pro_promo_price">$4.49 one-time purchase. License follows your account with unlimited devices.</string>
   <string name="pro_promo_features_title">Pro Exclusive Features:</string>
   <string name="pro_promo_features">1. Unified hotword management across vendors (except offline models and ElevenLabs)\n2. WebDAV auto backup\n3. Custom UI color picking\n4. Omni-directional cursor sliding\n5. Offline Traditional Chinese conversion\n6. Regex post-processing</string>

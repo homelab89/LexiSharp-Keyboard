@@ -6,7 +6,7 @@
     <!-- 允许共享外部存储目录下的 APK 文件(用于应用更新安装) -->
     <external-files-path name="apk" path="apk" />
 
-    <!-- 允许共享 Download/Lexi 目录下的剪贴板文件 -->
+    <!-- 允许共享 Download/BiBi 目录下的剪贴板文件 -->
     <external-path name="downloads" path="Download" />
 </paths>
 
