@@ -1,5 +1,13 @@
 # Changelog
 
+## v3.9.0 (2025-12-09)
+
+### Improvements
+
+- **Enter key enhancement**: Supports the enter key to send messages in more software
+- **UI standardization**: Adapts to the new Android 15 API
+- **Pro version promotion pop-up**: To avoid risks, the app name has been changed to 说点啥 (BiBi Keyboard)
+
 ## v3.8.6 (2025-12-09)
 
 ### New Features
