@@ -61,9 +61,10 @@ class ZhipuFileAsrEngine(
             try {
                 val apiKey = prefs.zhipuApiKey
                 val temperature = prefs.zhipuTemperature
+                val prompt = prefs.zhipuPrompt.trim()
 
-                val multipart = MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("model", "glm-asr")
+                val multipartBuilder = MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("model", "glm-asr-2512")
                     .addFormDataPart("temperature", temperature.toString())
                     .addFormDataPart("stream", "false")
                     .addFormDataPart(
@@ -71,7 +72,13 @@ class ZhipuFileAsrEngine(
                         "audio.wav",
                         tmp.asRequestBody("audio/wav".toMediaType())
                     )
-                    .build()
+
+                // 添加可选的 prompt 参数（用于长文本场景的前文上下文）
+                if (prompt.isNotBlank()) {
+                    multipartBuilder.addFormDataPart("prompt", prompt)
+                }
+
+                val multipart = multipartBuilder.build()
 
                 val request = Request.Builder()
                     .url(ENDPOINT)

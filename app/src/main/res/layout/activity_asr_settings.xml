@@ -576,6 +576,23 @@
             style="@style/SettingsHint"
             android:text="@string/zhipu_temperature_hint" />
 
+          <com.google.android.material.textfield.TextInputLayout
+            style="@style/SettingsTextInputLayout"
+            android:hint="@string/label_zhipu_prompt">
+
+            <com.google.android.material.textfield.TextInputEditText
+              android:id="@+id/etZhipuPrompt"
+              style="@style/SettingsTextInput"
+              android:inputType="textMultiLine"
+              android:minLines="2"
+              android:maxLines="5"
+              android:gravity="top|start" />
+          </com.google.android.material.textfield.TextInputLayout>
+
+          <TextView
+            style="@style/SettingsHint"
+            android:text="@string/zhipu_prompt_hint" />
+
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnZhipuGetKey"
             style="@style/SettingsTonalButton"

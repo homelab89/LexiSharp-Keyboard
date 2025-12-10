@@ -887,6 +887,12 @@ class AsrSettingsActivity : BaseActivity() {
             }
         }
 
+        // Prompt for context
+        findViewById<EditText>(R.id.etZhipuPrompt).apply {
+            setText(prefs.zhipuPrompt)
+            bindString { prefs.zhipuPrompt = it }
+        }
+
         // Key guide link
         findViewById<com.google.android.material.button.MaterialButton>(R.id.btnZhipuGetKey).setOnClickListener { v ->
             hapticTapIfEnabled(v)

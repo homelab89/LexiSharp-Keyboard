@@ -739,6 +739,9 @@ class Prefs(context: Context) {
         get() = sp.getFloat(KEY_ZHIPU_TEMPERATURE, DEFAULT_ZHIPU_TEMPERATURE).coerceIn(0f, 1f)
         set(value) = sp.edit { putFloat(KEY_ZHIPU_TEMPERATURE, value.coerceIn(0f, 1f)) }
 
+    // 智谱 GLM：上下文提示（prompt），用于长文本场景的前文上下文，建议小于8000字
+    var zhipuPrompt: String by stringPref(KEY_ZHIPU_PROMPT, "")
+
     fun getSonioxLanguages(): List<String> {
         val raw = sonioxLanguagesJson.trim()
         if (raw.isBlank()) {
@@ -1389,6 +1392,7 @@ class Prefs(context: Context) {
         // Zhipu GLM ASR
         private const val KEY_ZHIPU_API_KEY = "zhipu_api_key"
         private const val KEY_ZHIPU_TEMPERATURE = "zhipu_temperature"
+        private const val KEY_ZHIPU_PROMPT = "zhipu_prompt"
         private const val KEY_VOLC_STREAMING_ENABLED = "volc_streaming_enabled"
         private const val KEY_VOLC_BIDI_STREAMING_ENABLED = "volc_bidi_streaming_enabled"
         private const val KEY_DASH_STREAMING_ENABLED = "dash_streaming_enabled"
