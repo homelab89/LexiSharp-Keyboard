@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.9.1 (2025-12-11)
+
+### New Features
+
+- **Android Standard Speech Recognition Service**: Integrated Android standard RecognitionService
+- **GLM-ASR Context Prompt**: Added context prompt parameter support for Zhipu GLM-ASR, upgraded model to glm-asr-2512 to improve long audio text recognition continuity
+- **Update Check with View History Button**: Added a button to view update history in the update check dialog, making it easier for users to understand version changes
+- **[Pro] Support for GLM-ASR Hotword Injection**: Added hotword injection functionality for Zhipu GLM-ASR to enhance recognition accuracy of specific vocabulary
+- **[Pro] Support for Inserting Hotwords into Post-Processing Prompt**: Added hotword insertion functionality for LLM post-processing, targeting ASR vendors that do not support hotword injection
+
+---
+
 ## v3.9.0 (2025-12-09)
 
 ### Improvements
