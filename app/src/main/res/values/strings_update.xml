@@ -12,9 +12,10 @@
     <string name="current_version_info_title">Current Version Info</string>
     <string name="current_version_message">Current version: %1$s\n\nYou are using the latest version!</string>
     <string name="btn_download">Download</string>
-    <string name="btn_view_release_page">View Release Page</string>
+    <string name="btn_view_release_page">Release</string>
     <string name="btn_manual_check">Manual Check</string>
     <string name="btn_cancel">Cancel</string>
+    <string name="btn_view_changelog">History</string>
 
     <string name="download_source_title">Select Download Source</string>
     <string name="download_source_github_official">GitHub (official)</string>

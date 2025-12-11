@@ -12,10 +12,11 @@
     <string name="update_dialog_message">現在のバージョン：%1$s\n最新バージョン：%2$s\n\nダウンロードしますか？</string>
     <string name="current_version_info_title">現在のバージョン情報</string>
     <string name="current_version_message">現在のバージョン：%1$s\n\n最新バージョンをご利用中です！</string>
-    <string name="btn_download">ダウンロード</string>
-    <string name="btn_view_release_page">リリースページを表示</string>
+    <string name="btn_download">DL</string>
+    <string name="btn_view_release_page">Release</string>
     <string name="btn_manual_check">手動確認</string>
-    <string name="btn_cancel">キャンセル</string>
+    <string name="btn_cancel">閉じる</string>
+    <string name="btn_view_changelog">履歴</string>
 
     <string name="download_source_title">ダウンロードソースを選択</string>
     <string name="download_source_github_official">GitHub（公式）</string>

@@ -11,10 +11,11 @@
     <string name="update_dialog_message">目前版本：%1$s\n最新版本：%2$s\n\n是否前往下載？</string>
     <string name="current_version_info_title">目前版本資訊</string>
     <string name="current_version_message">目前版本：%1$s\n\n已是最新版本！</string>
-    <string name="btn_download">前往下載</string>
-    <string name="btn_view_release_page">查看 Release 頁</string>
+    <string name="btn_download">下載</string>
+    <string name="btn_view_release_page">發佈頁</string>
     <string name="btn_manual_check">手動查看</string>
     <string name="btn_cancel">取消</string>
+    <string name="btn_view_changelog">歷史</string>
 
     <string name="download_source_title">選擇下載源</string>
     <string name="download_source_github_official">GitHub 官方</string>

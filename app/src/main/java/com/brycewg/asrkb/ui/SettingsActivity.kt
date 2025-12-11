@@ -584,6 +584,9 @@ class SettingsActivity : BaseActivity() {
             .setPositiveButton(R.string.btn_download) { _, _ ->
                 showDownloadSourceDialog(result.downloadUrl, result.latestVersion)
             }
+            .setNeutralButton(R.string.btn_view_changelog) { _, _ ->
+                openChangelogHistory()
+            }
             .setNegativeButton(R.string.btn_cancel, null)
             .create()
 
@@ -644,7 +647,10 @@ class SettingsActivity : BaseActivity() {
             .setTitle(R.string.current_version_info_title)
             .setMessage(messageText)
             .setPositiveButton(android.R.string.ok, null)
-            .setNeutralButton(R.string.btn_view_release_page) { _, _ ->
+            .setNeutralButton(R.string.btn_view_changelog) { _, _ ->
+                openChangelogHistory()
+            }
+            .setNegativeButton(R.string.btn_view_release_page) { _, _ ->
                 // 跳转到 GitHub Release 页面
                 try {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result.downloadUrl))
@@ -743,6 +749,26 @@ class SettingsActivity : BaseActivity() {
             }
             .setNegativeButton(R.string.btn_cancel, null)
             .show()
+    }
+
+    /**
+     * 打开更新历史页面
+     */
+    private fun openChangelogHistory() {
+        try {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://bibi.brycewg.com/changelog.html")
+            )
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to open changelog page", e)
+            Toast.makeText(
+                this,
+                getString(R.string.error_open_browser),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     /**
