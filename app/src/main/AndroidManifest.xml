@@ -175,6 +175,20 @@
             android:name=".api.ExternalSpeechService"
             android:exported="true" />
 
+        <!-- Android 标准语音识别服务 (RecognitionService) -->
+        <service
+            android:name=".api.AsrRecognitionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_SPEECH_RECOGNITION">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <meta-data
+                android:name="android.speech"
+                android:resource="@xml/recognition_service" />
+        </service>
+
     </application>
 
 
