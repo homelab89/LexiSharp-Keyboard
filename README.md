@@ -4,7 +4,7 @@
 
 **基于 AI 的智能语音输入法 | 让语音输入更自然、更高效**
 
-### 🌐 [官方网站](https://bibi.brycewg.com)
+### 🌐 [官方网站](https://bibi.brycewg.com) • 📖 [使用文档](https://bibidocs.brycewg.com)
 
 简体中文 | [English](README_EN.md)
 

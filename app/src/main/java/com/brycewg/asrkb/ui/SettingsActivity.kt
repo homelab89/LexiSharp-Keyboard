@@ -66,6 +66,7 @@ class SettingsActivity : BaseActivity() {
     companion object {
         private const val TAG = "SettingsActivity"
         const val EXTRA_AUTO_SHOW_IME_PICKER = "extra_auto_show_ime_picker"
+        private const val DOCS_URL = "https://bibidocs.brycewg.com"
     }
 
     // 一键设置状态机
@@ -961,6 +962,11 @@ class SettingsActivity : BaseActivity() {
             .setPositiveButton(R.string.btn_close, null)
             .create()
 
+        // 设置"查看完整文档"按钮点击事件
+        view.findViewById<Button>(R.id.btnViewFullDocs)?.setOnClickListener {
+            openFullDocumentation()
+        }
+
         var countdownJob: kotlinx.coroutines.Job? = null
 
         dialog.setOnShowListener {
@@ -1025,6 +1031,11 @@ class SettingsActivity : BaseActivity() {
             .setPositiveButton(R.string.btn_close, null)
             .setCancelable(false)
             .create()
+
+        // 设置"查看完整文档"按钮点击事件
+        view.findViewById<Button>(R.id.btnViewFullDocs)?.setOnClickListener {
+            openFullDocumentation()
+        }
 
         var countdownJob: kotlinx.coroutines.Job? = null
 
@@ -1495,6 +1506,23 @@ class SettingsActivity : BaseActivity() {
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to show IME picker", e)
             }
+        }
+    }
+
+    /**
+     * 打开完整使用文档网站
+     */
+    private fun openFullDocumentation() {
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(DOCS_URL))
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to open documentation URL", e)
+            Toast.makeText(
+                this,
+                getString(R.string.external_aidl_guide_open_failed),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

@@ -2,6 +2,7 @@
     <!-- 使用指南相关字符串 - User guide related strings -->
 
     <string name="btn_show_guide">查看使用指南</string>
+    <string name="btn_view_full_docs">查看完整使用文档</string>
     <string name="btn_close">关闭</string>
     <string name="btn_close_with_seconds">关闭(%1$ds)</string>
     <string name="title_quick_guide">快速上手教程</string>

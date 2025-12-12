@@ -3,6 +3,7 @@
     <!-- クイックガイド関連文字列 - User guide related strings -->
 
     <string name="btn_show_guide">クイックガイドを見る</string>
+    <string name="btn_view_full_docs">完全なドキュメントを見る</string>
     <string name="btn_close">閉じる</string>
     <string name="btn_close_with_seconds">閉じる（%1$ds）</string>
     <string name="title_quick_guide">クイックスタートガイド</string>

@@ -4,7 +4,7 @@
 
 **AI-powered Smart Voice Input Method | Make Voice Input More Natural and Efficient**
 
-### 🌐 [Official Website](https://bibi.brycewg.com)
+### 🌐 [Official Website](https://bibi.brycewg.com) • 📖 [Documentation](https://bibidocs.brycewg.com)
 
 English | [简体中文](README.md)
 

@@ -283,6 +283,15 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- 查看完整文档按钮 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnViewFullDocs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_view_full_docs"
+            style="@style/Widget.Material3.Button.TonalButton" />
+
     </LinearLayout>
 
 </ScrollView>

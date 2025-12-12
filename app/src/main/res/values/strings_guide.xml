@@ -2,6 +2,7 @@
     <!-- User guide related strings -->
 
     <string name="btn_show_guide">View Quick Guide</string>
+    <string name="btn_view_full_docs">View Full Documentation</string>
     <string name="btn_close">Close</string>
     <string name="btn_close_with_seconds">Close (%1$ds)</string>
     <string name="title_quick_guide">Quick Start Guide</string>
