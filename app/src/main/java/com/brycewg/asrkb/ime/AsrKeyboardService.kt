@@ -233,6 +233,10 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                             applyExtensionButtonConfig()
                             // 更新波形灵敏度
                             waveformView?.sensitivity = prefs.waveformSensitivity
+                            // 更新 AI 后处理按钮状态
+                            btnPostproc?.setImageResource(
+                                if (prefs.postProcessEnabled) R.drawable.magic_wand_fill else R.drawable.magic_wand
+                            )
                             v.requestLayout()
                             // 第二次异步重算，确保尺寸变化与父容器测量完成后 padding/overlay 位置也被同步
                             v.post {

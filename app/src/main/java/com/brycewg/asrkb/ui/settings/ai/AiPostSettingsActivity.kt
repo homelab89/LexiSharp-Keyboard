@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.asr.LlmPostProcessor
 import com.brycewg.asrkb.asr.LlmVendor
+import com.brycewg.asrkb.ime.AsrKeyboardService
 import com.brycewg.asrkb.store.Prefs
 import com.brycewg.asrkb.store.PromptPreset
 import com.brycewg.asrkb.ui.installExplainedSwitch
@@ -87,6 +88,7 @@ class AiPostSettingsActivity : BaseActivity() {
     private lateinit var etLlmPrompt: EditText
     private lateinit var btnAddPromptPreset: Button
     private lateinit var btnDeletePromptPreset: Button
+    private lateinit var switchPostProcessEnabled: MaterialSwitch
     private lateinit var switchAiEditPreferLastAsr: MaterialSwitch
     private lateinit var etSkipAiUnderChars: EditText
 
@@ -121,6 +123,21 @@ class AiPostSettingsActivity : BaseActivity() {
             setTitle(R.string.title_ai_settings)
             setNavigationOnClickListener { finish() }
         }
+
+        // 启用 AI 后处理
+        switchPostProcessEnabled = findViewById(R.id.switchPostProcessEnabled)
+        switchPostProcessEnabled.isChecked = prefs.postProcessEnabled
+        switchPostProcessEnabled.installExplainedSwitch(
+            context = this,
+            titleRes = R.string.label_ai_post_process_enabled,
+            offDescRes = R.string.feature_ai_post_process_off_desc,
+            onDescRes = R.string.feature_ai_post_process_on_desc,
+            preferenceKey = "ai_post_process_enabled_explained",
+            readPref = { prefs.postProcessEnabled },
+            writePref = { v -> prefs.postProcessEnabled = v },
+            onChanged = { sendRefreshBroadcast() },
+            hapticFeedback = { hapticTapIfEnabled(it) }
+        )
 
         // AI 编辑默认范围开关：使用上次识别结果
         switchAiEditPreferLastAsr = findViewById(R.id.switchAiEditPreferLastAsr)
@@ -727,6 +744,15 @@ class AiPostSettingsActivity : BaseActivity() {
         if (prefs.micHapticEnabled) {
             view?.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         }
+    }
+
+    /**
+     * Send broadcast to refresh keyboard UI (e.g., update AI post-process button toggle state)
+     */
+    private fun sendRefreshBroadcast() {
+        sendBroadcast(Intent(AsrKeyboardService.ACTION_REFRESH_IME_UI).apply {
+            setPackage(packageName)
+        })
     }
 
     private fun openUrlSafely(url: String) {

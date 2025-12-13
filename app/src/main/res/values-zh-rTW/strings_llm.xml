@@ -37,13 +37,19 @@
     <!-- AI 後處理設定 - 功能說明 -->
     <!-- ============================================== -->
 
+    <!-- AI 後處理開關 -->
+    <string name="feature_ai_post_process_off_desc">語音識別結果直接輸出，不進行任何處理。</string>
+    <string name="feature_ai_post_process_on_desc">語音識別結果將經過 AI 處理後再輸出，用於文字潤飾、標點、格式化等。</string>
+
     <!-- AI 編輯預設使用上次識別結果 -->
     <string name="feature_ai_edit_default_use_last_asr_off_desc">AI 編輯將預設針對整個輸入欄位進行操作。</string>
     <string name="feature_ai_edit_default_use_last_asr_on_desc">AI 編輯將預設操作上次識別結果，方便在語音輸入後快速編輯。</string>
 
     <!-- 章節標題 - Section titles -->
-    <string name="section_post_process_scope">後處理範圍</string>
+    <string name="section_post_process_scope">後處理模式</string>
     <string name="section_post_process_model">後處理模型</string>
+
+    <string name="label_ai_post_process_enabled">啟用 AI 後處理</string>
 
     <!-- LLM 供應商選擇 -->
     <string name="label_llm_vendor">LLM 供應商</string>

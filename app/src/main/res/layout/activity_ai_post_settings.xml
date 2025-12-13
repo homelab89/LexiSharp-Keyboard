@@ -24,7 +24,7 @@
       android:padding="16dp"
       android:orientation="vertical">
 
-      <!-- Group 1: 后处理范围 (合并 AI 编辑默认范围 + 跳过阈值) -->
+      <!-- Group 1: 后处理模式 (合并 AI 编辑默认范围 + 跳过阈值) -->
       <LinearLayout
         style="@style/SettingsSectionCard.First"
         android:orientation="vertical">
@@ -32,6 +32,12 @@
         <TextView
           style="@style/SettingsSectionCardTitle"
           android:text="@string/section_post_process_scope" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/switchPostProcessEnabled"
+          style="@style/SettingsSwitch"
+          android:layout_marginTop="0dp"
+          android:text="@string/label_ai_post_process_enabled" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switchAiEditPreferLastAsr"
