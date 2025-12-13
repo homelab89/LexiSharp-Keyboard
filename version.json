@@ -1,11 +1,11 @@
 {
-  "version": "3.9.2",
-  "version_code": 133,
-  "download_url": "https://github.com/BryceWG/BiBi-Keyboard/releases/tag/v3.9.2",
-  "release_notes": "### 新增功能\n\n- **匿名使用数据采集**: 添加匿名使用统计功能，帮助改善产品体验\n- **完整使用文档**: 在使用指南弹窗最下方添加完整使用文档按钮，方便用户查看详细说明\n\n### 改进优化\n\n- **悬浮框布局优化**: 重构多个悬浮框的实现方式，改进布局效果和交互体验\n- **一键设置流程优化**: 改进 IME 选择器状态管理，优化轮询逻辑避免不合时宜的提示\n- **悬浮球开关控制**: 修复悬浮球开关状态控制逻辑，提升功能稳定性",
-  "release_notes_en": "### New Features\n\n- **Anonymous Usage Analytics**: Added anonymous usage statistics collection to help improve product experience\n- **Complete User Documentation**: Added complete user documentation button for easy access at the bottom of the user guide popup\n\n### Improvements\n\n- **Floating Window Layout Optimization**: Refactored implementation of multiple floating windows to improve layout effects and interaction experience\n- **One-Click Setup Process Enhancement**: Improved IME selector state management, optimized polling logic to avoid inopportune prompts\n- **Floating Ball Toggle Control**: Fixed floating ball toggle control logic for improved feature stability",
+  "version": "3.9.3",
+  "version_code": 134,
+  "download_url": "https://github.com/BryceWG/BiBi-Keyboard/releases/tag/v3.9.3",
+  "release_notes": "### 新增功能\n\n- **Fireworks AI 支持**: 添加 Fireworks AI 模型提供商支持，扩展 AI 后处理能力\n- **小企鹅联动增强**: 支持在小企鹅输入法中使用 SenseVoice 和 TeleSpeech 伪流式识别功能\n- **添加 AI 后处理开关**: 在后处理设置页增加 AI 后处理开关\n\n### 改进优化\n\n- **AI 后处理界面优化**: 将温度、阈值等数值参数改为滑块控件，提升操作体验\n- **设置界面样式统一**: 调整设置可点击选择项样式\n\n### 问题修复\n\n- **标点按钮复位**: 修复标点按钮点按后不复位的问题\n- **SpeechRecognizer 接口状态修复**: 增加接口处理超时机制",
+  "release_notes_en": "### New Features\n\n- **Fireworks AI Support**: Added Fireworks AI model provider support to expand AI post-processing capabilities\n- **Enhanced Lexi Integration**: Support for SenseVoice and TeleSpeech pseudo-streaming recognition in Fcitx5 Android Lexi Keyboard\n- **Add AI Post-Processing Toggle**: Add an AI post-processing toggle on the post-processing settings page.\n\n### Improvements\n\n- **AI Post-Processing UI Enhancement**: Changed temperature, threshold and other numeric parameters to slider controls for improved user experience\n- **Settings UI Style Unification**: Adjusted settings clickable selection items to wrap_content style\n\n### Bug Fixes\n\n- **Punctuation Button Reset**: Fixed issue where punctuation buttons didn't reset after being pressed\n- **SpeechRecognizer Interface Status Fix**: Added interface processing timeout mechanism",
   "important_notice": "1. 为规避风险，3.9.0已将应用名称更改“说点啥”（BiBi Keyboard）\n2. BiBi Keyboard Pro版本已上架，欢迎在3.8.6后版本-关于页面中了解详情。\n3. 官方网站和使用文档均已上线,网址分别为: bibi.brycewg.com bibidocs.brycewg.com\n4. 注意:3.8.5更新升级了火山引擎(豆包语音识别模型)到了2.0版本,请到控制台开通对应模型(https://console.volcengine.com/speech/service),或者可以在3.8.6版本中通过开关选择回退到1.0版本。",
   "notice_level": "info",
   "min_supported_version": "2.6.5",
-  "update_time": "2025-12-12T14:49:19Z"
+  "update_time": "2025-12-13T16:04:06Z"
 }
