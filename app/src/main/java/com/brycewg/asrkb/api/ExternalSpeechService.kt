@@ -152,14 +152,7 @@ class ExternalSpeechService : Service() {
                     val bytes = data.createByteArray() ?: ByteArray(0)
                     val sr = data.readInt()
                     val ch = data.readInt()
-                    try {
-                        val e = sessions[sid]?.engine
-                        if (e is com.brycewg.asrkb.asr.ExternalPcmConsumer) {
-                            e.appendPcm(bytes, sr, ch)
-                        }
-                    } catch (t: Throwable) {
-                        Log.w(TAG, "writePcm failed for sid=$sid", t)
-                    }
+                    sessions[sid]?.onPcmFrame(bytes, sr, ch)
                     reply?.writeNoException()
                     return true
                 }
@@ -221,8 +214,23 @@ class ExternalSpeechService : Service() {
         }
 
         fun cancel() {
-            try { engine?.stop() } catch (_: Throwable) {}
+            try {
+                engine?.stop()
+            } catch (t: Throwable) {
+                Log.w(TAG, "Engine stop failed on cancel", t)
+            }
             safe { cb.onState(id, STATE_IDLE, "canceled") }
+        }
+
+        fun onPcmFrame(pcm: ByteArray, sampleRate: Int, channels: Int) {
+            val e = engine
+            if (e !is com.brycewg.asrkb.asr.ExternalPcmConsumer) return
+
+            try {
+                e.appendPcm(pcm, sampleRate, channels)
+            } catch (t: Throwable) {
+                Log.w(TAG, "appendPcm failed for sid=$id", t)
+            }
         }
 
         private fun resolveStreamingBySettings(vendor: AsrVendor): Boolean {
@@ -435,26 +443,48 @@ class ExternalSpeechService : Service() {
                 // 本地：Paraformer/Zipformer 固定流式
                 AsrVendor.Paraformer -> com.brycewg.asrkb.asr.ParaformerStreamAsrEngine(context, scope, prefs, this, externalPcmMode = true)
                 AsrVendor.Zipformer -> com.brycewg.asrkb.asr.ZipformerStreamAsrEngine(context, scope, prefs, this, externalPcmMode = true)
-                // SenseVoice：非流式 → 走文件引擎 + 通用适配器
-                AsrVendor.SenseVoice -> com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
-                    context, scope, prefs, this,
-                    com.brycewg.asrkb.asr.SenseVoiceFileAsrEngine(
-                        context, scope, prefs, this,
-                        onRequestDuration = { ms: Long ->
-                            try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
-                        }
-                    )
-                )
-                // TeleSpeech：非流式 → 走文件引擎 + 通用适配器
-                AsrVendor.Telespeech -> com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
-                    context, scope, prefs, this,
-                    com.brycewg.asrkb.asr.TelespeechFileAsrEngine(
-                        context, scope, prefs, this,
-                        onRequestDuration = { ms: Long ->
-                            try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
-                        }
-                    )
-                )
+                // SenseVoice：支持伪流式（VAD 分片预览 + 整段离线识别）
+                AsrVendor.SenseVoice -> {
+                    if (prefs.svPseudoStreamEnabled) {
+                        com.brycewg.asrkb.asr.SenseVoicePushPcmPseudoStreamAsrEngine(
+                            context, scope, prefs, this,
+                            onRequestDuration = { ms: Long ->
+                                try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                            }
+                        )
+                    } else {
+                        com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
+                            context, scope, prefs, this,
+                            com.brycewg.asrkb.asr.SenseVoiceFileAsrEngine(
+                                context, scope, prefs, this,
+                                onRequestDuration = { ms: Long ->
+                                    try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                                }
+                            )
+                        )
+                    }
+                }
+                // TeleSpeech：支持伪流式（VAD 分片预览 + 整段离线识别）
+                AsrVendor.Telespeech -> {
+                    if (prefs.tsPseudoStreamEnabled) {
+                        com.brycewg.asrkb.asr.TelespeechPushPcmPseudoStreamAsrEngine(
+                            context, scope, prefs, this,
+                            onRequestDuration = { ms: Long ->
+                                try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                            }
+                        )
+                    } else {
+                        com.brycewg.asrkb.asr.GenericPushFileAsrAdapter(
+                            context, scope, prefs, this,
+                            com.brycewg.asrkb.asr.TelespeechFileAsrEngine(
+                                context, scope, prefs, this,
+                                onRequestDuration = { ms: Long ->
+                                    try { lastRequestDurationMs = ms } catch (t: Throwable) { Log.w(TAG, "set proc ms failed", t) }
+                                }
+                            )
+                        )
+                    }
+                }
             }
         }
 
@@ -660,8 +690,16 @@ class ExternalSpeechService : Service() {
             } catch (t: Throwable) {
                 Log.w(TAG, "callback transact failed: code=$code", t)
             } finally {
-                try { data.recycle() } catch (_: Throwable) {}
-                try { reply.recycle() } catch (_: Throwable) {}
+                try {
+                    data.recycle()
+                } catch (t: Throwable) {
+                    Log.w(TAG, "data.recycle failed", t)
+                }
+                try {
+                    reply.recycle()
+                } catch (t: Throwable) {
+                    Log.w(TAG, "reply.recycle failed", t)
+                }
             }
         }
     }

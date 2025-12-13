@@ -167,8 +167,20 @@ class AsrRecognitionService : RecognitionService() {
                 SonioxFileAsrEngine(this, scope, prefs, listener)
             }
             AsrVendor.Zhipu -> ZhipuFileAsrEngine(this, scope, prefs, listener)
-            AsrVendor.SenseVoice -> SenseVoiceFileAsrEngine(this, scope, prefs, listener)
-            AsrVendor.Telespeech -> TelespeechFileAsrEngine(this, scope, prefs, listener)
+            AsrVendor.SenseVoice -> {
+                if (prefs.svPseudoStreamEnabled) {
+                    SenseVoicePseudoStreamAsrEngine(this, scope, prefs, listener)
+                } else {
+                    SenseVoiceFileAsrEngine(this, scope, prefs, listener)
+                }
+            }
+            AsrVendor.Telespeech -> {
+                if (prefs.tsPseudoStreamEnabled) {
+                    TelespeechPseudoStreamAsrEngine(this, scope, prefs, listener)
+                } else {
+                    TelespeechFileAsrEngine(this, scope, prefs, listener)
+                }
+            }
             AsrVendor.Paraformer -> ParaformerStreamAsrEngine(this, scope, prefs, listener)
             AsrVendor.Zipformer -> ZipformerStreamAsrEngine(this, scope, prefs, listener)
         }
