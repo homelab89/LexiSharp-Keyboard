@@ -149,9 +149,9 @@ class VadDetector(
         // 初期防抖：刚开始录音时，允许一小段时间不累计静音，避免尚未开口或微弱启动噪声导致的提前停。
         // 比语音挂起略保守一点（低档位更长）。
         initialDebounceMs = when (lvl) {
-            in 1..3 -> 300
-            in 4..7 -> 200
-            else -> 100
+            in 1..3 -> 3000
+            in 4..7 -> 2000
+            else -> 1000
         }
         initialDebounceRemainingMs = initialDebounceMs
 
