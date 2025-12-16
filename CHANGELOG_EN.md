@@ -1,5 +1,26 @@
 # Changelog
 
+## v3.9.4 (2025-12-16)
+
+### New Features
+
+- **Fun-ASR-Realtime Model**: Added Fun-ASR-Realtime model support for DashScope to improve real-time speech recognition performance
+- **Initial VAD Delay**: Improved initial Voice Activity Detection (VAD) delay to enhance speech recognition user experience
+- **Website and Documentation Buttons**: Added official website and documentation buttons to the about page for easy user access to help and product information
+- **[Pro] Fun-ASR-Realtime Hotword Adaptation**: Added hotword adaptation for DashScope Fun-ASR-Realtime model
+
+### Improvements
+
+- **DashScope Model Selector**: Refactored DashScope ASR model selector architecture for improved model management and switching experience
+- **Keyboard Stability**: Ensured stability of soft keyboard popup and enabled state detection for enhanced input method reliability
+
+### Bug Fixes
+
+- **Local Streaming Model Stability**: Fixed stability issues with local streaming model recognition, improving recognition accuracy and continuity
+- **Update Installation Page**: Fixed issue where the update installation page would pop up again after returning to the app following completion
+
+---
+
 ## v3.9.3 (2025-12-13)
 
 ### New Features
