@@ -548,7 +548,12 @@ class AsrSettingsViewModel : ViewModel() {
         val base = context.getExternalFilesDir(null) ?: context.filesDir
         val root = File(base, "sensevoice")
         val variant = prefs.svModelVariant
-        val dir = if (variant == "small-full") File(root, "small-full") else File(root, "small-int8")
+        val dir = when (variant) {
+            "small-full" -> File(root, "small-full")
+            "nano-full" -> File(root, "nano-full")
+            "nano-int8" -> File(root, "nano-int8")
+            else -> File(root, "small-int8")
+        }
         val modelDir = findModelDir(dir)
         return modelDir != null &&
                 File(modelDir, "tokens.txt").exists() &&
@@ -646,7 +651,7 @@ data class AsrSettingsUiState(
     val sonioxStreamingEnabled: Boolean = false,
     val sonioxLanguages: List<String> = emptyList(),
     // SenseVoice settings
-    val svModelVariant: String = "small-int8",
+    val svModelVariant: String = "nano-int8",
     val svNumThreads: Int = 2,
     val svLanguage: String = "auto",
     val svUseItn: Boolean = true,

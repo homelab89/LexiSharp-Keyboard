@@ -887,10 +887,10 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_SV_MODEL_DIR, "") ?: ""
         set(value) = sp.edit { putString(KEY_SV_MODEL_DIR, value.trim()) }
 
-    // SenseVoice 模型版本：small-int8 或 small-full（默认 small-int8）
+    // SenseVoice 模型版本：small-int8 / small-full / nano-int8 / nano-full（默认 nano-int8，用于新安装）
     var svModelVariant: String
-        get() = sp.getString(KEY_SV_MODEL_VARIANT, "small-int8") ?: "small-int8"
-        set(value) = sp.edit { putString(KEY_SV_MODEL_VARIANT, value.trim().ifBlank { "small-int8" }) }
+        get() = sp.getString(KEY_SV_MODEL_VARIANT, "nano-int8") ?: "nano-int8"
+        set(value) = sp.edit { putString(KEY_SV_MODEL_VARIANT, value.trim().ifBlank { "nano-int8" }) }
 
     var svNumThreads: Int
         get() = sp.getInt(KEY_SV_NUM_THREADS, 2).coerceIn(1, 8)

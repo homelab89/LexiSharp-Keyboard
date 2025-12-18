@@ -634,6 +634,7 @@
             style="@style/SettingsHiddenSpinner" />
 
           <TextView
+            android:id="@+id/tvSvLanguageLabel"
             style="@style/SettingsLabel"
             android:text="@string/label_sv_language" />
 

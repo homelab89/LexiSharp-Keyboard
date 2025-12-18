@@ -1511,10 +1511,12 @@ class AsrSettingsActivity : BaseActivity() {
 
     private fun setupSvModelVariantSelection() {
         val variantLabels = listOf(
+            getString(R.string.sv_model_nano_int8),
+            getString(R.string.sv_model_nano_full),
             getString(R.string.sv_model_small_int8),
             getString(R.string.sv_model_small_full)
         )
-        val variantCodes = listOf("small-int8", "small-full")
+        val variantCodes = listOf("nano-int8", "nano-full", "small-int8", "small-full")
         val tvSvModelVariant = findViewById<TextView>(R.id.tvSvModelVariantValue)
         val btnSvDownload = findViewById<MaterialButton>(R.id.btnSvDownloadModel)
 
@@ -1530,17 +1532,19 @@ class AsrSettingsActivity : BaseActivity() {
 
         updateVariantSummary()
         updateDownloadButtonText()
+        updateSvLanguageVisibility()
 
         tvSvModelVariant.setOnClickListener { v ->
             hapticTapIfEnabled(v)
             val cur = variantCodes.indexOf(prefs.svModelVariant).coerceAtLeast(0)
             showSingleChoiceDialog(R.string.label_sv_model_variant, variantLabels.toTypedArray(), cur) { which ->
-                val code = variantCodes.getOrNull(which) ?: "small-int8"
+                val code = variantCodes.getOrNull(which) ?: "nano-int8"
                 if (code != prefs.svModelVariant) {
                     viewModel.updateSvModelVariant(code)
                 }
                 updateVariantSummary()
                 updateDownloadButtonText()
+                updateSvLanguageVisibility()
                 updateSvDownloadUiVisibility()
             }
         }
@@ -1561,6 +1565,7 @@ class AsrSettingsActivity : BaseActivity() {
         }
 
         updateSvLangSummary()
+        updateSvLanguageVisibility()
         tvSvLanguage.setOnClickListener { v ->
             hapticTapIfEnabled(v)
             val cur = codes.indexOf(prefs.svLanguage).coerceAtLeast(0)
@@ -1572,6 +1577,16 @@ class AsrSettingsActivity : BaseActivity() {
                 updateSvLangSummary()
             }
         }
+    }
+
+    private fun updateSvLanguageVisibility() {
+        val label = findViewById<TextView?>(R.id.tvSvLanguageLabel)
+        val value = findViewById<TextView?>(R.id.tvSvLanguageValue)
+        if (label == null || value == null) return
+        val visible = !prefs.svModelVariant.startsWith("nano-")
+        val visibility = if (visible) View.VISIBLE else View.GONE
+        label.visibility = visibility
+        value.visibility = visibility
     }
 
     private fun setupSvKeepAliveSelection() {
@@ -1621,10 +1636,11 @@ class AsrSettingsActivity : BaseActivity() {
                 getString(R.string.download_source_mirror_gh_proxynet)
             )
             val variant = prefs.svModelVariant
-            val urlOfficial = if (variant == "small-full") {
-                "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.zip"
-            } else {
-                "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17.zip"
+            val urlOfficial = when (variant) {
+                "small-full" -> "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17.zip"
+                "small-int8" -> "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17.zip"
+                "nano-full" -> "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-funasr-nano-2025-12-17.zip"
+                else -> "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-sense-voice-funasr-nano-int8-2025-12-17.zip"
             }
 
             androidx.appcompat.app.AlertDialog.Builder(this)
@@ -1663,10 +1679,11 @@ class AsrSettingsActivity : BaseActivity() {
                             val base = getExternalFilesDir(null) ?: filesDir
                             val variant = prefs.svModelVariant
                             val outDirRoot = File(base, "sensevoice")
-                            val outDir = if (variant == "small-full") {
-                                File(outDirRoot, "small-full")
-                            } else {
-                                File(outDirRoot, "small-int8")
+                            val outDir = when (variant) {
+                                "small-full" -> File(outDirRoot, "small-full")
+                                "nano-full" -> File(outDirRoot, "nano-full")
+                                "nano-int8" -> File(outDirRoot, "nano-int8")
+                                else -> File(outDirRoot, "small-int8")
                             }
                             if (outDir.exists()) {
                                 withContext(Dispatchers.IO) { outDir.deleteRecursively() }

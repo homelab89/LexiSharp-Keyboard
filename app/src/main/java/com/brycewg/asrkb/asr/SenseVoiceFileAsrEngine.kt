@@ -102,6 +102,8 @@ class SenseVoiceFileAsrEngine(
             }
             val variantDir = when (variant) {
                 "small-full" -> java.io.File(probeRoot, "small-full")
+                "nano-full" -> java.io.File(probeRoot, "nano-full")
+                "nano-int8" -> java.io.File(probeRoot, "nano-int8")
                 else -> java.io.File(probeRoot, "small-int8")
             }
             val auto = findSvModelDir(variantDir) ?: findSvModelDir(probeRoot)
@@ -139,11 +141,20 @@ class SenseVoiceFileAsrEngine(
             val keepMs = if (keepMinutes <= 0) 0L else keepMinutes.toLong() * 60_000L
             val alwaysKeep = keepMinutes < 0
 
+            val ruleFsts = try {
+                if (prefs.svUseItn) ItnAssets.ensureItnFstPath(context) else null
+            } catch (t: Throwable) {
+                Log.e("SenseVoiceFileAsrEngine", "Failed to resolve ITN FST path", t)
+                null
+            }
+
             val text = manager.decodeOffline(
                 assetManager = null,
                 tokens = tokensPath,
                 model = modelPath,
-                language = try { prefs.svLanguage } catch (t: Throwable) {
+                language = try {
+                    resolveSvLanguageForVariant(prefs.svLanguage, variant)
+                } catch (t: Throwable) {
                     Log.w("SenseVoiceFileAsrEngine", "Failed to get language", t)
                     "auto"
                 },
@@ -156,6 +167,7 @@ class SenseVoiceFileAsrEngine(
                     Log.w("SenseVoiceFileAsrEngine", "Failed to get num threads", t)
                     2
                 },
+                ruleFsts = ruleFsts,
                 samples = samples,
                 sampleRate = sampleRate,
                 keepAliveMs = keepMs,
@@ -243,6 +255,8 @@ fun preloadSenseVoiceIfConfigured(
         }
         val variantDir = when (variant) {
             "small-full" -> java.io.File(probeRoot, "small-full")
+            "nano-full" -> java.io.File(probeRoot, "nano-full")
+            "nano-int8" -> java.io.File(probeRoot, "nano-int8")
             else -> java.io.File(probeRoot, "small-int8")
         }
         val auto = findSvModelDir(variantDir) ?: findSvModelDir(probeRoot) ?: return
@@ -258,6 +272,12 @@ fun preloadSenseVoiceIfConfigured(
         }
         val keepMs = if (keepMinutes <= 0) 0L else keepMinutes.toLong() * 60_000L
         val alwaysKeep = keepMinutes < 0
+        val ruleFsts = try {
+            if (prefs.svUseItn) ItnAssets.ensureItnFstPath(context) else null
+        } catch (t: Throwable) {
+            Log.e("SenseVoiceFileAsrEngine", "Failed to resolve ITN FST path for preload", t)
+            null
+        }
         // 在后台协程触发预加载，避免直接在调用线程（可能是主线程）阻塞
         kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Default).launch {
             val t0 = try { android.os.SystemClock.uptimeMillis() } catch (_: Throwable) { 0L }
@@ -265,7 +285,9 @@ fun preloadSenseVoiceIfConfigured(
                 assetManager = null,
                 tokens = tokensPath,
                 model = modelPath,
-                language = try { prefs.svLanguage } catch (t: Throwable) {
+                language = try {
+                    resolveSvLanguageForVariant(prefs.svLanguage, variant)
+                } catch (t: Throwable) {
                     Log.w("SenseVoiceFileAsrEngine", "Failed to get language", t)
                     "auto"
                 },
@@ -278,6 +300,7 @@ fun preloadSenseVoiceIfConfigured(
                     Log.w("SenseVoiceFileAsrEngine", "Failed to get num threads", t)
                     2
                 },
+                ruleFsts = ruleFsts,
                 keepAliveMs = keepMs,
                 alwaysKeep = alwaysKeep,
                 onLoadStart = {
@@ -356,7 +379,7 @@ fun selectSvModelFile(dir: java.io.File, variant: String?): java.io.File? {
     val hasF32 = f32File.exists()
     if (!hasInt8 && !hasF32) return null
 
-    val isFullVariant = variant == "small-full"
+    val isFullVariant = variant == "small-full" || variant == "nano-full"
     return when {
         isFullVariant && hasF32 -> f32File
         !isFullVariant && hasInt8 -> int8File
@@ -364,6 +387,16 @@ fun selectSvModelFile(dir: java.io.File, variant: String?): java.io.File? {
         hasInt8 -> int8File
         else -> null
     }
+}
+
+/**
+ * 根据变体决定实际使用的语言配置：
+ * - 普通 SenseVoice（small-*）：尊重用户选择（空串回退为 "auto"）；
+ * - FunASR Nano（nano-*）：固定使用 "auto"，避免非 auto 导致效果退化。
+ */
+fun resolveSvLanguageForVariant(language: String, variant: String?): String {
+    val normalized = language.trim().ifBlank { "auto" }
+    return if (variant != null && variant.startsWith("nano-")) "auto" else normalized
 }
 
 /**
@@ -375,9 +408,10 @@ private data class RecognizerConfig(
     val language: String,
     val useItn: Boolean,
     val provider: String,
-    val numThreads: Int
+    val numThreads: Int,
+    val ruleFsts: String?
 ) {
-    fun toCacheKey(): String = listOf(tokens, model, language, useItn, provider, numThreads).joinToString("|")
+    fun toCacheKey(): String = listOf(tokens, model, language, useItn, provider, numThreads, ruleFsts ?: "").joinToString("|")
 }
 
 /**
@@ -582,7 +616,12 @@ class SenseVoiceOnnxManager private constructor() {
         if (!trySetField(recConfig, "modelConfig", modelConfig)) {
             trySetField(recConfig, "model_config", modelConfig)
         }
-
+        // FST ITN：如提供了 ruleFsts，则透传给 OfflineRecognizerConfig（字段名可能为 ruleFsts 或 rule_fsts）
+        if (!config.ruleFsts.isNullOrBlank()) {
+            if (!trySetField(recConfig, "ruleFsts", config.ruleFsts)) {
+                trySetField(recConfig, "rule_fsts", config.ruleFsts)
+            }
+        }
         return recConfig
     }
 
@@ -666,6 +705,7 @@ class SenseVoiceOnnxManager private constructor() {
         useItn: Boolean,
         provider: String,
         numThreads: Int,
+        ruleFsts: String? = null,
         samples: FloatArray,
         sampleRate: Int,
         keepAliveMs: Long,
@@ -676,7 +716,7 @@ class SenseVoiceOnnxManager private constructor() {
         try {
             initClasses()
 
-            val config = RecognizerConfig(tokens, model, language, useItn, provider, numThreads)
+            val config = RecognizerConfig(tokens, model, language, useItn, provider, numThreads, ruleFsts)
             var recognizer = cachedRecognizer
 
             if (cachedConfig != config || recognizer == null) {
@@ -726,6 +766,7 @@ class SenseVoiceOnnxManager private constructor() {
         useItn: Boolean,
         provider: String,
         numThreads: Int,
+        ruleFsts: String? = null,
         keepAliveMs: Long,
         alwaysKeep: Boolean,
         onLoadStart: (() -> Unit)? = null,
@@ -734,7 +775,7 @@ class SenseVoiceOnnxManager private constructor() {
         try {
             initClasses()
 
-            val config = RecognizerConfig(tokens, model, language, useItn, provider, numThreads)
+            val config = RecognizerConfig(tokens, model, language, useItn, provider, numThreads, ruleFsts)
             var recognizer = cachedRecognizer
 
             if (cachedConfig != config || recognizer == null) {
@@ -788,6 +829,7 @@ object SenseVoiceOnnxBridge {
         useItn: Boolean,
         provider: String,
         numThreads: Int,
+        ruleFsts: String? = null,
         samples: FloatArray,
         sampleRate: Int,
         keepAliveMs: Long,
@@ -795,7 +837,7 @@ object SenseVoiceOnnxBridge {
         onLoadStart: (() -> Unit)? = null,
         onLoadDone: (() -> Unit)? = null
     ): String? = manager.decodeOffline(
-        assetManager, tokens, model, language, useItn, provider, numThreads,
+        assetManager, tokens, model, language, useItn, provider, numThreads, ruleFsts,
         samples, sampleRate, keepAliveMs, alwaysKeep, onLoadStart, onLoadDone
     )
 
@@ -807,12 +849,13 @@ object SenseVoiceOnnxBridge {
         useItn: Boolean,
         provider: String,
         numThreads: Int,
+        ruleFsts: String? = null,
         keepAliveMs: Long,
         alwaysKeep: Boolean,
         onLoadStart: (() -> Unit)? = null,
         onLoadDone: (() -> Unit)? = null
     ): Boolean = manager.prepare(
-        assetManager, tokens, model, language, useItn, provider, numThreads,
+        assetManager, tokens, model, language, useItn, provider, numThreads, ruleFsts,
         keepAliveMs, alwaysKeep, onLoadStart, onLoadDone
     )
 }

@@ -179,6 +179,8 @@ class SenseVoicePushPcmPseudoStreamAsrEngine(
     }
     val variantDir = when (variant) {
       "small-full" -> java.io.File(probeRoot, "small-full")
+      "nano-full" -> java.io.File(probeRoot, "nano-full")
+      "nano-int8" -> java.io.File(probeRoot, "nano-int8")
       else -> java.io.File(probeRoot, "small-int8")
     }
     val auto = findSvModelDir(variantDir) ?: findSvModelDir(probeRoot)
@@ -230,14 +232,27 @@ class SenseVoicePushPcmPseudoStreamAsrEngine(
     val keepMs = if (keepMinutes <= 0) 0L else keepMinutes.toLong() * 60_000L
     val alwaysKeep = keepMinutes < 0
 
+    val ruleFsts = try {
+      if (prefs.svUseItn) ItnAssets.ensureItnFstPath(context) else null
+    } catch (t: Throwable) {
+      Log.e(TAG, "Failed to resolve ITN FST path", t)
+      null
+    }
+
     val text = manager.decodeOffline(
       assetManager = null,
       tokens = tokensPath,
       model = modelPath,
-      language = try { prefs.svLanguage } catch (t: Throwable) { Log.w(TAG, "Failed to get language", t); "auto" },
+      language = try {
+        resolveSvLanguageForVariant(prefs.svLanguage, variant)
+      } catch (t: Throwable) {
+        Log.w(TAG, "Failed to get language", t)
+        "auto"
+      },
       useItn = try { prefs.svUseItn } catch (t: Throwable) { Log.w(TAG, "Failed to get useItn", t); false },
       provider = "cpu",
       numThreads = try { prefs.svNumThreads } catch (t: Throwable) { Log.w(TAG, "Failed to get num threads", t); 2 },
+      ruleFsts = ruleFsts,
       samples = samples,
       sampleRate = sampleRate,
       keepAliveMs = keepMs,

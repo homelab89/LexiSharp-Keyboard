@@ -1921,10 +1921,11 @@ class AsrKeyboardService : InputMethodService(), KeyboardActionHandler.UiListene
                 val base = getExternalFilesDir(null) ?: filesDir
                 val probeRoot = java.io.File(base, "sensevoice")
                 val variant = prefs.svModelVariant
-                val variantDir = if (variant == "small-full") {
-                    java.io.File(probeRoot, "small-full")
-                } else {
-                    java.io.File(probeRoot, "small-int8")
+                val variantDir = when (variant) {
+                    "small-full" -> java.io.File(probeRoot, "small-full")
+                    "nano-full" -> java.io.File(probeRoot, "nano-full")
+                    "nano-int8" -> java.io.File(probeRoot, "nano-int8")
+                    else -> java.io.File(probeRoot, "small-int8")
                 }
                 val found = com.brycewg.asrkb.asr.findSvModelDir(variantDir)
                     ?: com.brycewg.asrkb.asr.findSvModelDir(probeRoot)

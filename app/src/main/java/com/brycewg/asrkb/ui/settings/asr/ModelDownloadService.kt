@@ -358,12 +358,18 @@ class ModelDownloadService : Service() {
 
       // 构造成功消息
       val modelInfo = getModelInfo(modelType, installVariant)
-      val successMessage = getString(R.string.sv_import_success, modelInfo)
+      val successMessage = when (modelType) {
+        "punctuation" -> getString(R.string.punct_import_success, modelInfo)
+        else -> getString(R.string.sv_import_success, modelInfo)
+      }
       notificationHandler.notifySuccess(successMessage)
     } catch (t: Throwable) {
       Log.e(TAG, "Import task failed for key=$key, uri=$uri", t)
       val errorMessage = t.message ?: "Unknown error"
-      val failMessage = getString(R.string.sv_import_failed, errorMessage)
+      val failMessage = when (specifiedModelType) {
+        "punctuation" -> getString(R.string.punct_import_failed, errorMessage)
+        else -> getString(R.string.sv_import_failed, errorMessage)
+      }
       notificationHandler.notifyFailed(failMessage)
     } finally {
       tasks.remove(key)
@@ -457,6 +463,8 @@ class ModelDownloadService : Service() {
       // SenseVoice
       "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17" -> "sensevoice" to "small-full"
       "sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17" -> "sensevoice" to "small-int8"
+      "sherpa-onnx-sense-voice-funasr-nano-int8-2025-12-17" -> "sensevoice" to "nano-int8"
+      "sherpa-onnx-sense-voice-funasr-nano-2025-12-17" -> "sensevoice" to "nano-full"
 
       // Paraformer（主包名不含量化，默认按 int8 归类）
       "sherpa-onnx-streaming-paraformer-bilingual-zh-en" -> "paraformer" to "bilingual-int8"
@@ -487,7 +495,13 @@ class ModelDownloadService : Service() {
   private fun getModelInfo(modelType: String, variant: String): String {
     return when (modelType) {
       "sensevoice" -> {
-        val versionName = if (variant == "small-full") "Small (fp32)" else "Small (int8)"
+        val versionName = when (variant) {
+          "small-full" -> "Small (fp32)"
+          "small-int8" -> "Small (int8)"
+          "nano-full" -> "Nano (fp32)"
+          "nano-int8" -> "Nano (int8)"
+          else -> variant
+        }
         "SenseVoice $versionName"
       }
       "telespeech" -> {
@@ -698,7 +712,13 @@ class ModelDownloadService : Service() {
       }
       else -> {
         val outRoot = File(base, "sensevoice")
-        if (variant == "small-full") File(outRoot, "small-full") else File(outRoot, "small-int8")
+        val dirName = when (variant) {
+          "small-full" -> "small-full"
+          "nano-full" -> "nano-full"
+          "nano-int8" -> "nano-int8"
+          else -> "small-int8"
+        }
+        File(outRoot, dirName)
       }
     }
 
@@ -1246,8 +1266,11 @@ class NotificationHandler(
       "punctuation" -> context.getString(R.string.notif_punct_title)
       else -> {
         when (variant) {
-          "small-full" -> context.getString(R.string.notif_model_title_full)
-          else -> context.getString(R.string.notif_model_title_int8)
+          "small-full" -> context.getString(R.string.notif_model_title_small_full)
+          "small-int8" -> context.getString(R.string.notif_model_title_small_int8)
+          "nano-full" -> context.getString(R.string.notif_model_title_nano_full)
+          "nano-int8" -> context.getString(R.string.notif_model_title_nano_int8)
+          else -> context.getString(R.string.notif_model_title_small_int8)
         }
       }
     }
