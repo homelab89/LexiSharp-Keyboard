@@ -115,6 +115,10 @@ class SonioxFileAsrEngine(
                 val arr = org.json.JSONArray()
                 langs.forEach { arr.put(it) }
                 put("language_hints", arr)
+                // 严格限制模式：仅允许识别指定语言，避免误转写为其他语言
+                if (prefs.sonioxLanguageHintsStrict) {
+                    put("language_hints_strict", true)
+                }
             }
         }
         val req = Request.Builder()

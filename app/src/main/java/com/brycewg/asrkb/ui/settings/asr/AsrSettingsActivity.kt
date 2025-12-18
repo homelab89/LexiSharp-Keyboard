@@ -850,6 +850,21 @@ class AsrSettingsActivity : BaseActivity() {
 
         setupSonioxLanguageSelection()
 
+        // 语言严格限制开关
+        findViewById<MaterialSwitch>(R.id.switchSonioxLanguageStrict).apply {
+            isChecked = prefs.sonioxLanguageHintsStrict
+            installExplainedSwitch(
+                context = this@AsrSettingsActivity,
+                titleRes = R.string.label_soniox_language_strict,
+                offDescRes = R.string.feature_soniox_language_strict_off_desc,
+                onDescRes = R.string.feature_soniox_language_strict_on_desc,
+                preferenceKey = "soniox_language_strict_explained",
+                readPref = { prefs.sonioxLanguageHintsStrict },
+                writePref = { v -> prefs.sonioxLanguageHintsStrict = v },
+                hapticFeedback = { hapticTapIfEnabled(it) }
+            )
+        }
+
         // Key guide link
         findViewById<com.google.android.material.button.MaterialButton>(R.id.btnSonioxGetKey).setOnClickListener { v ->
             hapticTapIfEnabled(v)

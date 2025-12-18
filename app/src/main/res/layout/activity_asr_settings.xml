@@ -551,6 +551,11 @@
             style="@style/SettingsClickableValue.Dropdown"
             android:text="@string/soniox_lang_auto" />
 
+          <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchSonioxLanguageStrict"
+            style="@style/SettingsSwitch"
+            android:text="@string/label_soniox_language_strict" />
+
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSonioxGetKey"
             style="@style/SettingsTonalButton"

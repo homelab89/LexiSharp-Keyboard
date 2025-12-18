@@ -784,6 +784,11 @@ class Prefs(context: Context) {
     // Soniox：多语言提示（JSON 数组字符串），优先于单一字段
     var sonioxLanguagesJson: String by stringPref(KEY_SONIOX_LANGUAGES, "")
 
+    // Soniox：语言严格限制（language_hints_strict）；默认关闭
+    var sonioxLanguageHintsStrict: Boolean
+        get() = sp.getBoolean(KEY_SONIOX_LANGUAGE_HINTS_STRICT, false)
+        set(value) = sp.edit { putBoolean(KEY_SONIOX_LANGUAGE_HINTS_STRICT, value) }
+
     // 智谱 GLM ASR
     var zhipuApiKey: String by stringPref(KEY_ZHIPU_API_KEY, "")
 
@@ -1502,6 +1507,7 @@ class Prefs(context: Context) {
         private const val KEY_SONIOX_STREAMING_ENABLED = "soniox_streaming_enabled"
         private const val KEY_SONIOX_LANGUAGE = "soniox_language"
         private const val KEY_SONIOX_LANGUAGES = "soniox_languages"
+        private const val KEY_SONIOX_LANGUAGE_HINTS_STRICT = "soniox_language_hints_strict"
         private const val KEY_PUNCT_1 = "punct_1"
         private const val KEY_PUNCT_2 = "punct_2"
         private const val KEY_PUNCT_3 = "punct_3"
