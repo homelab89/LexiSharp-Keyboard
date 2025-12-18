@@ -387,6 +387,14 @@ class ZipformerStreamAsrEngine(
                 out = com.brycewg.asrkb.util.TextSanitizer.trimTrailingPunctAndEmoji(out)
             }
         } catch (_: Throwable) { }
+        if (out.isNotEmpty()) {
+            out = try {
+                SherpaPunctuationManager.getInstance().addOfflinePunctuation(context, out)
+            } catch (t: Throwable) {
+                Log.e(TAG, "Failed to apply offline punctuation", t)
+                out
+            }
+        }
         return out
     }
 

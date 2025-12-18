@@ -372,7 +372,15 @@ class ParaformerStreamAsrEngine(
             try { mgr.releaseStream(stream) } catch (t: Throwable) { Log.e(TAG, "releaseStream failed", t) }
             currentStream = null
         }
-        return text?.trim().orEmpty()
+        var out = text?.trim().orEmpty()
+        if (out.isEmpty()) return out
+        out = try {
+            SherpaPunctuationManager.getInstance().addOfflinePunctuation(context, out)
+        } catch (t: Throwable) {
+            Log.e(TAG, "Failed to apply offline punctuation", t)
+            out
+        }
+        return out
     }
 
     private suspend fun releaseStreamSilently(stream: Any) {

@@ -185,7 +185,14 @@ class TelespeechFileAsrEngine(
       if (text.isNullOrBlank()) {
         listener.onError(context.getString(R.string.error_asr_empty_result))
       } else {
-        listener.onFinal(text.trim())
+        val raw = text.trim()
+        val finalText = try {
+          SherpaPunctuationManager.getInstance().addOfflinePunctuation(context, raw)
+        } catch (t: Throwable) {
+          Log.e("TelespeechFileAsrEngine", "Failed to apply offline punctuation", t)
+          raw
+        }
+        listener.onFinal(finalText)
       }
     } catch (t: Throwable) {
       Log.e("TelespeechFileAsrEngine", "Recognition failed", t)

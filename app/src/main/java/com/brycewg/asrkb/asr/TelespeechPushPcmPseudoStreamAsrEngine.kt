@@ -126,7 +126,14 @@ class TelespeechPushPcmPseudoStreamAsrEngine(
           Log.w(TAG, "notify empty result failed", t)
         }
       } else {
-        try { listener.onFinal(text.trim()) } catch (t: Throwable) { Log.e(TAG, "notify final failed", t) }
+        val raw = text.trim()
+        val finalText = try {
+          SherpaPunctuationManager.getInstance().addOfflinePunctuation(context, raw)
+        } catch (t: Throwable) {
+          Log.e(TAG, "Failed to apply offline punctuation", t)
+          raw
+        }
+        try { listener.onFinal(finalText) } catch (t: Throwable) { Log.e(TAG, "notify final failed", t) }
       }
     } catch (t: Throwable) {
       Log.e(TAG, "Final recognition failed", t)

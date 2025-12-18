@@ -1045,6 +1045,14 @@ class AsrSettingsActivity : BaseActivity() {
 
         // Download/Clear buttons
         setupSvDownloadButtons()
+
+        // 通用标点模型（FunASR Nano 也共用同一套模型）
+        setupPunctDownloadButtons(
+            btnDownloadId = R.id.btnSvDownloadPunct,
+            btnImportId = R.id.btnSvImportPunct,
+            btnClearId = R.id.btnSvClearPunct,
+            statusTextId = R.id.tvSvPunctStatus
+        )
     }
 
     private fun setupParaformerSettings() {
@@ -1806,7 +1814,7 @@ class AsrSettingsActivity : BaseActivity() {
     }
 
     /**
-     * 通用标点模型下载/导入/清理（TeleSpeech / Paraformer / Zipformer 共用）
+     * 通用标点模型下载/导入/清理（本地 sherpa-onnx 引擎共用：FunASR Nano / TeleSpeech / Paraformer / Zipformer）
      */
     private fun setupPunctDownloadButtons(
         btnDownloadId: Int,
@@ -2262,7 +2270,7 @@ class AsrSettingsActivity : BaseActivity() {
     }
 
     /**
-     * 更新通用标点模型下载/清理按钮的可见性与状态（三个本地引擎共用同一套模型）
+     * 更新通用标点模型下载/清理按钮的可见性与状态（多个本地引擎共用同一套模型）
      */
     private fun updatePunctDownloadUiVisibility() {
         val ready = try {
@@ -2289,6 +2297,7 @@ class AsrSettingsActivity : BaseActivity() {
             }
         }
 
+        apply(R.id.btnSvDownloadPunct, R.id.btnSvImportPunct, R.id.btnSvClearPunct, R.id.tvSvPunctStatus)
         apply(R.id.btnTsDownloadPunct, R.id.btnTsImportPunct, R.id.btnTsClearPunct, R.id.tvTsPunctStatus)
         apply(R.id.btnPfDownloadPunct, R.id.btnPfImportPunct, R.id.btnPfClearPunct, R.id.tvPfPunctStatus)
         apply(R.id.btnZfDownloadPunct, R.id.btnZfImportPunct, R.id.btnZfClearPunct, R.id.tvZfPunctStatus)
