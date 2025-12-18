@@ -87,6 +87,13 @@ class TelespeechFileAsrEngine(
   override suspend fun recognize(pcm: ByteArray) {
     val t0 = System.currentTimeMillis()
     try {
+      // 调用前若缺少通用标点模型，则给出一次性提示（不影响识别流程）
+      try {
+        SherpaPunctuationManager.maybeWarnModelMissing(context)
+      } catch (t: Throwable) {
+        Log.w("TelespeechFileAsrEngine", "Failed to warn punctuation model missing", t)
+      }
+
       val manager = TelespeechOnnxManager.getInstance()
       if (!manager.isOnnxAvailable()) {
         listener.onError(context.getString(R.string.error_local_asr_not_ready))

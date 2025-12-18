@@ -57,13 +57,14 @@ class ModelDownloadService : Service() {
     private const val EXTRA_URI = "uri"
     private const val EXTRA_VARIANT = "variant"
     private const val EXTRA_KEY = "key"
-    private const val EXTRA_MODEL_TYPE = "modelType" // sensevoice | paraformer
+    private const val EXTRA_MODEL_TYPE = "modelType" // sensevoice | paraformer | zipformer | telespeech | punctuation
 
     private fun buildDownloadKey(variant: String, modelType: String): DownloadKey {
       val sourceId = when (modelType) {
         "paraformer" -> "download_paraformer"
         "zipformer" -> "download_zipformer"
         "telespeech" -> "download_telespeech"
+        "punctuation" -> "download_punctuation"
         else -> "download_sensevoice"
       }
       return DownloadKey(variant, sourceId)
@@ -101,6 +102,18 @@ class ModelDownloadService : Service() {
         putExtra(EXTRA_URI, uri.toString())
         putExtra(EXTRA_VARIANT, variant)
         putExtra(EXTRA_KEY, key.toSerializedKey())
+      }
+      context.startService(i)
+    }
+
+    fun startImport(context: Context, uri: android.net.Uri, variant: String, modelType: String) {
+      val key = DownloadKey(variant, "import_${modelType}_${uri.lastPathSegment ?: "unknown"}")
+      val i = Intent(context, ModelDownloadService::class.java).apply {
+        action = ACTION_IMPORT
+        putExtra(EXTRA_URI, uri.toString())
+        putExtra(EXTRA_VARIANT, variant)
+        putExtra(EXTRA_KEY, key.toSerializedKey())
+        putExtra(EXTRA_MODEL_TYPE, modelType)
       }
       context.startService(i)
     }
@@ -147,6 +160,7 @@ class ModelDownloadService : Service() {
         val uriString = intent.getStringExtra(EXTRA_URI) ?: return START_NOT_STICKY
         val uri = android.net.Uri.parse(uriString)
         val variant = intent.getStringExtra(EXTRA_VARIANT) ?: ""
+        val modelType = intent.getStringExtra(EXTRA_MODEL_TYPE) ?: "auto"
         val serializedKey = intent.getStringExtra(EXTRA_KEY) ?: DownloadKey(variant, "import").toSerializedKey()
         val key = DownloadKey.fromSerializedKey(serializedKey)
 
@@ -158,11 +172,11 @@ class ModelDownloadService : Service() {
             notificationManager = nm,
             key = key,
             variant = variant,
-            modelType = "auto" // Will be detected from file content
+            modelType = if (modelType == "auto") "auto" else modelType
           )
           notificationHandlers[key] = notificationHandler
 
-          val job = scope.launch { doImportTask(key, uri, variant, notificationHandler) }
+          val job = scope.launch { doImportTask(key, uri, variant, modelType, notificationHandler) }
           tasks[key] = job
         }
       }
@@ -231,6 +245,7 @@ class ModelDownloadService : Service() {
         "paraformer" -> getString(R.string.pf_download_status_done)
         "zipformer" -> getString(R.string.zf_download_status_done)
         "telespeech" -> getString(R.string.ts_download_status_done)
+        "punctuation" -> getString(R.string.punct_download_status_done)
         else -> getString(R.string.sv_download_status_done)
       }
       notificationHandler.notifySuccess(doneText)
@@ -242,6 +257,7 @@ class ModelDownloadService : Service() {
         modelType == "paraformer" -> getString(R.string.pf_download_status_failed)
         modelType == "zipformer" -> getString(R.string.zf_download_status_failed)
         modelType == "telespeech" -> getString(R.string.ts_download_status_failed)
+        modelType == "punctuation" -> getString(R.string.punct_download_status_failed)
         else -> getString(R.string.sv_download_status_failed)
       }
       notificationHandler.notifyFailed(failText)
@@ -268,11 +284,13 @@ class ModelDownloadService : Service() {
 
   /**
    * 从本地文件导入模型
+   * @param specifiedModelType 指定的模型类型，"auto" 表示自动检测
    */
   private suspend fun doImportTask(
     key: DownloadKey,
     uri: android.net.Uri,
     variant: String,
+    specifiedModelType: String,
     notificationHandler: NotificationHandler
   ) {
     // 仅支持 .zip 导入：先根据显示名或路径判断并在服务侧再次校验
@@ -287,37 +305,48 @@ class ModelDownloadService : Service() {
       // 从 Uri 复制文件到缓存目录
       copyFileFromUri(uri, cacheFile, notificationHandler)
 
-      // 通过压缩包文件名精准识别模型类型与变体
-      val typeAndVariant = detectModelTypeAndVariantFromFileName(displayName)
-        ?: throw IllegalStateException(getString(R.string.sv_import_failed, "无法识别模型类型"))
-      val modelType = typeAndVariant.first
-      val detectedVariant = typeAndVariant.second
+      // 确定模型类型和变体
+      val modelType: String
+      val detectedVariant: String
 
-      // 更新通知处理器（类型与变体），以便文案准确：
-      // Paraformer/Zipformer(bi*) 包含双量化，保持用户当前变体文案；SenseVoice 与 Zip zh* 精确展示
-      notificationHandler.updateModelType(modelType)
-      val shouldUpdateVariant = when (modelType) {
-        "sensevoice" -> true
-        "zipformer" -> detectedVariant.startsWith("zh")
-        else -> false // paraformer 保持用户选择
-      }
-      if (shouldUpdateVariant) notificationHandler.updateVariant(detectedVariant)
+      if (specifiedModelType != "auto") {
+        // 使用指定的模型类型和变体
+        modelType = specifiedModelType
+        detectedVariant = variant
+        notificationHandler.updateModelType(modelType)
+      } else {
+        // 通过压缩包文件名精准识别模型类型与变体
+        val typeAndVariant = detectModelTypeAndVariantFromFileName(displayName)
+          ?: throw IllegalStateException(getString(R.string.sv_import_failed, "无法识别模型类型"))
+        modelType = typeAndVariant.first
+        detectedVariant = typeAndVariant.second
 
-      // 同步首选项中的变体，确保后续加载/校验路径一致
-      try {
-        val prefs = Prefs(this@ModelDownloadService)
-        when (modelType) {
-          // SenseVoice：二选一，直接同步用户选择
-          "sensevoice" -> prefs.svModelVariant = detectedVariant
-          // TeleSpeech：离线 CTC，int8/full 二选一，直接同步用户选择
-          "telespeech" -> prefs.tsModelVariant = detectedVariant
-          // Paraformer：单包含 int8+fp32，两者均可用，不覆盖用户当前偏好
-          "paraformer" -> { /* no-op */ }
-          // Zipformer：zh/zh-xl 为单量化包，同步；bilingual 系列包含双量化，不覆盖
-          "zipformer" -> if (detectedVariant.startsWith("zh")) prefs.zfModelVariant = detectedVariant
+        // 更新通知处理器（类型与变体），以便文案准确：
+        // Paraformer/Zipformer(bi*) 包含双量化，保持用户当前变体文案；SenseVoice 与 Zip zh* 精确展示
+        notificationHandler.updateModelType(modelType)
+        val shouldUpdateVariant = when (modelType) {
+          "sensevoice" -> true
+          "zipformer" -> detectedVariant.startsWith("zh")
+          else -> false // paraformer 保持用户选择
         }
-      } catch (e: Throwable) {
-        Log.w(TAG, "Failed to persist detected variant: $detectedVariant for $modelType", e)
+        if (shouldUpdateVariant) notificationHandler.updateVariant(detectedVariant)
+
+        // 同步首选项中的变体，确保后续加载/校验路径一致
+        try {
+          val prefs = Prefs(this@ModelDownloadService)
+          when (modelType) {
+            // SenseVoice：二选一，直接同步用户选择
+            "sensevoice" -> prefs.svModelVariant = detectedVariant
+            // TeleSpeech：离线 CTC，int8/full 二选一，直接同步用户选择
+            "telespeech" -> prefs.tsModelVariant = detectedVariant
+            // Paraformer：单包含 int8+fp32，两者均可用，不覆盖用户当前偏好
+            "paraformer" -> { /* no-op */ }
+            // Zipformer：zh/zh-xl 为单量化包，同步；bilingual 系列包含双量化，不覆盖
+            "zipformer" -> if (detectedVariant.startsWith("zh")) prefs.zfModelVariant = detectedVariant
+          }
+        } catch (e: Throwable) {
+          Log.w(TAG, "Failed to persist detected variant: $detectedVariant for $modelType", e)
+        }
       }
 
       // 解压归档（仅支持 ZIP）
@@ -411,6 +440,7 @@ class ModelDownloadService : Service() {
       n.contains("zipformer") -> "zipformer"
       n.contains("telespeech") -> "telespeech"
       n.contains("sense-voice") || n.contains("sensevoice") -> "sensevoice"
+      n.contains("punct-ct-transformer") || n.contains("punctuation") -> "punctuation"
       else -> null
     }
   }
@@ -444,6 +474,9 @@ class ModelDownloadService : Service() {
       "sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20" -> "zipformer" to "bi-20230220-int8"
       "sherpa-onnx-streaming-zipformer-small-bilingual-zh-en-2023-02-16" -> "zipformer" to "bi-small-20230216-int8"
 
+      // Punctuation（ct-transformer zh+en）
+      "sherpa-onnx-punct-ct-transformer-zh-en-vocab272727-2024-04-12-int8" -> "punctuation" to "ct-zh-en-int8"
+
       else -> null
     }
   }
@@ -476,6 +509,10 @@ class ModelDownloadService : Service() {
           else -> variant
         }
         "Zipformer $versionName"
+      }
+      "punctuation" -> {
+        // 目前仅一套中英通用标点模型
+        "Punctuation zh+en ($variant)"
       }
       else -> "$modelType $variant"
     }
@@ -561,6 +598,7 @@ class ModelDownloadService : Service() {
       "paraformer" -> File(base, "paraformer")
       "zipformer" -> File(base, "zipformer")
       "telespeech" -> File(base, "telespeech")
+      "punctuation" -> File(base, "punctuation_tmp")
       else -> File(base, "sensevoice")
     }
     val tmpDir = File(outRoot, ".tmp_extract_${key.toSafeFileName()}_${System.currentTimeMillis()}")
@@ -593,6 +631,12 @@ class ModelDownloadService : Service() {
     modelType: String
   ) = withContext(Dispatchers.IO) {
     Log.d(TAG, "Verifying model files for variant: $variant")
+
+    // 标点模型：单独走简化校验/安装逻辑（仅需 model.int8.onnx），不依赖 tokens.txt
+    if (modelType == "punctuation") {
+      verifyAndInstallPunctuationModel(tmpDir)
+      return@withContext
+    }
 
     // 校验并定位模型目录
     val modelDir = findModelDir(tmpDir)
@@ -676,6 +720,68 @@ class ModelDownloadService : Service() {
     }
 
     Log.d(TAG, "Model installation completed: ${outFinal.path}")
+  }
+
+  /**
+   * 标点模型安装：
+   * - 仅校验存在 model.int8.onnx；
+   * - 最终落盘路径为 externalFilesDir/punctuation（或 filesDir/punctuation）。
+   */
+  private fun verifyAndInstallPunctuationModel(tmpDir: File) {
+    val base = getExternalFilesDir(null) ?: filesDir
+    val punctRoot = File(base, "punctuation")
+
+    fun findPunctDir(root: File): File? {
+      if (!root.exists()) return null
+      val direct = File(root, "model.int8.onnx")
+      if (direct.exists()) return root
+      val subs = root.listFiles() ?: return null
+      subs.forEach { f ->
+        if (f.isDirectory) {
+          val m = File(f, "model.int8.onnx")
+          if (m.exists()) return f
+        }
+      }
+      return null
+    }
+
+    val modelDir = findPunctDir(tmpDir)
+      ?: throw IllegalStateException("punctuation files missing after extract")
+
+    Log.d(TAG, "Punctuation model dir located at: ${modelDir.path}")
+
+    // 清理旧目录
+    if (punctRoot.exists()) {
+      try {
+        punctRoot.deleteRecursively()
+      } catch (e: Throwable) {
+        Log.w(TAG, "Failed to delete old punctuation dir: ${punctRoot.path}", e)
+      }
+    }
+
+    // 将模型目录迁移到 punctuation 根目录
+    val renamed = try {
+      modelDir.renameTo(punctRoot)
+    } catch (e: Throwable) {
+      Log.w(TAG, "Rename punctuation dir failed, will fallback to copy", e)
+      false
+    }
+    if (!renamed) {
+      Log.w(TAG, "Falling back to recursive copy for punctuation model")
+      copyDirRecursivelyInternal(modelDir, punctRoot)
+    }
+
+    // 清理临时目录（包括父目录）
+    val tmpRoot = tmpDir.parentFile ?: tmpDir
+    try {
+      if (tmpRoot.exists()) {
+        tmpRoot.deleteRecursively()
+      }
+    } catch (e: Throwable) {
+      Log.w(TAG, "Error deleting tmp punctuation dir: ${tmpRoot.path}", e)
+    }
+
+    Log.d(TAG, "Punctuation model installation completed: ${punctRoot.path}")
   }
 
   private fun ensureChannel() {
@@ -853,8 +959,8 @@ class ModelDownloadService : Service() {
   }
 }
 
-/**
- * 下载任务的唯一标识符
+  /**
+   * 下载任务的唯一标识符
  * 使用数据类替代字符串拼接，提供类型安全和更好的可读性
  */
 data class DownloadKey(
@@ -948,6 +1054,7 @@ class NotificationHandler(
       "paraformer" -> context.getString(R.string.pf_download_status_downloading, progress)
       "zipformer" -> context.getString(R.string.zf_download_status_downloading, progress)
       "telespeech" -> context.getString(R.string.ts_download_status_downloading, progress)
+      "punctuation" -> context.getString(R.string.punct_download_status_downloading, progress)
       else -> context.getString(R.string.sv_download_status_downloading, progress)
     }
     notifyProgress(
@@ -970,6 +1077,7 @@ class NotificationHandler(
       "paraformer" -> context.getString(R.string.pf_download_status_extracting_progress, progress)
       "zipformer" -> context.getString(R.string.zf_download_status_extracting_progress, progress)
       "telespeech" -> context.getString(R.string.ts_download_status_extracting_progress, progress)
+      "punctuation" -> context.getString(R.string.punct_download_status_extracting_progress, progress)
       else -> context.getString(R.string.sv_download_status_extracting_progress, progress)
     }
     notifyProgress(
@@ -991,6 +1099,7 @@ class NotificationHandler(
       "paraformer" -> context.getString(R.string.pf_download_status_extracting_progress, progress)
       "zipformer" -> context.getString(R.string.zf_download_status_extracting_progress, progress)
       "telespeech" -> context.getString(R.string.ts_download_status_extracting_progress, progress)
+      "punctuation" -> context.getString(R.string.punct_download_status_extracting_progress, progress)
       else -> context.getString(R.string.sv_download_status_extracting_progress, progress)
     }
     notifyProgress(
@@ -1040,6 +1149,7 @@ class NotificationHandler(
       "paraformer" -> context.getString(R.string.pf_download_status_failed)
       "zipformer" -> context.getString(R.string.zf_download_status_failed)
       "telespeech" -> context.getString(R.string.ts_download_status_failed)
+      "punctuation" -> context.getString(R.string.punct_download_status_failed)
       else -> context.getString(R.string.sv_download_status_failed)
     }
   }
@@ -1133,6 +1243,7 @@ class NotificationHandler(
         if (variant == "full") context.getString(R.string.notif_ts_title_full)
         else context.getString(R.string.notif_ts_title_int8)
       }
+      "punctuation" -> context.getString(R.string.notif_punct_title)
       else -> {
         when (variant) {
           "small-full" -> context.getString(R.string.notif_model_title_full)

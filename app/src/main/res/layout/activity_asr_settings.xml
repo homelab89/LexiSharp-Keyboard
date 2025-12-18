@@ -792,6 +792,42 @@
             app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
             android:text="@string/btn_ts_clear_model" />
 
+
+          <!-- 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用） -->
+          <TextView
+            style="@style/SettingsLabel"
+            android:layout_marginTop="12dp"
+            android:text="@string/label_punct_model_shared" />
+
+          <LinearLayout
+            style="@style/SettingsButtonRow.MarginTop12"
+            android:baselineAligned="false">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnTsDownloadPunct"
+              style="@style/SettingsRowButtonLeft"
+              android:text="@string/btn_punct_download_model" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnTsImportPunct"
+              style="@style/SettingsRowButtonRight"
+              android:text="@string/btn_punct_import_model" />
+          </LinearLayout>
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTsClearPunct"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+            android:text="@string/btn_punct_clear_model" />
+
+          <TextView
+            android:id="@+id/tvTsPunctStatus"
+            style="@style/SettingsStatusText"
+            android:text="" />
+            
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTsGuide"
             style="@style/SettingsTonalButton"
@@ -885,6 +921,41 @@
             style="@style/SettingsHint"
             android:layout_marginTop="12dp"
             android:text="@string/pf_model_info" />
+
+          <!-- 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用） -->
+          <TextView
+            style="@style/SettingsLabel"
+            android:layout_marginTop="12dp"
+            android:text="@string/label_punct_model_shared" />
+
+          <LinearLayout
+            style="@style/SettingsButtonRow.MarginTop12"
+            android:baselineAligned="false">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnPfDownloadPunct"
+              style="@style/SettingsRowButtonLeft"
+              android:text="@string/btn_punct_download_model" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnPfImportPunct"
+              style="@style/SettingsRowButtonRight"
+              android:text="@string/btn_punct_import_model" />
+          </LinearLayout>
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPfClearPunct"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+            android:text="@string/btn_punct_clear_model" />
+
+          <TextView
+            android:id="@+id/tvPfPunctStatus"
+            style="@style/SettingsStatusText"
+            android:text="" />
         </LinearLayout>
 
         <!-- Zipformer (Local streaming) -->
@@ -968,6 +1039,41 @@
             android:layout_marginTop="8dp"
             android:lineSpacingMultiplier="1.2"
             android:text="@string/zf_model_info" />
+
+          <!-- 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用） -->
+          <TextView
+            style="@style/SettingsLabel"
+            android:layout_marginTop="12dp"
+            android:text="@string/label_punct_model_shared" />
+
+          <LinearLayout
+            style="@style/SettingsButtonRow.MarginTop12"
+            android:baselineAligned="false">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnZfDownloadPunct"
+              style="@style/SettingsRowButtonLeft"
+              android:text="@string/btn_punct_download_model" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnZfImportPunct"
+              style="@style/SettingsRowButtonRight"
+              android:text="@string/btn_punct_import_model" />
+          </LinearLayout>
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnZfClearPunct"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:shapeAppearanceOverlay="@style/AsrkbShapeOverlayCapsule"
+            android:text="@string/btn_punct_clear_model" />
+
+          <TextView
+            android:id="@+id/tvZfPunctStatus"
+            style="@style/SettingsStatusText"
+            android:text="" />
         </LinearLayout>
       </LinearLayout>
 

@@ -20,6 +20,7 @@ import com.brycewg.asrkb.ui.BaseActivity
 import androidx.lifecycle.lifecycleScope
 import com.brycewg.asrkb.R
 import com.brycewg.asrkb.asr.AsrVendor
+import com.brycewg.asrkb.asr.SherpaPunctuationManager
 import com.brycewg.asrkb.ui.AsrVendorUi
 import com.brycewg.asrkb.ui.installExplainedSwitch
 import com.brycewg.asrkb.store.Prefs
@@ -61,6 +62,9 @@ class AsrSettingsActivity : BaseActivity() {
     }
     private val zfModelFilePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { handleZfModelImport(it) }
+    }
+    private val punctModelFilePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { handlePunctModelImport(it) }
     }
 
     // View references grouped by function
@@ -115,6 +119,7 @@ class AsrSettingsActivity : BaseActivity() {
         updateTsDownloadUiVisibility()
         updatePfDownloadUiVisibility()
         updateZfDownloadUiVisibility()
+        updatePunctDownloadUiVisibility()
     }
 
     private fun setupToolbar() {
@@ -1157,6 +1162,14 @@ class AsrSettingsActivity : BaseActivity() {
 
         // 下载/清理
         setupPfDownloadButtons()
+
+        // 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用）
+        setupPunctDownloadButtons(
+            btnDownloadId = R.id.btnPfDownloadPunct,
+            btnImportId = R.id.btnPfImportPunct,
+            btnClearId = R.id.btnPfClearPunct,
+            statusTextId = R.id.tvPfPunctStatus
+        )
     }
 
     private fun setupPfDownloadButtons() {
@@ -1383,6 +1396,14 @@ class AsrSettingsActivity : BaseActivity() {
         }
 
         setupZfDownloadButtons()
+
+        // 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用）
+        setupPunctDownloadButtons(
+            btnDownloadId = R.id.btnZfDownloadPunct,
+            btnImportId = R.id.btnZfImportPunct,
+            btnClearId = R.id.btnZfClearPunct,
+            statusTextId = R.id.tvZfPunctStatus
+        )
     }
 
     private fun setupZfDownloadButtons() {
@@ -1767,6 +1788,94 @@ class AsrSettingsActivity : BaseActivity() {
         }
     }
 
+    /**
+     * 通用标点模型下载/导入/清理（TeleSpeech / Paraformer / Zipformer 共用）
+     */
+    private fun setupPunctDownloadButtons(
+        btnDownloadId: Int,
+        btnImportId: Int,
+        btnClearId: Int,
+        statusTextId: Int
+    ) {
+        val btnDl = findViewById<MaterialButton?>(btnDownloadId) ?: return
+        val btnImport = findViewById<MaterialButton?>(btnImportId) ?: return
+        val btnClear = findViewById<MaterialButton?>(btnClearId) ?: return
+        val tvStatus = findViewById<TextView?>(statusTextId) ?: return
+
+        val variant = "ct-zh-en-int8"
+        val urlOfficial =
+            "https://github.com/BryceWG/BiBi-Keyboard/releases/download/models/sherpa-onnx-punct-ct-transformer-zh-en-vocab272727-2024-04-12-int8.zip"
+
+        btnImport.setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            punctModelFilePicker.launch("application/zip")
+        }
+
+        btnDl.setOnClickListener { v ->
+            v.isEnabled = false
+            tvStatus.text = ""
+            val sources = arrayOf(
+                getString(R.string.download_source_github_official),
+                getString(R.string.download_source_mirror_ghproxy),
+                getString(R.string.download_source_mirror_gitmirror),
+                getString(R.string.download_source_mirror_gh_proxynet)
+            )
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.download_source_title)
+                .setItems(sources) { dlg, which ->
+                    dlg.dismiss()
+                    val url = when (which) {
+                        1 -> "https://ghproxy.net/$urlOfficial"
+                        2 -> "https://hub.gitmirror.com/$urlOfficial"
+                        3 -> "https://gh-proxy.net/$urlOfficial"
+                        else -> urlOfficial
+                    }
+                    try {
+                        ModelDownloadService.startDownload(this, url, variant, "punctuation")
+                        tvStatus.text = getString(R.string.punct_download_started_in_bg)
+                    } catch (e: Throwable) {
+                        android.util.Log.e(TAG, "Failed to start punctuation model download", e)
+                        tvStatus.text = getString(R.string.punct_download_status_failed)
+                    } finally {
+                        v.isEnabled = true
+                    }
+                }
+                .setOnDismissListener { v.isEnabled = true }
+                .show()
+        }
+
+        btnClear.setOnClickListener { v ->
+            androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.punct_clear_confirm_title)
+                .setMessage(R.string.punct_clear_confirm_message)
+                .setPositiveButton(android.R.string.ok) { d, _ ->
+                    d.dismiss()
+                    v.isEnabled = false
+                    lifecycleScope.launch {
+                        try {
+                            val deleted = withContext(Dispatchers.IO) {
+                                SherpaPunctuationManager.clearInstalledModel(this@AsrSettingsActivity)
+                            }
+                            tvStatus.text = if (deleted) {
+                                getString(R.string.punct_clear_done)
+                            } else {
+                                getString(R.string.punct_clear_failed)
+                            }
+                        } catch (e: Throwable) {
+                            android.util.Log.e(TAG, "Failed to clear punctuation model", e)
+                            tvStatus.text = getString(R.string.punct_clear_failed)
+                        } finally {
+                            v.isEnabled = true
+                            updatePunctDownloadUiVisibility()
+                        }
+                    }
+                }
+                .setNegativeButton(R.string.btn_cancel, null)
+                .create()
+                .show()
+        }
+    }
+
     private fun setupTelespeechSettings() {
         val tvVariant = findViewById<TextView>(R.id.tvTsModelVariantValue)
         val variantLabels = arrayOf(
@@ -1888,6 +1997,14 @@ class AsrSettingsActivity : BaseActivity() {
         }
 
         setupTsDownloadButtons()
+
+        // 通用标点模型（TeleSpeech / Paraformer / Zipformer 共用）
+        setupPunctDownloadButtons(
+            btnDownloadId = R.id.btnTsDownloadPunct,
+            btnImportId = R.id.btnTsImportPunct,
+            btnClearId = R.id.btnTsClearPunct,
+            statusTextId = R.id.tvTsPunctStatus
+        )
     }
 
     private fun handleModelImport(uri: Uri) {
@@ -1959,6 +2076,33 @@ class AsrSettingsActivity : BaseActivity() {
         } catch (e: Throwable) {
             android.util.Log.e(TAG, "Failed to start zipformer model import", e)
             tvStatus.text = getString(R.string.zf_import_failed, e.message ?: "Unknown error")
+        }
+    }
+
+    private fun handlePunctModelImport(uri: Uri) {
+        // 更新三个状态文本区域
+        val statusTextViews = listOf(
+            findViewById<TextView?>(R.id.tvTsPunctStatus),
+            findViewById<TextView?>(R.id.tvPfPunctStatus),
+            findViewById<TextView?>(R.id.tvZfPunctStatus)
+        ).filterNotNull()
+
+        statusTextViews.forEach { it.text = "" }
+
+        try {
+            if (!isZipUri(uri)) {
+                val errMsg = getString(R.string.punct_import_failed, getString(R.string.error_only_zip_supported))
+                statusTextViews.forEach { it.text = errMsg }
+                return
+            }
+            val variant = "ct-zh-en-int8"
+            ModelDownloadService.startImport(this, uri, variant, "punctuation")
+            val startMsg = getString(R.string.punct_import_started_in_bg)
+            statusTextViews.forEach { it.text = startMsg }
+        } catch (e: Throwable) {
+            android.util.Log.e(TAG, "Failed to start punctuation model import", e)
+            val errMsg = getString(R.string.punct_import_failed, e.message ?: "Unknown error")
+            statusTextViews.forEach { it.text = errMsg }
         }
     }
 
@@ -2098,6 +2242,39 @@ class AsrSettingsActivity : BaseActivity() {
         if (ready && tv.text.isNullOrBlank()) {
             tv.text = getString(R.string.ts_download_status_done)
         }
+    }
+
+    /**
+     * 更新通用标点模型下载/清理按钮的可见性与状态（三个本地引擎共用同一套模型）
+     */
+    private fun updatePunctDownloadUiVisibility() {
+        val ready = try {
+            viewModel.isPunctuationModelInstalled(this)
+        } catch (t: Throwable) {
+            android.util.Log.e(TAG, "Failed to check punctuation model installed", t)
+            false
+        }
+
+        fun apply(btnDownloadId: Int, btnImportId: Int, btnClearId: Int, statusTextId: Int) {
+            val btnDl = findViewById<MaterialButton?>(btnDownloadId) ?: return
+            val btnImport = findViewById<MaterialButton?>(btnImportId) ?: return
+            val btnClear = findViewById<MaterialButton?>(btnClearId) ?: return
+            val tv = findViewById<TextView?>(statusTextId) ?: return
+
+            // 模型已安装时：隐藏下载和导入按钮，显示清理按钮
+            // 模型未安装时：显示下载和导入按钮，隐藏清理按钮
+            btnDl.visibility = if (ready) View.GONE else View.VISIBLE
+            btnImport.visibility = if (ready) View.GONE else View.VISIBLE
+            btnClear.visibility = if (ready) View.VISIBLE else View.GONE
+
+            if (ready && tv.text.isNullOrBlank()) {
+                tv.text = getString(R.string.punct_download_status_done)
+            }
+        }
+
+        apply(R.id.btnTsDownloadPunct, R.id.btnTsImportPunct, R.id.btnTsClearPunct, R.id.tvTsPunctStatus)
+        apply(R.id.btnPfDownloadPunct, R.id.btnPfImportPunct, R.id.btnPfClearPunct, R.id.tvPfPunctStatus)
+        apply(R.id.btnZfDownloadPunct, R.id.btnZfImportPunct, R.id.btnZfClearPunct, R.id.tvZfPunctStatus)
     }
 
     // ====== Helper Functions ======

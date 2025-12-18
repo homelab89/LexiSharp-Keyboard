@@ -88,6 +88,13 @@ class ParaformerStreamAsrEngine(
             return
         }
 
+        // 若通用标点模型未安装，给出一次性提示（不阻断识别）
+        try {
+            SherpaPunctuationManager.maybeWarnModelMissing(context)
+        } catch (t: Throwable) {
+            Log.w(TAG, "Failed to warn punctuation model missing", t)
+        }
+
         running.set(true)
         lastEmitUptimeMs = 0L
         lastEmittedText = null

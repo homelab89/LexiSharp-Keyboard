@@ -109,6 +109,15 @@ class AsrSettingsViewModel : ViewModel() {
             try { com.brycewg.asrkb.asr.unloadZipformerRecognizer() } catch (e: Throwable) { Log.e(TAG, "Failed to unload Zipformer recognizer", e) }
         }
 
+        // 当切换到本地模型（TeleSpeech / Paraformer / Zipformer）时，如未安装标点模型则提示一次
+        if (vendor == AsrVendor.Telespeech || vendor == AsrVendor.Paraformer || vendor == AsrVendor.Zipformer) {
+            try {
+                com.brycewg.asrkb.asr.SherpaPunctuationManager.maybeWarnModelMissing(appContext)
+            } catch (t: Throwable) {
+                Log.w(TAG, "Failed to warn punctuation model missing on vendor change", t)
+            }
+        }
+
         if (vendor == AsrVendor.SenseVoice && prefs.svPreloadEnabled) {
             viewModelScope.launch(Dispatchers.Default) {
                 try {
@@ -577,6 +586,15 @@ class AsrSettingsViewModel : ViewModel() {
         val hasDecoder = exists(Regex("^decoder(?:[.-].*)?\\.onnx$"))
         val hasJoiner = exists(Regex("^joiner(?:[.-].*)?\\.onnx$"))
         return hasEncoder && hasDecoder && hasJoiner
+    }
+
+    fun isPunctuationModelInstalled(context: Context): Boolean {
+        return try {
+            com.brycewg.asrkb.asr.SherpaPunctuationManager.isModelInstalled(context)
+        } catch (t: Throwable) {
+            Log.w(TAG, "Failed to check punctuation model installed", t)
+            false
+        }
     }
 
     private fun findModelDir(root: File): File? {
