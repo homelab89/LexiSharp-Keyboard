@@ -1194,6 +1194,16 @@ class Prefs(context: Context) {
         get() = sp.getLong(KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_DAY, -1L)
         set(value) = sp.edit { putLong(KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_DAY, value) }
 
+    // 上次尝试上报的时间戳（ms，用于冷却重试）
+    var analyticsLastAttemptEpochMs: Long
+        get() = sp.getLong(KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_MS, -1L)
+        set(value) = sp.edit { putLong(KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_MS, value) }
+
+    // 当天是否已用过一次冷却重试（epochDay）
+    var analyticsRetryUsedEpochDay: Long
+        get() = sp.getLong(KEY_ANALYTICS_RETRY_USED_EPOCH_DAY, -1L)
+        set(value) = sp.edit { putLong(KEY_ANALYTICS_RETRY_USED_EPOCH_DAY, value) }
+
     // 一次性迁移标志：重置同意弹窗以重新采集设备信息（v1 修复打包问题后）
     var analyticsConsentResetV1Done: Boolean
         get() = sp.getBoolean(KEY_ANALYTICS_CONSENT_RESET_V1_DONE, false)
@@ -1581,6 +1591,8 @@ class Prefs(context: Context) {
         private const val KEY_ANALYTICS_REPORT_MINUTE = "analytics_report_minute"
         private const val KEY_ANALYTICS_LAST_UPLOAD_EPOCH_DAY = "analytics_last_upload_epoch_day"
         private const val KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_DAY = "analytics_last_attempt_epoch_day"
+        private const val KEY_ANALYTICS_LAST_ATTEMPT_EPOCH_MS = "analytics_last_attempt_epoch_ms"
+        private const val KEY_ANALYTICS_RETRY_USED_EPOCH_DAY = "analytics_retry_used_epoch_day"
         private const val KEY_ANALYTICS_CONSENT_RESET_V1_DONE = "analytics_consent_reset_v1_done"
 
         // SyncClipboard keys

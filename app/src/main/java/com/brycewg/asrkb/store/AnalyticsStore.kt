@@ -21,8 +21,6 @@ class AnalyticsStore(context: Context) {
     private const val SP_NAME = "asr_prefs"
     private const val KEY_ASR_EVENTS_JSON = "analytics_asr_events"
     private const val KEY_APP_STARTS_JSON = "analytics_app_starts"
-    private const val MAX_ASR_EVENTS = 5000
-    private const val MAX_APP_STARTS = 2000
   }
 
   private val sp: SharedPreferences = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
@@ -93,39 +91,36 @@ class AnalyticsStore(context: Context) {
   fun addAsrEvent(event: AsrEvent) {
     val list = readAsrEventsInternal()
     list.add(event)
-    val ordered = list.sortedByDescending { it.timestamp }
-    val pruned = if (ordered.size > MAX_ASR_EVENTS) ordered.take(MAX_ASR_EVENTS) else ordered
-    writeAsrEventsInternal(pruned)
+    writeAsrEventsInternal(list)
   }
 
   fun addAppStart(event: AppStartEvent) {
     val list = readAppStartsInternal()
     list.add(event)
-    val ordered = list.sortedByDescending { it.timestamp }
-    val pruned = if (ordered.size > MAX_APP_STARTS) ordered.take(MAX_APP_STARTS) else ordered
-    writeAppStartsInternal(pruned)
+    writeAppStartsInternal(list)
   }
 
-  fun listAsrEventsSince(cutoffEpochMs: Long): List<AsrEvent> =
-    readAsrEventsInternal().filter { it.timestamp >= cutoffEpochMs }.sortedBy { it.timestamp }
+  fun listAsrEvents(): List<AsrEvent> =
+    readAsrEventsInternal().sortedBy { it.timestamp }
 
-  fun listAppStartsSince(cutoffEpochMs: Long): List<AppStartEvent> =
-    readAppStartsInternal().filter { it.timestamp >= cutoffEpochMs }.sortedBy { it.timestamp }
+  fun listAppStarts(): List<AppStartEvent> =
+    readAppStartsInternal().sortedBy { it.timestamp }
 
-  fun deleteAsrEventsBefore(cutoffEpochMs: Long): Int {
+  fun deleteAsrEventsByIds(ids: Set<String>): Int {
+    if (ids.isEmpty()) return 0
     val list = readAsrEventsInternal()
     val before = list.size
-    val remained = list.filter { it.timestamp >= cutoffEpochMs }
+    val remained = list.filterNot { ids.contains(it.id) }
     writeAsrEventsInternal(remained)
     return (before - remained.size).coerceAtLeast(0)
   }
 
-  fun deleteAppStartsBefore(cutoffEpochMs: Long): Int {
+  fun deleteAppStartsByIds(ids: Set<String>): Int {
+    if (ids.isEmpty()) return 0
     val list = readAppStartsInternal()
     val before = list.size
-    val remained = list.filter { it.timestamp >= cutoffEpochMs }
+    val remained = list.filterNot { ids.contains(it.id) }
     writeAppStartsInternal(remained)
     return (before - remained.size).coerceAtLeast(0)
   }
 }
-

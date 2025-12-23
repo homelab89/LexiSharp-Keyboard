@@ -40,7 +40,8 @@ object AnalyticsManager {
   private const val TAG = "AnalyticsManager"
   private const val COLLECTION_DAILY_REPORT = "daily_reports"
   private const val COLLECTION_CONSENT = "device_consents"
-  private const val DAY_MS = 24 * 60 * 60 * 1000L
+  private const val MIN_UPLOAD_INTERVAL_DAYS = 1
+  private const val RETRY_COOLDOWN_MS = 10 * 60 * 1000L
   private const val RETRY_INTERVAL_MS = 3 * 60 * 1000L
   private const val MAX_RETRIES = 3
 
@@ -181,20 +182,33 @@ object AnalyticsManager {
     cal.timeInMillis = now
     val minuteOfDay = cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE)
     val todayEpochDay = LocalDate.now(ZoneId.systemDefault()).toEpochDay()
-    if (prefs.analyticsLastUploadEpochDay == todayEpochDay) return
-    if (prefs.analyticsLastAttemptEpochDay == todayEpochDay) return
+    val lastUploadEpochDay = prefs.analyticsLastUploadEpochDay
+    if (lastUploadEpochDay >= 0L && (todayEpochDay - lastUploadEpochDay) < MIN_UPLOAD_INTERVAL_DAYS) return
     if (minuteOfDay < reportMinute) return
 
-    scope.launch { uploadOnce(context.applicationContext) }
+    val lastAttemptEpochDay = prefs.analyticsLastAttemptEpochDay
+    val lastAttemptEpochMs = prefs.analyticsLastAttemptEpochMs
+    val canRetry = lastAttemptEpochDay == todayEpochDay &&
+      prefs.analyticsRetryUsedEpochDay != todayEpochDay &&
+      lastAttemptEpochMs > 0L &&
+      (now - lastAttemptEpochMs) >= RETRY_COOLDOWN_MS
+    val isFirstAttemptToday = lastAttemptEpochDay != todayEpochDay
+    if (!isFirstAttemptToday && !canRetry) return
+
+    scope.launch { uploadOnce(context.applicationContext, isRetry = !isFirstAttemptToday) }
   }
 
-  private suspend fun uploadOnce(context: Context) {
+  private suspend fun uploadOnce(context: Context, isRetry: Boolean) {
     val prefs = Prefs(context)
     if (!prefs.dataCollectionEnabled) return
     val todayEpochDay = LocalDate.now(ZoneId.systemDefault()).toEpochDay()
     if (uploading) return
     uploading = true
     prefs.analyticsLastAttemptEpochDay = todayEpochDay
+    prefs.analyticsLastAttemptEpochMs = System.currentTimeMillis()
+    if (isRetry) {
+      prefs.analyticsRetryUsedEpochDay = todayEpochDay
+    }
     try {
       val baseUrl = try {
         context.getString(R.string.pocketbase_base_url).trim().trimEnd('/')
@@ -208,18 +222,12 @@ object AnalyticsManager {
       }
 
       val userId = ensureUserId(prefs)
-      val windowDays = if (prefs.analyticsLastUploadEpochDay >= 0L) {
-        (todayEpochDay - prefs.analyticsLastUploadEpochDay).toInt().coerceAtLeast(1)
-      } else {
-        1
-      }
-      val cutoff = System.currentTimeMillis() - (windowDays * DAY_MS)
       val store = AnalyticsStore(context)
-      val asrEvents = try { store.listAsrEventsSince(cutoff) } catch (t: Throwable) {
+      val asrEvents = try { store.listAsrEvents() } catch (t: Throwable) {
         Log.w(TAG, "Failed to read ASR events", t)
         emptyList()
       }
-      val appStarts = try { store.listAppStartsSince(cutoff) } catch (t: Throwable) {
+      val appStarts = try { store.listAppStarts() } catch (t: Throwable) {
         Log.w(TAG, "Failed to read app starts", t)
         emptyList()
       }
@@ -249,9 +257,9 @@ object AnalyticsManager {
       val ok = postWithRetries(req)
       if (ok) {
         prefs.analyticsLastUploadEpochDay = todayEpochDay
-        store.deleteAsrEventsBefore(cutoff)
-        store.deleteAppStartsBefore(cutoff)
-        Log.i(TAG, "Daily report uploaded, days=$windowDays, events=${asrEvents.size}, starts=${appStarts.size}")
+        store.deleteAsrEventsByIds(asrEvents.map { it.id }.toSet())
+        store.deleteAppStartsByIds(appStarts.map { it.id }.toSet())
+        Log.i(TAG, "Daily report uploaded, events=${asrEvents.size}, starts=${appStarts.size}")
       }
     } finally {
       uploading = false
