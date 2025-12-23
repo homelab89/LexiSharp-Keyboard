@@ -7,6 +7,7 @@ import com.brycewg.asrkb.ui.floating.FloatingAsrService
 import com.k2fsa.sherpa.onnx.TenVadModelConfig
 import com.k2fsa.sherpa.onnx.Vad
 import com.k2fsa.sherpa.onnx.VadModelConfig
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 基于 Ten VAD（sherpa-onnx）的语音活动检测与判停器。
@@ -361,11 +362,30 @@ class VadDetector(
     }
 }
 
+/**
+ * 长按说话时的自动停录抑制器：用于绕过静音判停干预。
+ */
+object VadAutoStopGuard {
+    private val suppressCount = AtomicInteger(0)
+
+    fun acquire(): AutoCloseable {
+        suppressCount.incrementAndGet()
+        return AutoCloseable { release() }
+    }
+
+    fun release() {
+        val remaining = suppressCount.decrementAndGet()
+        if (remaining < 0) {
+            suppressCount.set(0)
+        }
+    }
+
+    fun isSuppressed(): Boolean = suppressCount.get() > 0
+}
+
 fun isVadAutoStopEnabled(context: Context, prefs: Prefs): Boolean {
     return try {
-        // 统一仅由「静音自动停止」开关控制是否启用基于静音的自动停录。
-        // - IME 与悬浮球行为一致：只要用户显式开启了静音判停，就启用 VAD 停录。
-        // - 点按/长按录音模式（micTapToggleEnabled）不再影响是否启用静音判停，避免和畅说模式等基于 VAD 的功能产生隐性耦合。
+        if (VadAutoStopGuard.isSuppressed()) return false
         prefs.autoStopOnSilenceEnabled
     } catch (t: Throwable) {
         Log.w("VadDetector", "Failed to read prefs for VAD auto-stop", t)
