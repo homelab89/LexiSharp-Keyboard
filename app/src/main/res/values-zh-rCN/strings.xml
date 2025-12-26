@@ -305,7 +305,7 @@
 
   <!-- 付款码弹窗 -->
   <string name="payment_qr_title">通过付款码购买 Pro</string>
-  <string name="payment_qr_instruction">您可以通过微信或支付宝向作者直接付款（32 元），然后将付款截图和备注信息（包含订单号）发送到作者邮箱。作者最晚将在 1-2 天内回复激活码。</string>
+    <string name="payment_qr_instruction">您可以通过微信或支付宝向作者直接付款（32 元），然后将付款截图和备注信息（包含订单号）发送到作者邮箱。作者会回复 Play 商店「说点啥 Pro」的商品兑换码（激活码），需要手机可正常使用 Play 商店进行兑换。最晚 1-2 天内回复。</string>
   <string name="payment_qr_wechat">微信</string>
   <string name="payment_qr_alipay">支付宝</string>
   <string name="payment_qr_save">保存</string>

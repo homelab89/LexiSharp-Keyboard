@@ -305,7 +305,7 @@
 
   <!-- 付款碼彈窗 -->
   <string name="payment_qr_title">透過付款碼購買 Pro</string>
-  <string name="payment_qr_instruction">您可以透過微信或支付寶向作者直接付款（32 元），然後將付款截圖和備註資訊（包含訂單號）傳送到作者郵箱。作者最晚將在 1-2 天內回覆啟用碼。</string>
+  <string name="payment_qr_instruction">您可以透過微信或支付寶向作者直接付款（32 元），然後將付款截圖和備註資訊（包含訂單號）傳送到作者郵箱。作者會回覆 Play 商店「說點啥 Pro」的商品兌換碼（啟用碼），需要手機可正常使用 Play 商店進行兌換。最晚 1-2 天內回覆。</string>
   <string name="payment_qr_wechat">微信</string>
   <string name="payment_qr_alipay">支付寶</string>
   <string name="payment_qr_save">儲存</string>

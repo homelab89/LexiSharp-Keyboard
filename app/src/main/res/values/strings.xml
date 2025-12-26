@@ -307,7 +307,7 @@
 
   <!-- Payment QR Dialog -->
   <string name="payment_qr_title">Purchase Pro via QR Code</string>
-  <string name="payment_qr_instruction">Pay the author directly via WeChat or Alipay (¥32 CNY), then send the payment screenshot with your order number to the author\'s email. The author will reply with an activation code within 1-2 days at most.</string>
+  <string name="payment_qr_instruction">Pay the author directly via WeChat or Alipay (¥32 CNY), then send the payment screenshot with your order number to the author email. The author will reply with a Play Store redemption code for "说点啥 Pro" (activation code). Your phone must be able to use the Play Store to redeem it. The reply will arrive within 1-2 days at most.</string>
   <string name="payment_qr_wechat">WeChat</string>
   <string name="payment_qr_alipay">Alipay</string>
   <string name="payment_qr_save">Save</string>
