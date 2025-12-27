@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="images/logo.png" width="128" height="128" alt="Logo">
+<img src="images/icon_new.svg" width="128" height="128" alt="Logo">
 
 # 「说点啥」(BiBi Keyboard)
 
