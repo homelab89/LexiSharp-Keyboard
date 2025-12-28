@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Default Colors (Fallback) - Ultra Light Mode -->
-    <color name="ic_launcher_background_color">#FCFCFC</color> <!-- Ultra Light Gray -->
-    <color name="ic_launcher_foreground_color">#777777</color> <!-- Soft Gray -->
+    <!-- 图标颜色 (日间默认) -->
+    <color name="ic_launcher_background_color">#FCFCFC</color>
+    <color name="ic_launcher_foreground_color">#777777</color>
 
-    <!-- Linked Colors -->
+    <!-- 启动画面背景 -->
     <color name="splash_background">@color/ic_launcher_background_color</color>
-    <color name="ic_launcher_background">@color/ic_launcher_background_color</color>
 </resources>
