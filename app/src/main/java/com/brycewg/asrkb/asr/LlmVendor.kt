@@ -49,9 +49,14 @@ enum class LlmVendor(
             "Qwen/Qwen3-8B",
             "Qwen/Qwen3-14B",
             "Qwen/Qwen3-32B",
-            "Qwen/Qwen3-30B-A3B",
-            "Qwen/Qwen3-235B-A22B",
+            "Qwen/Qwen3-30B-A3B-Instruct-2507",
+            "Qwen/Qwen3-30B-A3B-Thinking-2507",
+            "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "Qwen/Qwen3-235B-A22B-Thinking-2507",
+            "Qwen/Qwen3-Next-80B-A3B-Instruct",
+            "Qwen/Qwen3-Next-80B-A3B-Thinking",
             "deepseek-ai/DeepSeek-V3.1-Terminus",
+            "deepseek-ai/DeepSeek-V3.2",
             "zai-org/GLM-4.6"
         ),
         registerUrl = "https://cloud.siliconflow.cn/i/g8thUcWa",
@@ -63,9 +68,12 @@ enum class LlmVendor(
             "Qwen/Qwen3-8B",
             "Qwen/Qwen3-14B",
             "Qwen/Qwen3-32B",
-            "Qwen/Qwen3-30B-A3B",
-            "Qwen/Qwen3-235B-A22B",
+            "Qwen/Qwen3-30B-A3B-Instruct-2507",
+            "Qwen/Qwen3-30B-A3B-Thinking-2507",
+            "Qwen/Qwen3-235B-A22B-Instruct-2507",
+            "Qwen/Qwen3-235B-A22B-Thinking-2507",
             "deepseek-ai/DeepSeek-V3.1-Terminus",
+            "deepseek-ai/DeepSeek-V3.2",
             "zai-org/GLM-4.6"
         )
     ),
@@ -95,6 +103,7 @@ enum class LlmVendor(
             "gemini-2.5-flash-lite",
             "gemini-2.5-flash",
             "gemini-2.5-pro",
+            "gemini-3-flash-preview",
             "gemini-3-pro-preview"
         ),
         registerUrl = "https://aistudio.google.com/apikey",
@@ -106,6 +115,7 @@ enum class LlmVendor(
             "gemini-2.5-flash-lite",
             "gemini-2.5-flash",
             "gemini-2.5-pro",
+            "gemini-3-flash-preview",
             "gemini-3-pro-preview"
         )
     ),
@@ -150,6 +160,7 @@ enum class LlmVendor(
         endpoint = "https://open.bigmodel.cn/api/paas/v4",
         defaultModel = "glm-4.6",
         models = listOf(
+            "glm-4.7",
             "glm-4.6",
             "glm-4.5",
             "glm-4.5-air",
@@ -162,7 +173,7 @@ enum class LlmVendor(
         temperatureMin = 0f,
         temperatureMax = 1f,
         reasoningMode = ReasoningMode.THINKING_TYPE,
-        reasoningModels = setOf("glm-4.6", "glm-4.5", "glm-4.5-air", "glm-4.5-flash")
+        reasoningModels = setOf("glm-4.7","glm-4.6", "glm-4.5", "glm-4.5-air", "glm-4.5-flash")
     ),
 
     /** Volcengine (火山引擎) */
@@ -277,7 +288,7 @@ enum class LlmVendor(
         id = "fireworks",
         displayNameResId = R.string.llm_vendor_fireworks,
         endpoint = "https://api.fireworks.ai/inference/v1",
-        defaultModel = "accounts/fireworks/models/deepseek-v3-0324",
+        defaultModel = "accounts/fireworks/models/deepseek-v3p2",
         models = listOf(
             // DeepSeek models
             "accounts/fireworks/models/deepseek-v3p2",
@@ -289,7 +300,8 @@ enum class LlmVendor(
             "accounts/fireworks/models/gpt-oss-120b",
             "accounts/fireworks/models/gpt-oss-20b",
             // GLM models
-            "accounts/fireworks/models/glm-4p6"
+            "accounts/fireworks/models/glm-4p6",
+            "accounts/fireworks/models/glm-4p7"
         ),
         registerUrl = "https://fireworks.ai/login",
         guideUrl = "https://docs.fireworks.ai/",
@@ -302,6 +314,7 @@ enum class LlmVendor(
             "accounts/fireworks/models/deepseek-v3p2",
             // GLM 4.5/4.6: binary on/off, default on
             "accounts/fireworks/models/glm-4p6",
+            "accounts/fireworks/models/glm-4p7",
             // GPT-OSS: only low/medium/high, no 'none' support
             "accounts/fireworks/models/gpt-oss-120b",
             "accounts/fireworks/models/gpt-oss-20b"
