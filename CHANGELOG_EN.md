@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.11.1 (2025-12-30)
+
+### New Features
+
+- **Volcengine New Model Support**: Added Volcengine DeepSeek-V3-2-251201 model support
+- **[Pro] App-Specific Prompt Settings**: Added app-specific prompt configuration feature in AI post-processing settings, allowing customized post-processing prompts for different apps using accessibility capabilities
+
+### Improvements
+
+- **AI Post-Processing Streaming Output**: Added streaming output functionality for AI post-processing, allowing users to see progressively generated text fragments while waiting for the final result, improving interactive experience
+- **Settings Option Bottom Sheet**: Added new settings option bottom sheet component to replace original dialogs, enhancing interaction smoothness
+- **Word Count Performance Optimization**: Optimized CJK character detection performance using range checks and fixed counting errors in some extreme text cases
+
+### Changes
+
+- **Removed Zipformer Engine**: Deprecated Zipformer streaming engine to streamline local ASR solutions. Existing users will be automatically migrated to Paraformer; please reconfirm or switch models in ASR settings. The "zipformer" ID mapping to Paraformer is preserved in the AsrVendor enum to ensure smooth legacy configuration migration, with one-time cleanup logic added to remove downloaded zipformer model directories on first launch
+
+---
+
 ## v3.11.0 (2025-12-28)
 
 ### New Features
