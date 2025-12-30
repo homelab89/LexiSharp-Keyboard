@@ -135,18 +135,25 @@ object TextSanitizer {
    * 判断是否为 CJK 字符（中文、日文、韩文）
    */
   private fun isCJK(codePoint: Int): Boolean {
-    val block = Character.UnicodeBlock.of(codePoint)
-    return block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS ||
-           block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A ||
-           block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B ||
-           block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C ||
-           block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D ||
-           block == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_E ||
-           block == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS ||
-           block == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS_SUPPLEMENT ||
-           block == Character.UnicodeBlock.HIRAGANA ||
-           block == Character.UnicodeBlock.KATAKANA ||
-           block == Character.UnicodeBlock.HANGUL_SYLLABLES ||
-           block == Character.UnicodeBlock.HANGUL_JAMO
+    return when (codePoint) {
+      in 0x4E00..0x9FFF -> true    // CJK Unified Ideographs
+      in 0x3400..0x4DBF -> true    // CJK Unified Ideographs Extension A
+      in 0x20000..0x2A6DF -> true  // CJK Unified Ideographs Extension B
+      in 0x2A700..0x2B73F -> true  // CJK Unified Ideographs Extension C
+      in 0x2B740..0x2B81F -> true  // CJK Unified Ideographs Extension D
+      in 0x2B820..0x2CEAF -> true  // CJK Unified Ideographs Extension E
+      in 0x2CEB0..0x2EBEF -> true  // CJK Unified Ideographs Extension F
+      in 0x30000..0x3134F -> true  // CJK Unified Ideographs Extension G
+      in 0xF900..0xFAFF -> true    // CJK Compatibility Ideographs
+      in 0x2F800..0x2FA1F -> true  // CJK Compatibility Ideographs Supplement
+      in 0x3040..0x309F -> true    // Hiragana
+      in 0x30A0..0x30FF -> true    // Katakana
+      in 0x31F0..0x31FF -> true    // Katakana Phonetic Extensions
+      in 0xAC00..0xD7AF -> true    // Hangul Syllables
+      in 0x1100..0x11FF -> true    // Hangul Jamo
+      in 0xA960..0xA97F -> true    // Hangul Jamo Extended-A
+      in 0xD7B0..0xD7FF -> true    // Hangul Jamo Extended-B
+      else -> false
+    }
   }
 }
