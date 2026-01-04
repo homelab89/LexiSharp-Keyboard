@@ -1051,6 +1051,11 @@ class AsrSettingsActivity : BaseActivity() {
             btnClearId = R.id.btnSvClearPunct,
             statusTextId = R.id.tvSvPunctStatus
         )
+
+        findViewById<MaterialButton>(R.id.btnSvGuide).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely(getString(R.string.model_guide_config_doc_url))
+        }
     }
 
     private fun setupParaformerSettings() {
@@ -1176,6 +1181,11 @@ class AsrSettingsActivity : BaseActivity() {
             btnClearId = R.id.btnPfClearPunct,
             statusTextId = R.id.tvPfPunctStatus
         )
+
+        findViewById<MaterialButton>(R.id.btnPfGuide).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely(getString(R.string.model_guide_config_doc_url))
+        }
     }
 
     private fun setupPfDownloadButtons() {
@@ -1790,6 +1800,11 @@ class AsrSettingsActivity : BaseActivity() {
             btnClearId = R.id.btnTsClearPunct,
             statusTextId = R.id.tvTsPunctStatus
         )
+
+        findViewById<MaterialButton>(R.id.btnTsGuide).setOnClickListener { v ->
+            hapticTapIfEnabled(v)
+            openUrlSafely(getString(R.string.model_guide_config_doc_url))
+        }
     }
 
     private fun handleModelImport(uri: Uri) {
